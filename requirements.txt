@@ -1,0 +1,23 @@
+pandas
+numpy
+openpyxl
+scipy
+statsmodels
+scikit-learn
+xgboost
+shap
+pingouin
+matplotlib
+seaborn
+plotly
+pyyaml
+joblib
+pytest
+black
+ruff
+jupyter
+pydantic
+# opsional (nanti, saat integrasi/aplikasi):
+# fastapi
+# uvicorn
+# streamlit

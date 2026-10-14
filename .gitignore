@@ -1,0 +1,15 @@
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+.env
+models/**/*.joblib
+data/raw/*.xlsx
+data/processed/
+umkm_proyek.zip
+*.egg-info/
+# data berisi nama usaha: jangan pernah masuk repo
+*.xlsx
+*.xls
+# cache alat
+.pytest_cache/
+.ruff_cache/

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "umkm"
+version = "0.1.0"
+requires-python = ">=3.10"
+# dependensi minimal untuk inferensi/integrasi
+dependencies = ["pandas", "numpy", "scikit-learn", "joblib", "pydantic", "pyyaml", "openpyxl"]
+
+[project.optional-dependencies]
+# hanya untuk tahap analisis
+analysis = ["scipy", "statsmodels", "xgboost", "shap", "pingouin", "matplotlib", "seaborn", "plotly"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+line-length = 100

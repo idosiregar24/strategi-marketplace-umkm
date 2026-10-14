@@ -1,0 +1,22 @@
+seed: 42
+base_dir: null   # diisi config.py dari env UMKM_BASE_DIR, jika kosong pakai folder proyek
+paths:
+  raw: data/raw/Kuesioner_Penelitian__Responses_.xlsx
+  processed: data/processed
+  reports: reports
+  models: models
+cleaning:
+  winsor_lower: null   # D16: ekor bawah tidak dibatasi (nilai 0 ditangani log1p, D04)
+  winsor_upper: 0.99
+  tahun_referensi: 2026
+  trx_maks_wajar: 100000   # batas untuk flag_trx_tidak_wajar
+  kosongkan_trx_janggal: true   # D17: transaksi ber-flag (tidak wajar/pecahan) dijadikan NaN
+cv:
+  n_splits: 5
+  n_repeats: 5
+segmentation:
+  k_min: 2
+  k_max: 6
+  min_cluster_size: 15
+  bootstrap_n: 100
+bootstrap_n: 1000

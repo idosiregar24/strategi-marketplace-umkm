@@ -1,0 +1,6 @@
+konstruk,peran,n_butir,n_responden,alpha,lolos_alpha,min_korelasi_butir_total,butir_di_bawah_0_30
+x1_unggah,strategi,4,149,0.9553136802783495,True,0.8853176300736723,
+x2_promosi,strategi,4,149,0.930124978271589,True,0.7492000660451735,
+x3_komunikasi,strategi,5,149,0.9468984962406014,True,0.8041314479866162,
+x4_konsistensi,strategi,5,149,0.9520803141908983,True,0.8432310640971123,
+y_persepsi,pendukung,8,149,0.9554524299044306,True,0.7378001882501514,

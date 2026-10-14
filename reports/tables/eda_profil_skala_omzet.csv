@@ -1,0 +1,5 @@
+skala_omzet,rentang_omzet_sebelum,n_utama,n_semua_149
+Q1_kecil,<= Rp9 jt,26,41
+Q2_menengah_bawah,Rp9-18 jt,30,37
+Q3_menengah_atas,Rp18-30 jt,30,36
+Q4_besar,> Rp30 jt,30,35
