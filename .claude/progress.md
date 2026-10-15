@@ -62,3 +62,8 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
   lainnya: skor strategi tidak berbeda.
 - Terbuka: D23 (DIUSULKAN). Untuk Tahap 4: perhatikan kepekaan X1 terhadap D20; korelasi negatif X3-pelanggan baru.
 - Catatan Colab: jika folder `MyDrive/umkm_proyek/` sudah ada, hapus/ganti dengan isi zip baru agar modul Tahap 3 ikut.
+
+### 2026-10-15 - Di luar tahap: dokumentasi dan dashboard
+- `reports/hasil_utama.md` (ringkasan hasil manual), README.md, `.gitignore` diperketat (*.xlsx, cache).
+- Dashboard lokal (D24): `src/umkm/dashboard.py` + `src/umkm/static/dashboard.html`; `python -m umkm.dashboard`
+  -> http://localhost:8000. 9 tes baru (total 67 lolos). Tahap 3 masih MENUNGGU PERSETUJUAN.

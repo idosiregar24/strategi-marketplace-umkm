@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strategi Marketplace UMKM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: satu kolom terpusat; pipeline tahap yang bisa diklik, lalu angka, grafik, kualitas data, pertanyaan, galeri. */
+:root {
+  --bg: #f5f6f4; --surface: #ffffff; --ink: #15191b; --ink-2: #4a5357; --muted: #7a8488; --line: #e1e4e2;
+  --accent: #2a78d6; --accent-soft: #e6f0fb; --naik: #2a78d6; --sama: #cfd2cc; --turun: #d64140; --kosong: #ecedea;
+  --good: #1d7a33; --good-soft: #e3f3e6; --warn: #9a5b00; --warn-soft: #fbf0dc; --idle: #6b7478; --idle-soft: #eef0ee;
+  --bar-dim: #b9c7d6;
+  --f-display: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111416; --surface: #191d20; --ink: #eef1f0; --ink-2: #b5bdbf; --muted: #868f91; --line: #2a3033;
+    --accent: #4b93ea; --accent-soft: #1c2a3a; --naik: #3987e5; --sama: #4b504d; --turun: #e66767; --kosong: #2a2e2c;
+    --good: #5cc46f; --good-soft: #183020; --warn: #e3a447; --warn-soft: #33270f; --idle: #9aa3a6; --idle-soft: #23282a;
+    --bar-dim: #3d4a58; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111416; --surface: #191d20; --ink: #eef1f0; --ink-2: #b5bdbf; --muted: #868f91; --line: #2a3033;
+  --accent: #4b93ea; --accent-soft: #1c2a3a; --naik: #3987e5; --sama: #4b504d; --turun: #e66767; --kosong: #2a2e2c;
+  --good: #5cc46f; --good-soft: #183020; --warn: #e3a447; --warn-soft: #33270f; --idle: #9aa3a6; --idle-soft: #23282a;
+  --bar-dim: #3d4a58; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55;
+  padding-inline: 16px; padding-block: 28px 56px;
+}
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+.wrap { max-width: 1040px; margin-inline: auto; display: grid; gap: 44px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1rem; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+.lede { color: var(--ink-2); max-width: 64ch; }
+.mono { font-family: var(--f-mono); font-size: 0.86em; }
+section { display: grid; gap: 16px; }
+.sec-head { display: grid; gap: 4px; }
+.sec-head p { color: var(--ink-2); max-width: 70ch; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; min-width: 0; }
+header { display: grid; gap: 12px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--ink-2); font-size: 0.9rem; align-items: center; }
+.meta b { color: var(--ink); font-weight: 600; }
+.note { font-size: 0.88rem; color: var(--ink-2); border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; max-width: 70ch; }
+.btn {
+  appearance: none; font: inherit; font-size: 0.82rem; font-weight: 600; color: var(--accent); background: var(--accent-soft);
+  border: 1px solid transparent; border-radius: 6px; padding: 5px 12px; cursor: pointer;
+}
+.btn:hover { border-color: var(--accent); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.empty { color: var(--muted); font-size: 0.9rem; }
+.error { color: var(--turun); }
+
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 0.74rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; width: fit-content; }
+.chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.chip.done { color: var(--good); background: var(--good-soft); }
+.chip.wait, .chip.run { color: var(--warn); background: var(--warn-soft); }
+.chip.todo { color: var(--idle); background: var(--idle-soft); }
+
+.pipeline { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.step {
+  appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px;
+  padding: 10px 10px 12px; text-align: left; cursor: pointer; display: grid; gap: 6px; font: inherit; min-width: 0;
+  transition: border-color .15s, background .15s;
+}
+.step:hover { border-color: var(--accent); }
+.step:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.step[aria-selected="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.step .n { font-family: var(--f-mono); font-size: 0.74rem; color: var(--muted); }
+.step .t { font-weight: 700; font-size: 0.88rem; line-height: 1.25; }
+.step .bar { height: 4px; border-radius: 2px; background: var(--idle-soft); }
+.step.s-done .bar { background: var(--good); }
+.step.s-wait .bar, .step.s-run .bar { background: var(--warn); }
+@media (max-width: 760px) { .pipeline { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 440px) { .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.detail { display: grid; gap: 18px; }
+.detail-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.detail-head p { flex-basis: 100%; color: var(--ink-2); max-width: 70ch; }
+.flow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.3fr) auto minmax(0, 1fr); gap: 12px; }
+.flow .arrow { align-self: center; color: var(--muted); font-size: 1.2rem; }
+.flow .box { border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.flow ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 0.9rem; }
+.file { display: grid; gap: 2px; font-size: 0.88rem; }
+.file .mono { color: var(--ink); overflow-wrap: anywhere; }
+.file small { color: var(--muted); font-size: 0.8rem; }
+.decisions { font-size: 0.85rem; color: var(--ink-2); }
+@media (max-width: 760px) { .flow { grid-template-columns: minmax(0, 1fr); } .flow .arrow { transform: rotate(90deg); justify-self: center; } }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.stat { padding: 16px 18px; display: grid; gap: 4px; align-content: start; }
+.stat .v { font-family: var(--f-display); font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat .k { font-size: 0.86rem; color: var(--ink-2); }
+@media (max-width: 760px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.charts .wide { grid-column: 1 / -1; }
+@media (max-width: 760px) { .charts { grid-template-columns: minmax(0, 1fr); } }
+.chart { display: grid; gap: 14px; align-content: start; }
+.cap { font-size: 0.86rem; color: var(--ink-2); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.8rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.rows { display: grid; gap: 10px; }
+.row, .axis { display: grid; grid-template-columns: 170px minmax(0, 1fr) 70px; gap: 10px; align-items: center; font-size: 0.86rem; }
+@media (max-width: 440px) { .row, .axis { grid-template-columns: 100px minmax(0, 1fr) 56px; } }
+.row .lbl { color: var(--ink-2); overflow-wrap: anywhere; }
+.row .val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.track { position: relative; height: 22px; background: var(--kosong); border-radius: 4px; display: flex; overflow: hidden; gap: 2px; }
+.track.plain { background: transparent; }
+.seg { height: 100%; min-width: 0; outline: none; }
+.seg:first-child { border-radius: 4px 0 0 4px; }
+.seg:last-child { border-radius: 0 4px 4px 0; }
+.seg:only-child { border-radius: 0 4px 4px 0; }
+.seg:hover, .seg:focus-visible { filter: brightness(1.12); }
+.axis { font-size: 0.74rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.axis .ticks { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 4px; }
+.sig { display: block; font-size: 0.72rem; font-weight: 600; color: var(--good); }
+.ns { display: block; font-size: 0.72rem; font-weight: 600; color: var(--muted); }
+#tip {
+  position: fixed; z-index: 10; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 0.8rem;
+  padding: 6px 9px; border-radius: 6px; max-width: 280px; line-height: 1.4; opacity: 0; transition: opacity .1s;
+}
+#tip.on { opacity: 1; }
+
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+.scroll { overflow-x: auto; }
+.scroll table { min-width: 560px; }
+
+.qgroups { display: grid; gap: 22px; }
+.qgroup { display: grid; gap: 10px; }
+.qgroup h3 { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.qgroup h3 small { font-weight: 500; color: var(--muted); font-size: 0.85rem; }
+.q { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.q input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent); cursor: pointer; }
+.q label { display: grid; gap: 6px; cursor: pointer; min-width: 0; }
+.q .ask { font-weight: 600; }
+.q .why { font-size: 0.86rem; color: var(--ink-2); }
+.q .why b { color: var(--ink); font-weight: 600; }
+.q.checked { opacity: 0.6; }
+.q.checked .ask { text-decoration: line-through; }
+
+.gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .gallery { grid-template-columns: minmax(0, 1fr); } }
+.fig { display: grid; gap: 10px; align-content: start; padding: 14px; }
+.fig a { display: block; border-radius: 6px; overflow: hidden; background: #fcfcfb; }
+.fig a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.fig img { display: block; width: 100%; height: auto; }
+.fig figcaption { font-size: 0.86rem; color: var(--ink-2); display: grid; gap: 2px; }
+.fig figcaption b { color: var(--ink); font-weight: 600; }
+figure { margin: 0; }
+footer { font-size: 0.82rem; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">Penelitian UMKM Pekanbaru</span>
+    <h1>Strategi Marketplace UMKM</h1>
+    <p class="lede">Strategi marketplace mana (unggah produk, promosi, komunikasi pelanggan, konsistensi kelola toko) yang paling berhubungan dengan kinerja penjualan UMKM, lalu rekomendasi strategi per segmen.</p>
+    <div class="meta">
+      <span>Data diolah <b id="m-data">-</b></span>
+      <span>Halaman dimuat <b id="m-muat">-</b></span>
+      <span id="m-tahap"></span>
+      <button class="btn" id="reload" type="button">Muat ulang data</button>
+    </div>
+    <p class="note">Semua hasil menggambarkan keterkaitan (asosiasi), bukan sebab-akibat. Angka dibaca langsung dari hasil pipeline terakhir.</p>
+    <p class="error" id="err" hidden></p>
+  </header>
+
+  <section aria-labelledby="h-alur">
+    <div class="sec-head">
+      <h2 id="h-alur">Alur pengerjaan</h2>
+      <p>Klik satu tahap untuk melihat data yang masuk, apa yang dikerjakan, dan data yang dihasilkan. Status diambil dari <span class="mono">.claude/progress.md</span>.</p>
+    </div>
+    <div class="pipeline" role="tablist" aria-label="Tahap penelitian" id="pipeline"></div>
+    <div class="panel detail" role="tabpanel" id="detail" aria-live="polite"></div>
+  </section>
+
+  <section aria-labelledby="h-angka">
+    <div class="sec-head">
+      <h2 id="h-angka">Angka kunci</h2>
+      <p id="angka-cap"></p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section aria-labelledby="h-hasil">
+    <div class="sec-head">
+      <h2 id="h-hasil">Hasil utama</h2>
+      <p>Arahkan kursor (atau tekan Tab) ke batang untuk melihat angkanya.</p>
+    </div>
+    <div class="charts">
+      <div class="panel chart wide">
+        <div class="sec-head">
+          <h3>Strategi yang paling berhubungan dengan kenaikan penjualan</h3>
+          <p class="cap">Korelasi Spearman skor strategi dengan kinerja gabungan (Y_obj), sampel utama. Makin panjang batang, makin kuat hubungannya.</p>
+        </div>
+        <div class="rows" id="ch-kor"><p class="empty">Belum ada hasil Tahap 3.</p></div>
+        <div class="axis"><span></span><div class="ticks"><span>0</span><span>0,1</span><span>0,2</span><span>0,3</span><span>0,4</span><span>0,5</span></div><span></span></div>
+        <div class="legend"><span><b style="color:var(--good)">bermakna</b> = p &lt; 0,05 setelah koreksi Holm</span></div>
+      </div>
+      <div class="panel chart">
+        <div class="sec-head"><h3>Arah perubahan sesudah marketplace</h3><p class="cap" id="arah-cap">Sampel utama.</p></div>
+        <div class="legend">
+          <span><i style="background:var(--naik)"></i>naik</span><span><i style="background:var(--sama)"></i>sama</span>
+          <span><i style="background:var(--turun)"></i>turun</span><span><i style="background:var(--kosong);outline:1px solid var(--line)"></i>kosong (data janggal)</span>
+        </div>
+        <div class="rows" id="ch-arah"><p class="empty">Belum ada hasil Tahap 3.</p></div>
+      </div>
+      <div class="panel chart">
+        <div class="sec-head"><h3>Seberapa sering strategi dijalankan</h3><p class="cap">Rata-rata skor 1-5, semua responden. Skor 3 = netral.</p></div>
+        <div class="rows" id="ch-skor"><p class="empty">Belum ada hasil Tahap 3.</p></div>
+        <div class="axis"><span></span><div class="ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div><span></span></div>
+      </div>
+      <div class="panel chart wide">
+        <div class="sec-head"><h3>Platform yang dipakai</h3><p class="cap" id="plat-cap">Satu UMKM bisa memakai lebih dari satu platform.</p></div>
+        <div class="rows" id="ch-plat"><p class="empty">Belum ada hasil Tahap 3.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-kualitas">
+    <div class="sec-head">
+      <h2 id="h-kualitas">Catatan kualitas data</h2>
+      <p>Hal-hal yang memengaruhi cara membaca hasil. Semuanya sudah ditandai di data dan diuji ulang di Tahap 4.</p>
+    </div>
+    <div class="panel scroll"><table><thead><tr><th>Temuan</th><th>Dampak</th><th>Status</th></tr></thead><tbody id="kualitas"></tbody></table></div>
+  </section>
+
+  <section aria-labelledby="h-tanya">
+    <div class="sec-head">
+      <h2 id="h-tanya">Yang perlu Anda tanyakan</h2>
+      <p>Centang setelah terjawab (tersimpan di browser ini saja). Jika belum ada jawaban, analisis tetap jalan dengan pilihan bawaan yang tertulis.</p>
+      <p class="cap" id="qprog"></p>
+    </div>
+    <div class="qgroups" id="qgroups"></div>
+  </section>
+
+  <section aria-labelledby="h-galeri">
+    <div class="sec-head">
+      <h2 id="h-galeri">Galeri grafik</h2>
+      <p>Semua grafik di <span class="mono">reports/figures/</span>. Klik untuk membuka ukuran penuh.</p>
+    </div>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <section aria-labelledby="h-folder">
+    <div class="sec-head"><h2 id="h-folder">Di mana datanya</h2><p>Isi folder proyek di komputer Anda.</p></div>
+    <div class="panel scroll">
+      <table>
+        <thead><tr><th>Folder / berkas</th><th>Isi</th><th>Masuk repo?</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">data/raw/</td><td>Excel kuesioner asli, tidak pernah diubah (berisi nama usaha)</td><td><span class="chip todo">tidak</span></td></tr>
+          <tr><td class="mono">data/processed/</td><td><span class="mono">data_clean.csv</span> (Tahap 1), <span class="mono">data_features.csv</span> (Tahap 2)</td><td><span class="chip todo">tidak</span></td></tr>
+          <tr><td class="mono">reports/</td><td>Log tiap tahap, <span class="mono">hasil_utama.md</span>, <span class="mono">eda_ringkasan.md</span>, <span class="mono">tables/</span>, <span class="mono">figures/</span></td><td><span class="chip done">ya</span></td></tr>
+          <tr><td class="mono">src/umkm/</td><td>Semua kode analisis, termasuk dashboard ini</td><td><span class="chip done">ya</span></td></tr>
+          <tr><td class="mono">notebooks/</td><td><span class="mono">03_eda.ipynb</span> (lokal), <span class="mono">00_setup_colab.ipynb</span> (Google Colab)</td><td><span class="chip done">ya</span></td></tr>
+          <tr><td class="mono">tests/</td><td>Tes otomatis (pytest)</td><td><span class="chip done">ya</span></td></tr>
+          <tr><td class="mono">.claude/</td><td>Rencana tiap tahap, log keputusan, progres</td><td><span class="chip done">ya</span></td></tr>
+          <tr><td class="mono">umkm_proyek.zip</td><td>Paket untuk Google Colab (berisi data mentah)</td><td><span class="chip todo">tidak</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>Dijalankan dengan <span class="mono">python -m umkm.dashboard</span>. Perbarui hasil dengan <span class="mono">python -m umkm.pipeline --all</span>, lalu klik "Muat ulang data".</footer>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+/* Uraian tetap per tahap; status dan keluaran diambil dari progress.md lewat data.json. */
+const URAIAN = {
+  1: { sum: "Merapikan data mentah kuesioner agar bisa dihitung.",
+       inp: [["data/raw/Kuesioner_Penelitian__Responses_.xlsx", "data mentah, tidak pernah diubah"]],
+       proc: ["Nama kolom dirapikan; jawaban \"3. Netral\" menjadi angka 3", "Omzet teks \"3.500.000\" menjadi angka",
+              "Lama usaha \"3 bulan\" menjadi 0,25 tahun; \"2018\" menjadi 8 tahun", "Platform dipecah jadi kolom ya/tidak",
+              "Nilai ekstrem dipangkas di persentil 99; transaksi janggal dikosongkan", "Nama usaha diganti ID R001-R149"] },
+  2: { sum: "Membuat skor strategi dan ukuran kinerja yang siap dianalisis.",
+       inp: [["data/processed/data_clean.csv", "hasil Tahap 1"]],
+       proc: ["Skor strategi = rata-rata butir: X1 Unggah, X2 Promosi, X3 Komunikasi, X4 Konsistensi",
+              "Reliabilitas diuji (Cronbach's alpha)", "Target: naik_penjualan (naik/tidak), y_obj (besar perubahan), pelanggan baru",
+              "Sampel utama = UMKM yang punya kondisi \"sebelum\"", "Penanda kualitas: jawaban seragam, omzet turun tajam"] },
+  3: { sum: "Melihat pola awal: profil, sebaran jawaban, sebelum-sesudah, korelasi, perbandingan kelompok.",
+       inp: [["data/processed/data_features.csv", "hasil Tahap 2"], ["data/processed/data_clean.csv", "nilai omzet dan transaksi"]],
+       proc: ["Profil responden: platform, lama usaha, skala omzet", "Sebaran skor dan dominasi jawaban netral",
+              "Sebelum vs sesudah (uji Wilcoxon)", "Korelasi strategi dengan kinerja (Spearman)",
+              "UMKM naik vs tidak naik (Mann-Whitney)", "Cek tumpang-tindih antar-variabel (VIF)"] },
+  4: { sum: "Mengukur hubungan tiap strategi dengan kinerja sambil mengontrol profil usaha.",
+       inp: [["data/processed/data_features.csv", "sampel utama"]],
+       proc: ["Regresi OLS dan regresi logistik", "Random Forest dengan validasi silang 5 × 5, dibandingkan dengan model sederhana",
+              "Permutation importance dan SHAP", "Peringkat strategi + bootstrap 1000x", "Uji sensitivitas (tanpa jawaban seragam, semua responden, dll.)"] },
+  5: { sum: "Mengelompokkan UMKM yang mirip (K-Means).", inp: [["data/processed/data_features.csv", ""]],
+       proc: ["K-Means dengan k = 2 sampai 6", "Pilih k dari silhouette dan stabilitas bootstrap", "Profil tiap segmen"] },
+  6: { sum: "Menyusun prioritas strategi untuk tiap segmen.", inp: [["Hasil Tahap 4 dan 5", ""]],
+       proc: ["Bandingkan skor tiap UMKM dengan acuan segmennya", "Prioritaskan strategi dengan celah terbesar dan hubungan terkuat",
+              "Fungsi recommend(profil) untuk dipakai sistem lain nanti"] },
+  7: { sum: "Menyusun laporan akhir.", inp: [["Semua hasil tahap 1-6", ""]], proc: ["Metode, hasil, keterbatasan, rekomendasi"] },
+};
+const KET = { done: "Selesai", wait: "Menunggu persetujuan", run: "Berjalan", todo: "Belum" };
+const KET_PENDEK = { done: "Selesai", wait: "Menunggu", run: "Berjalan", todo: "Belum" };
+const KAPSI_FIGUR = {
+  "eda_spearman_heatmap.png": "Korelasi strategi dengan kinerja",
+  "eda_boxplot_naik_penjualan.png": "Skor strategi: naik vs tidak naik",
+  "eda_arah_perubahan.png": "Arah perubahan omzet dan transaksi",
+  "eda_sebelum_sesudah.png": "Nilai sebelum vs sesudah per UMKM",
+  "eda_distribusi_konstruk.png": "Sebaran skor strategi",
+  "eda_butir_likert.png": "Sebaran jawaban per butir",
+  "eda_boxplot_tanpa_baseline.png": "UMKM tanpa baseline vs punya baseline",
+  "eda_profil_platform.png": "Platform yang dipakai",
+  "eda_profil_lama_usaha.png": "Lama usaha",
+  "eda_profil_skala_omzet.png": "Skala usaha menurut omzet",
+};
+const URUT_FIGUR = Object.keys(KAPSI_FIGUR);
+const PERTANYAAN = [
+  { g: "Ke responden atau pengumpul data", sub: "memperbaiki data", items: [
+    { id: "q3", a: "Omzet R065 (90 jt → 9 jt) dan R130 (320 jt → 32 jt): apakah salah ketik nol?", w: "Dua UMKM ini menarik skor kinerja gabungan sangat ke bawah.", d: "data dibiarkan; Tahap 4 menguji hasil dengan dan tanpa mereka." },
+    { id: "q4", a: "\"Pelanggan baru per bulan\" itu kondisi sebelum atau sesudah memakai marketplace?", w: "Karena ambigu, variabel ini lemah dan tidak berhubungan dengan strategi mana pun.", d: "tetap target tambahan, dibaca hati-hati." },
+    { id: "q5", a: "Butir X1.2 (perbarui katalog) dan X2.1 (fitur promo) ada di instrumen tetapi tidak di Excel. Apakah memang tidak ditanyakan di form?", w: "Skor X1 dan X2 kini dari 4 butir, bukan 5.", d: "dicatat sebagai keterbatasan." },
+  ]},
+  { g: "Ke dosen pembimbing", sub: "arah analisis dan laporan", items: [
+    { id: "q6", a: "Apakah analisis asosiasi (bukan sebab-akibat) sudah sesuai tujuan penelitian?", w: "Data sebelum-sesudah tidak punya kelompok pembanding, jadi tidak bisa membuktikan marketplace penyebab kenaikan.", d: "klaim ditulis sebagai keterkaitan." },
+    { id: "q7", a: "Apakah dominasi jawaban netral cukup dibahas sebagai keterbatasan?", w: "Sebagian besar butir didominasi jawaban 3, sehingga perbedaan antar-UMKM sulit terlihat.", d: "dibahas di bagian keterbatasan." },
+    { id: "q8", a: "Apakah SEM/PLS-SEM wajib dipakai?", w: "Metode inti saat ini regresi dan Random Forest.", d: "tidak memakai SEM." },
+  ]},
+];
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (x, d = 2) => (x == null ? "-" : Number(x).toFixed(d).replace(".", ","));
+const pct = (x) => Math.round(x * 100) + "%";
+const rupiah = (x) => Math.abs(x) < 1e6 ? "Rp" + Math.round(x / 1e3).toLocaleString("id-ID") + " rb" : "Rp" + (x / 1e6).toLocaleString("id-ID", { maximumFractionDigits: 1 }) + " jt";
+
+/* Tooltip */
+const tip = $("tip");
+function bindTip(el, text) {
+  el.tabIndex = 0;
+  el.setAttribute("aria-label", text);
+  const place = (x, y) => {
+    tip.style.left = Math.min(window.innerWidth - tip.offsetWidth - 8, Math.max(8, x + 12)) + "px";
+    tip.style.top = Math.max(8, y - tip.offsetHeight - 10) + "px";
+  };
+  const show = (x, y) => { tip.textContent = text; tip.classList.add("on"); place(x, y); };
+  el.addEventListener("mouseenter", (e) => show(e.clientX, e.clientY));
+  el.addEventListener("mousemove", (e) => place(e.clientX, e.clientY));
+  el.addEventListener("mouseleave", () => tip.classList.remove("on"));
+  el.addEventListener("focus", () => { const r = el.getBoundingClientRect(); show(r.left + r.width / 2, r.top); });
+  el.addEventListener("blur", () => tip.classList.remove("on"));
+}
+
+/* Tahap */
+let TAHAP = [];
+function renderDetail(st) {
+  const u = URAIAN[st.n] || { sum: "", inp: [], proc: [] };
+  const files = (arr) => arr.length ? arr.map(([f, d]) => `<div class="file"><span class="mono">${esc(f)}</span>${d ? `<small>${esc(d)}</small>` : ""}</div>`).join("") : '<span class="empty">-</span>';
+  $("detail").innerHTML = `
+    <div class="detail-head"><h3>Tahap ${st.n} · ${esc(st.nama)}</h3><span class="chip ${st.status}">${KET[st.status]}</span>
+      ${st.selesai ? `<span class="cap">selesai ${esc(st.selesai)}</span>` : ""}<p>${esc(u.sum)}</p></div>
+    <div class="flow">
+      <div class="box"><span class="eyebrow">Data masuk</span>${files(u.inp)}</div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="box"><span class="eyebrow">${st.status === "todo" ? "Rencana" : "Yang dikerjakan"}</span><ul>${u.proc.map((p) => `<li>${esc(p)}</li>`).join("")}</ul></div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="box"><span class="eyebrow">${st.status === "todo" ? "Akan dihasilkan" : "Data dihasilkan"}</span>${files(st.keluaran.map((k) => [k, ""]))}</div>
+    </div>`;
+}
+function select(i, focus) {
+  [...$("pipeline").children].forEach((b, j) => { b.setAttribute("aria-selected", String(i === j)); b.tabIndex = i === j ? 0 : -1; });
+  if (focus) $("pipeline").children[i].focus();
+  renderDetail(TAHAP[i]);
+}
+function renderTahap(tahap) {
+  TAHAP = tahap;
+  const pipe = $("pipeline");
+  pipe.innerHTML = "";
+  tahap.forEach((st, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = `step s-${st.status}`;
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-controls", "detail");
+    b.innerHTML = `<span class="n">Tahap ${st.n}</span><span class="t">${esc(st.nama)}</span><span class="bar"></span><span class="chip ${st.status}">${KET_PENDEK[st.status]}</span>`;
+    b.addEventListener("click", () => select(i));
+    b.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") select((i + 1) % tahap.length, true);
+      if (e.key === "ArrowLeft") select((i - 1 + tahap.length) % tahap.length, true);
+    });
+    pipe.appendChild(b);
+  });
+  let aktif = tahap.findIndex((t) => t.status !== "done");
+  if (aktif < 0) aktif = tahap.length - 1;
+  if (tahap.length) select(aktif);
+  const selesai = tahap.filter((t) => t.status === "done").length;
+  $("m-tahap").innerHTML = `Tahap selesai <b>${selesai} dari ${tahap.length}</b>`;
+}
+
+/* Angka dan grafik */
+function barRow(host, label, width, color, val, tipText, extra = "") {
+  const row = document.createElement("div");
+  row.className = "row";
+  row.innerHTML = `<span class="lbl">${esc(label)}${extra}</span><div class="track plain"><div class="seg" style="width:${Math.max(0, Math.min(100, width))}%;background:${color}"></div></div><span class="val">${val}</span>`;
+  host.appendChild(row);
+  bindTip(row.querySelector(".seg"), tipText);
+}
+function renderHasil(h) {
+  const a = h.angka;
+  const arah = h.arah || [];
+  const omzet = arah.find((r) => r.k === "Omzet");
+  $("stats").innerHTML = a ? [
+    [a.n_semua, "UMKM responden"],
+    [a.n_utama, "UMKM di sampel utama"],
+    [pct(a.n_naik / a.n_utama), `omzet atau transaksi naik (${a.n_naik} dari ${a.n_utama})`],
+    [omzet ? rupiah(omzet.median_selisih) : "-", "median kenaikan omzet per bulan"],
+  ].map(([v, k]) => `<div class="panel stat"><span class="v">${v}</span><span class="k">${esc(k)}</span></div>`).join("") : '<p class="empty">Belum ada hasil Tahap 2.</p>';
+  if (a) $("angka-cap").textContent = `Sampel utama = ${a.n_utama} UMKM yang punya kondisi "sebelum marketplace". ${a.n_tanpa_baseline} UMKM yang berdiri bersamaan dengan masuk marketplace hanya dipakai sebagai pembanding.`;
+
+  if (h.korelasi) {
+    const host = $("ch-kor"); host.innerHTML = "";
+    h.korelasi.forEach((d) => {
+      const sig = d.p_holm < 0.05;
+      barRow(host, d.k, (d.rho / 0.5) * 100, sig ? "var(--accent)" : "var(--bar-dim)", fmt(d.rho),
+        `${d.k}: rho ${fmt(d.rho)}, p Holm ${fmt(d.p_holm, 3)}. Naik vs tidak naik: rank-biserial ${fmt(d.rb)} (p Holm ${fmt(d.p_mw, 3)}); tanpa jawaban seragam p Holm ${fmt(d.p_mw_tanpa_seragam, 3)}.`,
+        sig ? '<span class="sig">bermakna</span>' : '<span class="ns">belum bermakna</span>');
+    });
+  }
+  if (arah.length && a) {
+    const host = $("ch-arah"); host.innerHTML = "";
+    $("arah-cap").textContent = `Sampel utama, n = ${a.n_utama}.`;
+    arah.forEach((d) => {
+      const n = a.n_utama;
+      const row = document.createElement("div");
+      row.className = "row";
+      row.innerHTML = `<span class="lbl">${esc(d.k)}</span>`;
+      const tr = document.createElement("div");
+      tr.className = "track";
+      ["naik", "sama", "turun", "kosong"].forEach((kat) => {
+        if (!d[kat]) return;
+        const s = document.createElement("div");
+        s.className = "seg";
+        s.style.width = (d[kat] / n) * 100 + "%";
+        s.style.background = `var(--${kat})`;
+        tr.appendChild(s);
+        bindTip(s, `${d.k} ${kat}: ${d[kat]} UMKM (${pct(d[kat] / n)})`);
+      });
+      row.appendChild(tr);
+      row.insertAdjacentHTML("beforeend", `<span class="val">${pct(d.naik / n)} naik</span>`);
+      host.appendChild(row);
+    });
+  }
+  if (h.skor) {
+    const host = $("ch-skor"); host.innerHTML = "";
+    h.skor.forEach((d) => barRow(host, d.k, ((d.v - 1) / 4) * 100, "var(--accent)", fmt(d.v), `${d.k}: rata-rata ${fmt(d.v)} dari 5`));
+  }
+  if (h.platform) {
+    const host = $("ch-plat"); host.innerHTML = "";
+    const n = a ? a.n_semua : 0;
+    h.platform.forEach((d) => barRow(host, d.k, d.pct * 100, "var(--accent)", pct(d.pct), `${d.k}: ${d.n}${n ? " dari " + n : ""} UMKM (${pct(d.pct)})`));
+    if (h.kombinasi_teratas) $("plat-cap").textContent = `Persentase dari semua responden. Satu UMKM bisa memakai lebih dari satu platform; kombinasi terbanyak ${h.kombinasi_teratas.k} (${h.kombinasi_teratas.n} UMKM).`;
+  }
+
+  const rows = [];
+  if (h.butir_netral) rows.push([`Jawaban netral (3) mendominasi ${h.butir_netral.n} dari ${h.butir_netral.total} butir` + (h.pct_persepsi_tepat_3 != null ? `; skor persepsi ${pct(h.pct_persepsi_tepat_3)} responden tepat 3` : ""), "Variasi sempit, perbedaan antar-UMKM lebih sulit terlihat", "wait", "keterbatasan"]);
+  if (a && h.korelasi) {
+    const x1 = h.korelasi.find((d) => d.k.startsWith("X1"));
+    rows.push([`${a.n_seragam_utama} responden sampel utama menjawab semua butir strategi dengan angka sama (${a.n_seragam_naik} di antaranya naik)`,
+      x1 ? `Tanpa mereka, beda skor unggah produk (X1) naik vs tidak naik: p Holm ${fmt(x1.p_mw, 3)} → ${fmt(x1.p_mw_tanpa_seragam, 3)}` : "Diuji ulang di Tahap 4", "wait", "perlu hati-hati"]);
+  }
+  if (a) rows.push([`Omzet ${a.n_turun_tajam} responden turun tajam (R065 dan R130 tepat 10 kali lipat)`, "Kemungkinan salah ketik nol; diuji dengan dan tanpa mereka", "wait", "perlu konfirmasi"]);
+  if (a) rows.push([`Transaksi ${a.n_trx_dikosongkan} responden janggal`, "Dikosongkan; kinerja mereka dinilai dari omzet saja", "done", "sudah ditangani"]);
+  if (h.alpha) rows.push([`Reliabilitas skor strategi alpha ${fmt(h.alpha.min)}-${fmt(h.alpha.max)}`, "Butir tiap strategi konsisten mengukur hal yang sama", "done", "baik"]);
+  if (h.vif_maks != null) rows.push([`Tumpang-tindih antar-variabel rendah (VIF maksimum ${fmt(h.vif_maks)})`, "Keempat strategi aman dimasukkan bersama ke model", h.vif_maks < 5 ? "done" : "wait", h.vif_maks < 5 ? "aman" : "perlu cek"]);
+  $("kualitas").innerHTML = rows.length ? rows.map(([t, d, s, l]) => `<tr><td>${esc(t)}</td><td>${esc(d)}</td><td><span class="chip ${s}">${esc(l)}</span></td></tr>`).join("") : '<tr><td colspan="3" class="empty">Belum ada hasil.</td></tr>';
+}
+
+/* Pertanyaan: keputusan terbuka dari decisions.md + daftar tetap */
+let centang = {};
+try { centang = JSON.parse(localStorage.getItem("umkm-q") || "{}") || {}; } catch (e) { centang = {}; }
+function renderPertanyaan(tahap, keputusan) {
+  const tunggu = tahap.filter((t) => t.status === "wait");
+  const sekarang = [
+    ...tunggu.map((t) => ({ id: `tahap-${t.n}`, a: `Apakah hasil Tahap ${t.n} (${t.nama}) disetujui?`, w: "Tahap berikutnya baru dimulai setelah ini.", d: "belum lanjut ke tahap berikutnya." })),
+    ...keputusan.map((k) => ({ id: `dec-${k.id}`, a: `${k.id} · ${k.topik} (${k.status.toLowerCase()})`, w: k.isi, d: k.status === "DIUSULKAN" ? "dipakai sesuai usulan." : "ditanyakan sebelum dipakai." })),
+  ];
+  const grup = [{ g: "Keputusan Anda sekarang", sub: "dari progress.md dan decisions.md", items: sekarang }, ...PERTANYAAN];
+  const host = $("qgroups"); host.innerHTML = "";
+  let total = 0;
+  grup.forEach((g) => {
+    if (!g.items.length) return;
+    const box = document.createElement("div");
+    box.className = "qgroup";
+    box.innerHTML = `<h3>${esc(g.g)}<small>${esc(g.sub)}</small></h3>`;
+    g.items.forEach((q) => {
+      total += 1;
+      const el = document.createElement("div");
+      el.className = "q" + (centang[q.id] ? " checked" : "");
+      el.innerHTML = `<input type="checkbox" id="${esc(q.id)}" ${centang[q.id] ? "checked" : ""}><label for="${esc(q.id)}"><span class="ask">${esc(q.a)}</span><span class="why">${esc(q.w)}</span><span class="why"><b>Jika belum ada jawaban:</b> ${esc(q.d)}</span></label>`;
+      el.querySelector("input").addEventListener("change", (e) => {
+        centang[q.id] = e.target.checked;
+        el.classList.toggle("checked", e.target.checked);
+        try { localStorage.setItem("umkm-q", JSON.stringify(centang)); } catch (err) { /* penyimpanan tidak tersedia */ }
+        hitung();
+      });
+      box.appendChild(el);
+    });
+    host.appendChild(box);
+  });
+  const ids = grup.flatMap((g) => g.items.map((q) => q.id));
+  const hitung = () => { $("qprog").textContent = `${ids.filter((i) => centang[i]).length} dari ${total} pertanyaan sudah terjawab.`; };
+  hitung();
+}
+
+/* Galeri */
+function renderGaleri(figur) {
+  const host = $("gallery");
+  if (!figur.length) { host.innerHTML = '<p class="empty">Belum ada grafik. Jalankan Tahap 3.</p>'; return; }
+  const urut = [...figur].sort((x, y) => (URUT_FIGUR.indexOf(x) + 1 || 99) - (URUT_FIGUR.indexOf(y) + 1 || 99));
+  const v = Date.now();
+  host.innerHTML = urut.map((f) => `<figure class="panel fig"><a href="figures/${encodeURIComponent(f)}?v=${v}" target="_blank" rel="noopener"><img src="figures/${encodeURIComponent(f)}?v=${v}" alt="${esc(KAPSI_FIGUR[f] || f)}" loading="lazy"></a><figcaption><b>${esc(KAPSI_FIGUR[f] || f)}</b><span class="mono">${esc(f)}</span></figcaption></figure>`).join("");
+}
+
+async function muat() {
+  $("err").hidden = true;
+  try {
+    const r = await fetch("data.json", { cache: "no-store" });
+    if (!r.ok) throw new Error(`server menjawab ${r.status}`);
+    const d = await r.json();
+    $("m-data").textContent = d.data_dari || "belum ada";
+    $("m-muat").textContent = d.diperbarui;
+    renderTahap(d.tahap);
+    renderHasil(d.hasil || {});
+    renderPertanyaan(d.tahap, d.keputusan_terbuka || []);
+    renderGaleri(d.figur || []);
+  } catch (e) {
+    $("err").textContent = `Data tidak bisa dimuat (${e.message}). Pastikan server masih berjalan: python -m umkm.dashboard`;
+    $("err").hidden = false;
+  }
+}
+$("reload").addEventListener("click", muat);
+muat();
+</script>
+</body>
+</html>

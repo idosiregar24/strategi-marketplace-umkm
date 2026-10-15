@@ -16,6 +16,9 @@ analysis = ["scipy", "statsmodels", "xgboost", "shap", "pingouin", "matplotlib",
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+umkm = ["static/*.html"]
+
 [tool.black]
 line-length = 100
 

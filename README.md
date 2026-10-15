@@ -43,3 +43,14 @@ Letakkan file kuesioner di `data/raw/Kuesioner_Penelitian__Responses_.xlsx`, lal
 python -m umkm.pipeline --all     # atau --stage N
 pytest
 ```
+
+## Dashboard ringkasan (lokal)
+
+```
+python -m umkm.dashboard              # buka http://localhost:8000
+python -m umkm.dashboard --port 8050  # port lain
+```
+
+Halaman menampilkan alur tahap, angka kunci, grafik hasil, keputusan terbuka, dan galeri grafik. Angka dibaca
+langsung dari `reports/` dan `.claude/progress.md` setiap kali halaman dimuat. Server hanya bisa diakses dari
+komputer sendiri (127.0.0.1). Hentikan dengan Ctrl+C.
