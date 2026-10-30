@@ -25,7 +25,17 @@ def _stage3() -> None:
     print(f"Tahap 3 selesai: {len(rep.tabel)} tabel eda_*.csv, {len(rep.grafik)} grafik eda_*.png")
 
 
-STAGES: dict[int, Callable[[], None]] = {1: _stage1, 2: _stage2, 3: _stage3}
+def _stage4() -> None:
+    from umkm import pengaruh  # butuh pustaka analisis (statsmodels, shap)
+
+    rep = pengaruh.run()
+    print(
+        f"Tahap 4 selesai: {len(rep.tabel)} tabel pengaruh_*.csv, {len(rep.grafik)} grafik, "
+        f"bootstrap {rep.info['n_boot']}x"
+    )
+
+
+STAGES: dict[int, Callable[[], None]] = {1: _stage1, 2: _stage2, 3: _stage3, 4: _stage4}
 
 
 def main(argv: list[str] | None = None) -> None:

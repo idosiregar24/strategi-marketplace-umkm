@@ -1,0 +1,66 @@
+varian,keterangan,target,n,variabel,koef,p,peringkat,status
+utama,sampel utama (n=116),naik_penjualan (logit),116,x1_unggah,0.7858739297325291,0.0051364538506980485,2.0,ok
+utama,sampel utama (n=116),naik_penjualan (logit),116,x2_promosi,0.22725186380806253,0.34381014750725225,3.0,ok
+utama,sampel utama (n=116),naik_penjualan (logit),116,x3_komunikasi,0.9134835837921217,0.0013087036760294308,1.0,ok
+utama,sampel utama (n=116),naik_penjualan (logit),116,x4_konsistensi,-0.07534764333956469,0.7771289861814785,4.0,ok
+utama,sampel utama (n=116),y_obj (OLS),116,x1_unggah,0.12356053282631965,0.07820065062592448,2.0,ok
+utama,sampel utama (n=116),y_obj (OLS),116,x2_promosi,0.05810201415380107,0.6052523103330258,3.0,ok
+utama,sampel utama (n=116),y_obj (OLS),116,x3_komunikasi,0.12540782013751162,0.08804930040219613,1.0,ok
+utama,sampel utama (n=116),y_obj (OLS),116,x4_konsistensi,0.028941024259297562,0.718342096995095,4.0,ok
+a_tanpa_winsor,tanpa baris terwinsor,naik_penjualan (logit),112,x1_unggah,0.7792105180554495,0.007689980574244901,2.0,ok
+a_tanpa_winsor,tanpa baris terwinsor,naik_penjualan (logit),112,x2_promosi,0.3497133949295689,0.17079871616909637,3.0,ok
+a_tanpa_winsor,tanpa baris terwinsor,naik_penjualan (logit),112,x3_komunikasi,0.8686396904231662,0.0026801510095093685,1.0,ok
+a_tanpa_winsor,tanpa baris terwinsor,naik_penjualan (logit),112,x4_konsistensi,-0.12170129987238719,0.6551296591210533,4.0,ok
+a_tanpa_winsor,tanpa baris terwinsor,y_obj (OLS),112,x1_unggah,0.14325097932957045,0.024739145261172754,2.0,ok
+a_tanpa_winsor,tanpa baris terwinsor,y_obj (OLS),112,x2_promosi,0.13544349880305417,0.07284390034133238,3.0,ok
+a_tanpa_winsor,tanpa baris terwinsor,y_obj (OLS),112,x3_komunikasi,0.1444744131655115,0.03253501993168509,1.0,ok
+a_tanpa_winsor,tanpa baris terwinsor,y_obj (OLS),112,x4_konsistensi,-0.004765378659906637,0.9489835416167641,4.0,ok
+b_tanpa_omzet_tetap,tanpa omzet sebelum = sesudah,naik_penjualan (logit),60,,,,,tidak dihitung: kelas terlalu kecil (60 vs 0)
+b_tanpa_omzet_tetap,tanpa omzet sebelum = sesudah,y_obj (OLS),60,x1_unggah,-0.08916139889987261,0.48527071580408077,4.0,ok
+b_tanpa_omzet_tetap,tanpa omzet sebelum = sesudah,y_obj (OLS),60,x2_promosi,-0.04523245430108078,0.8192069853682173,3.0,ok
+b_tanpa_omzet_tetap,tanpa omzet sebelum = sesudah,y_obj (OLS),60,x3_komunikasi,-0.045143238776308006,0.7509916486371669,2.0,ok
+b_tanpa_omzet_tetap,tanpa omzet sebelum = sesudah,y_obj (OLS),60,x4_konsistensi,0.16146424973225965,0.40954880656419357,1.0,ok
+c_semua_149,semua 149 responden,naik_penjualan (logit),149,x1_unggah,0.5210859881247,0.03023097322574598,2.0,ok
+c_semua_149,semua 149 responden,naik_penjualan (logit),149,x2_promosi,0.14900570798626145,0.48891293754139176,3.0,ok
+c_semua_149,semua 149 responden,naik_penjualan (logit),149,x3_komunikasi,0.5307477996121629,0.010843197027827652,1.0,ok
+c_semua_149,semua 149 responden,naik_penjualan (logit),149,x4_konsistensi,0.03736437436331677,0.871222826476207,4.0,ok
+c_semua_149,semua 149 responden,y_obj (OLS),149,x1_unggah,0.538105195088122,0.30239128951701555,1.0,ok
+c_semua_149,semua 149 responden,y_obj (OLS),149,x2_promosi,-0.11178128914884758,0.6920884078389595,4.0,ok
+c_semua_149,semua 149 responden,y_obj (OLS),149,x3_komunikasi,0.364282302856773,0.2747305573761115,2.0,ok
+c_semua_149,semua 149 responden,y_obj (OLS),149,x4_konsistensi,0.07294819262802707,0.7574237032503355,3.0,ok
+d_target_d_omzet,target hanya d_omzet,d_omzet (OLS),116,x1_unggah,0.031210681605155326,0.10670352993592123,2.0,ok
+d_target_d_omzet,target hanya d_omzet,d_omzet (OLS),116,x2_promosi,0.03989771302032545,0.06878927036060298,1.0,ok
+d_target_d_omzet,target hanya d_omzet,d_omzet (OLS),116,x3_komunikasi,0.02782837998327355,0.1316833855633454,3.0,ok
+d_target_d_omzet,target hanya d_omzet,d_omzet (OLS),116,x4_konsistensi,-0.0035797551301776087,0.8793045277409369,4.0,ok
+d_target_d_trx,target hanya d_trx,d_trx (OLS),116,x1_unggah,0.05172865408404542,0.18917162644631724,2.0,ok
+d_target_d_trx,target hanya d_trx,d_trx (OLS),116,x2_promosi,-0.03662232383364085,0.660949632561499,4.0,ok
+d_target_d_trx,target hanya d_trx,d_trx (OLS),116,x3_komunikasi,0.06180278133095396,0.27838870187760123,1.0,ok
+d_target_d_trx,target hanya d_trx,d_trx (OLS),116,x4_konsistensi,0.038431664577214024,0.3284206485494352,3.0,ok
+d_target_pelanggan_baru,target y_pelanggan_baru,y_pelanggan_baru (OLS),116,x1_unggah,-0.18051355833258886,0.27734856620686,3.0,ok
+d_target_pelanggan_baru,target y_pelanggan_baru,y_pelanggan_baru (OLS),116,x2_promosi,0.34432441041224937,0.035578356777043935,1.0,ok
+d_target_pelanggan_baru,target y_pelanggan_baru,y_pelanggan_baru (OLS),116,x3_komunikasi,-0.5312400615106567,0.0004152558174250523,4.0,ok
+d_target_pelanggan_baru,target y_pelanggan_baru,y_pelanggan_baru (OLS),116,x4_konsistensi,0.22045620167901983,0.21169228032383636,2.0,ok
+e_tanpa_seragam,tanpa jawaban seragam (D20),naik_penjualan (logit),107,x1_unggah,0.6199539228027406,0.02415227848569677,2.0,ok
+e_tanpa_seragam,tanpa jawaban seragam (D20),naik_penjualan (logit),107,x2_promosi,0.0929191203765938,0.7081461836506899,3.0,ok
+e_tanpa_seragam,tanpa jawaban seragam (D20),naik_penjualan (logit),107,x3_komunikasi,0.9909348544486006,0.0006923881517261988,1.0,ok
+e_tanpa_seragam,tanpa jawaban seragam (D20),naik_penjualan (logit),107,x4_konsistensi,0.00987827202188744,0.9714770944811343,4.0,ok
+e_tanpa_seragam,tanpa jawaban seragam (D20),y_obj (OLS),107,x1_unggah,0.14286845057333555,0.05986641160551996,1.0,ok
+e_tanpa_seragam,tanpa jawaban seragam (D20),y_obj (OLS),107,x2_promosi,0.08754059633658387,0.4183028192782152,3.0,ok
+e_tanpa_seragam,tanpa jawaban seragam (D20),y_obj (OLS),107,x3_komunikasi,0.1154137697698713,0.13883220668774732,2.0,ok
+e_tanpa_seragam,tanpa jawaban seragam (D20),y_obj (OLS),107,x4_konsistensi,0.022629332235950032,0.7820706887824814,4.0,ok
+f_tanpa_R021,tanpa R021 (D25),naik_penjualan (logit),115,x1_unggah,0.8183935763837173,0.004264152814181475,2.0,ok
+f_tanpa_R021,tanpa R021 (D25),naik_penjualan (logit),115,x2_promosi,0.2873152275913606,0.23797882584521313,3.0,ok
+f_tanpa_R021,tanpa R021 (D25),naik_penjualan (logit),115,x3_komunikasi,0.9535424970850629,0.0011257772097217648,1.0,ok
+f_tanpa_R021,tanpa R021 (D25),naik_penjualan (logit),115,x4_konsistensi,-0.10824626398078643,0.6906216318163169,4.0,ok
+f_tanpa_R021,tanpa R021 (D25),y_obj (OLS),115,x1_unggah,0.13787272538321096,0.021873851072709803,3.0,ok
+f_tanpa_R021,tanpa R021 (D25),y_obj (OLS),115,x2_promosi,0.1398196274596588,0.05333436445937522,2.0,ok
+f_tanpa_R021,tanpa R021 (D25),y_obj (OLS),115,x3_komunikasi,0.14910672882396558,0.024425064986652558,1.0,ok
+f_tanpa_R021,tanpa R021 (D25),y_obj (OLS),115,x4_konsistensi,-0.0027679860753115418,0.969531729572884,4.0,ok
+g_tanpa_log_omzet,tanpa kontrol log_omzet_sebelum,naik_penjualan (logit),116,x1_unggah,0.7542250606317257,0.005501042846612993,2.0,ok
+g_tanpa_log_omzet,tanpa kontrol log_omzet_sebelum,naik_penjualan (logit),116,x2_promosi,0.25962308124561423,0.281790396802974,3.0,ok
+g_tanpa_log_omzet,tanpa kontrol log_omzet_sebelum,naik_penjualan (logit),116,x3_komunikasi,0.8559938067140737,0.0021607881585764916,1.0,ok
+g_tanpa_log_omzet,tanpa kontrol log_omzet_sebelum,naik_penjualan (logit),116,x4_konsistensi,-0.11757334156862423,0.648014920738853,4.0,ok
+g_tanpa_log_omzet,tanpa kontrol log_omzet_sebelum,y_obj (OLS),116,x1_unggah,0.12691721925837685,0.06301118815680161,1.0,ok
+g_tanpa_log_omzet,tanpa kontrol log_omzet_sebelum,y_obj (OLS),116,x2_promosi,0.06969618401339805,0.5326882320227451,3.0,ok
+g_tanpa_log_omzet,tanpa kontrol log_omzet_sebelum,y_obj (OLS),116,x3_komunikasi,0.10200872263003039,0.20103110356428788,2.0,ok
+g_tanpa_log_omzet,tanpa kontrol log_omzet_sebelum,y_obj (OLS),116,x4_konsistensi,0.013362100450963789,0.8740928579598375,4.0,ok

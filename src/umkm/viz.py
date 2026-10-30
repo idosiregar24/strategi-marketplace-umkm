@@ -411,3 +411,98 @@ def boxplot_kelompok(
         ax.set_visible(False)
     _judul(fig, judul, subjudul)
     return fig
+
+
+def dot_ci(
+    nilai: pd.Series,
+    bawah: pd.Series,
+    atas: pd.Series,
+    judul: str,
+    xlabel: str,
+    subjudul: str | None = None,
+    sorot: Sequence[bool] | None = None,
+    referensi: float | None = None,
+    skala_log: bool = False,
+    teks_tambahan: Sequence[str] | None = None,
+    label_fmt: str = "{:.2f}",
+) -> Figure:
+    """Titik + garis interval per kategori (indeks = kategori, urutan sesuai Series).
+
+    `sorot` = True diberi warna seri, False abu-abu (penekanan, bukan identitas);
+    `referensi` menggambar garis tegak (mis. 0 atau OR = 1).
+    """
+    n = len(nilai)
+    fig, ax = plt.subplots(figsize=(7.5, 0.5 * n + 1.7))
+    y = np.arange(n)[::-1]
+    sorot = list(sorot) if sorot is not None else [True] * n
+    for yi, v, lo, hi, s in zip(y, nilai.values, bawah.values, atas.values, sorot):
+        c = SERI_1 if s else MUTED
+        ax.plot([lo, hi], [yi, yi], color=c, linewidth=2, solid_capstyle="round", zorder=2)
+        ax.scatter([v], [yi], s=58, color=c, edgecolors=SURFACE, linewidths=2, zorder=3)
+    if referensi is not None:
+        ax.axvline(referensi, color=INK_2, linewidth=1, linestyle=(0, (3, 3)), zorder=1)
+    if skala_log:
+        ax.set_xscale("log")
+        ax.xaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%g"))
+        ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+    ax.set_yticks(y, nilai.index)
+    ax.set_xlabel(xlabel)
+    ax.xaxis.grid(True)
+    ax.set_axisbelow(True)
+    ax.spines["left"].set_visible(False)
+    ax.tick_params(axis="y", length=0)
+    lo_all, hi_all = float(np.nanmin(bawah)), float(np.nanmax(atas))
+    if skala_log:
+        ax.set_xlim(lo_all / 1.15, hi_all * 2.2)
+    else:
+        span = hi_all - lo_all
+        ax.set_xlim(lo_all - span * 0.05, hi_all + span * 0.42)
+    for yi, v, hi, extra in zip(y, nilai.values, atas.values, teks_tambahan or [""] * n):
+        txt = label_fmt.format(v) + (f"  {extra}" if extra else "")
+        xpos = hi * 1.06 if skala_log else hi + (hi_all - lo_all) * 0.02
+        ax.text(xpos, yi, txt, va="center", ha="left", color=INK_2, fontsize=8.5)
+    _judul(fig, judul, subjudul)
+    return fig
+
+
+def scatter_panel(
+    x: pd.DataFrame,
+    y: np.ndarray,
+    nama: Sequence[str],
+    judul: str,
+    xlabel: str,
+    ylabel: str,
+    subjudul: str | None = None,
+    teks_panel: Sequence[str] | None = None,
+    seed: int = 42,
+) -> Figure:
+    """Small multiples: tiap kolom x (sedikit jitter) vs kolom y yang sepadan, satu warna."""
+    rng = np.random.default_rng(seed)
+    k = x.shape[1]
+    fig, axes = plt.subplots(1, k, figsize=(2.75 * k, 3.6), sharey=True, squeeze=False)
+    for j, (ax, nm) in enumerate(zip(axes.flat, nama)):
+        xv = x.iloc[:, j].to_numpy(float)
+        ax.axhline(0, color=INK_2, linewidth=1, linestyle=(0, (3, 3)), zorder=1)
+        ax.scatter(
+            xv + rng.uniform(-0.06, 0.06, len(xv)),
+            y[:, j],
+            s=14,
+            color=SERI_1,
+            alpha=0.7,
+            edgecolors="none",
+            zorder=3,
+        )
+        ax.set_title(nm, fontsize=9.5, loc="left")
+        ax.set_xlim(0.7, 5.3)
+        ax.set_xticks([1, 2, 3, 4, 5])
+        ax.set_xlabel(xlabel)
+        ax.yaxis.grid(True)
+        ax.set_axisbelow(True)
+        if j == 0:
+            ax.set_ylabel(ylabel)
+        if teks_panel:
+            ax.text(
+                0.03, 0.95, teks_panel[j], transform=ax.transAxes, va="top", fontsize=8, color=INK_2
+            )
+    _judul(fig, judul, subjudul)
+    return fig

@@ -2,8 +2,11 @@
 
 Strategi s dalam {X1_unggah, X2_promosi, X3_komunikasi, X4_konsistensi}.
 
-1. pengaruh_s: pengaruh strategi s yang sudah dinormalkan ke 0-1, diambil dari rata-rata
-   peringkat/skor ternormalisasi |koefisien terstandar|, permutation importance, dan mean|SHAP| (Tahap 4).
+1. pengaruh_s: kolom `bobot_rekomendasi` di `reports/tables/pengaruh_gabungan.csv` (Tahap 4, D26) =
+   skor pengaruh gabungan (koef logit bertanda, permutation importance, mean|SHAP|; tiap sumber
+   dinormalkan 0-1 lalu dirata-rata) x p_koef_positif (bagian bootstrap dengan koef logit > 0),
+   minimal `influence.bobot_minimum` (0,1). Bobot sama untuk semua segmen (tidak ada moderasi bermakna).
+   Sensitivitas Tahap 6: ulang peringkat dengan bobot sama rata dan bobot dari logit saja.
 2. benchmark_s(segmen): median skor strategi s pada UMKM dengan naik_penjualan = 1 di segmen tersebut.
 3. skor_s(UMKM atau segmen): skor strategi s yang dinilai (rata-rata segmen untuk rekomendasi per segmen).
 4. gap_s = max(0, benchmark_s - skor_s).

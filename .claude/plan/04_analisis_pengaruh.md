@@ -17,7 +17,8 @@ Keluaran: reports/tables/pengaruh_*.csv, reports/figures/shap_*.png
 7. Sensitivitas: ulang model utama (a) tanpa baris terwinsor, (b) tanpa responden omzet sebelum=sesudah,
    (c) DENGAN semua 149 responden (analisis utama memakai `sampel_utama` = 1, n=116; D14),
    (d) target alternatif: hanya d_omzet, hanya d_trx, dan y_pelanggan_baru,
-   (e) tanpa `flag_jawaban_seragam` (D20), (f) tanpa `flag_omzet_turun_tajam` untuk y_obj (D21),
+   (e) tanpa `flag_jawaban_seragam` (D20), (f) tanpa R021 untuk y_obj dan d_trx (D25: transaksi
+   naik 150x, y_obj 4,76 jauh di atas responden lain); `flag_omzet_turun_tajam` (D21) kini 0,
    (g) dengan dan tanpa `log_omzet_sebelum` sebagai kontrol (efek regresi ke rata-rata).
    Laporkan apakah peringkat berubah.
 

@@ -1,0 +1,18 @@
+varian,target,n,teratas,bermakna_positif,bermakna_negatif,p_min_negatif,rho_peringkat_vs_utama,rho_vs_logit_utama,status
+utama,naik_penjualan (logit),116,x3_komunikasi,"x1_unggah, x3_komunikasi",-,0.7771289861814785,1.0,1.0,ok
+utama,y_obj (OLS),116,x3_komunikasi,-,-,,1.0,1.0,ok
+a_tanpa_winsor,naik_penjualan (logit),112,x3_komunikasi,"x1_unggah, x3_komunikasi",-,0.6551296591210533,1.0,1.0,ok
+a_tanpa_winsor,y_obj (OLS),112,x3_komunikasi,"x1_unggah, x3_komunikasi",-,0.9489835416167641,1.0,1.0,ok
+b_tanpa_omzet_tetap,naik_penjualan (logit),60,,,,,,,tidak dihitung: kelas terlalu kecil (60 vs 0)
+b_tanpa_omzet_tetap,y_obj (OLS),60,x4_konsistensi,-,-,0.48527071580408077,-0.39999999999999997,-0.39999999999999997,ok
+c_semua_149,naik_penjualan (logit),149,x3_komunikasi,"x1_unggah, x3_komunikasi",-,,1.0,1.0,ok
+c_semua_149,y_obj (OLS),149,x1_unggah,-,-,0.6920884078389595,0.6000000000000001,0.6000000000000001,ok
+d_target_d_omzet,d_omzet (OLS),116,x2_promosi,-,-,0.8793045277409369,0.19999999999999998,0.19999999999999998,ok
+d_target_d_trx,d_trx (OLS),116,x3_komunikasi,-,-,0.660949632561499,0.7999999999999999,0.7999999999999999,ok
+d_target_pelanggan_baru,y_pelanggan_baru (OLS),116,x2_promosi,x2_promosi,x3_komunikasi,0.0004152558174250523,-0.7999999999999999,-0.7999999999999999,ok
+e_tanpa_seragam,naik_penjualan (logit),107,x3_komunikasi,"x1_unggah, x3_komunikasi",-,,1.0,1.0,ok
+e_tanpa_seragam,y_obj (OLS),107,x1_unggah,-,-,,0.7999999999999999,0.7999999999999999,ok
+f_tanpa_R021,naik_penjualan (logit),115,x3_komunikasi,"x1_unggah, x3_komunikasi",-,0.6906216318163169,1.0,1.0,ok
+f_tanpa_R021,y_obj (OLS),115,x3_komunikasi,"x1_unggah, x3_komunikasi",-,0.969531729572884,0.7999999999999999,0.7999999999999999,ok
+g_tanpa_log_omzet,naik_penjualan (logit),116,x3_komunikasi,"x1_unggah, x3_komunikasi",-,0.648014920738853,1.0,1.0,ok
+g_tanpa_log_omzet,y_obj (OLS),116,x1_unggah,-,-,,0.7999999999999999,0.7999999999999999,ok

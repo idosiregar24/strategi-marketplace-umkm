@@ -1,0 +1,4 @@
+sumber_a,sumber_b,rho_peringkat
+koef_logit,permutation,1.0
+koef_logit,shap,0.7999999999999999
+permutation,shap,0.7999999999999999

@@ -1,7 +1,7 @@
 """Uji statistik dan ukuran efek (nonparametrik, VIF).
 
 Semua fungsi murni: menerima Series/DataFrame dan mengembalikan dict/DataFrame tanpa menulis berkas.
-Dipakai mulai Tahap 3 (EDA); Tahap 4 menambah regresi dan bootstrap di modul ini.
+Dipakai mulai Tahap 3 (EDA); Tahap 4 menambah regresi OLS robust (HC3) dan logit.
 """
 
 from __future__ import annotations
@@ -10,6 +10,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+import statsmodels.api as sm
 from scipy import stats as st
 from statsmodels.stats.multitest import multipletests
 from statsmodels.stats.outliers_influence import variance_inflation_factor
@@ -192,3 +193,100 @@ def vif(df: pd.DataFrame, cols: list[str]) -> pd.DataFrame:
         if c != "const"
     ]
     return pd.DataFrame(rows)
+
+
+# ---------------------------------------------------------------------------
+# Regresi (Tahap 4)
+# ---------------------------------------------------------------------------
+def standarkan(x: pd.DataFrame) -> pd.DataFrame:
+    """z-score per kolom (SD sampel, ddof=1)."""
+    return (x - x.mean()) / x.std(ddof=1)
+
+
+def _tabel_koef(fit: Any, cols: list[str]) -> pd.DataFrame:
+    ci = fit.conf_int()
+    return pd.DataFrame(
+        {
+            "variabel": cols,
+            "koef": fit.params[cols].to_numpy(),
+            "se": fit.bse[cols].to_numpy(),
+            "ci_bawah": ci.loc[cols, 0].to_numpy(),
+            "ci_atas": ci.loc[cols, 1].to_numpy(),
+            "p": fit.pvalues[cols].to_numpy(),
+        }
+    )
+
+
+def ols_hc3(y: pd.Series, x: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, float]]:
+    """OLS dengan prediktor terstandar dan galat baku robust HC3; baris kosong dibuang.
+
+    Koefisien = perubahan y untuk kenaikan 1 SD prediktor, dengan prediktor lain tetap.
+    """
+    data = pd.concat([y, x], axis=1).dropna()
+    cols = list(x.columns)
+    fit = sm.OLS(data[y.name], add_constant(standarkan(data[cols]))).fit(cov_type="HC3")
+    info = {"n": int(fit.nobs), "r2": fit.rsquared, "r2_adj": fit.rsquared_adj}
+    return _tabel_koef(fit, cols), info
+
+
+def logit_or(y: pd.Series, x: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, float]]:
+    """Regresi logistik (y biner) dengan prediktor terstandar; baris kosong dibuang.
+
+    Koefisien dalam log-odds per 1 SD prediktor; odds ratio (OR) dan CI 95% = exp(koef/CI).
+    Melempar ValueError bila model tidak konvergen atau terjadi separasi sempurna.
+    """
+    data = pd.concat([y, x], axis=1).dropna()
+    cols = list(x.columns)
+    try:
+        fit = sm.Logit(data[y.name], add_constant(standarkan(data[cols]))).fit(disp=0, maxiter=200)
+    except Exception as e:  # PerfectSeparationError / LinAlgError
+        raise ValueError(f"logit gagal: {e}") from e
+    if not fit.mle_retvals.get("converged", True):
+        raise ValueError("logit tidak konvergen")
+    out = _tabel_koef(fit, cols)
+    for c in ("koef", "ci_bawah", "ci_atas"):
+        out[c.replace("koef", "or") if c == "koef" else f"or_{c}"] = np.exp(out[c])
+    info = {
+        "n": int(fit.nobs),
+        "n_1": int(data[y.name].sum()),
+        "pseudo_r2": fit.prsquared,
+        "const": float(fit.params["const"]),
+        "llf": float(fit.llf),
+    }
+    return out, info
+
+
+def peluang_logit(const: float, koef: float, z: float) -> float:
+    """Peluang prediksi logit bila satu prediktor terstandar = z dan prediktor lain di rata-rata."""
+    return float(1 / (1 + np.exp(-(const + koef * z))))
+
+
+def logit_lr_blok(y: pd.Series, x: pd.DataFrame, blok: list[str]) -> dict[str, float]:
+    """Uji likelihood-ratio: apakah blok prediktor menambah kecocokan logit di atas sisanya."""
+    data = pd.concat([y, x], axis=1).dropna()
+    _, penuh = logit_or(data[y.name], data[list(x.columns)])
+    _, kecil = logit_or(data[y.name], data[[c for c in x.columns if c not in blok]])
+    lr = 2 * (penuh["llf"] - kecil["llf"])
+    return {
+        "lr": lr,
+        "df": len(blok),
+        "p": float(st.chi2.sf(lr, len(blok))),
+        "pseudo_r2_penuh": penuh["pseudo_r2"],
+        "pseudo_r2_tanpa_blok": kecil["pseudo_r2"],
+    }
+
+
+def ols_diagnostik(y: pd.Series, x: pd.DataFrame) -> dict[str, float]:
+    """Pemeriksaan residual OLS: kemencengan, kurtosis, Jarque-Bera, dan Cook's distance maks."""
+    data = pd.concat([y, x], axis=1).dropna()
+    fit = sm.OLS(data[y.name], add_constant(standarkan(data[list(x.columns)]))).fit()
+    res = fit.resid
+    cook = fit.get_influence().cooks_distance[0]
+    return {
+        "skew_residual": float(st.skew(res)),
+        "kurtosis_residual": float(st.kurtosis(res)),
+        "p_jarque_bera": float(st.jarque_bera(res).pvalue),
+        "cook_maks": float(cook.max()),
+        "baris_cook_maks": int(data.index[int(cook.argmax())]),
+        "n_cook_di_atas_4_per_n": int((cook > 4 / len(data)).sum()),
+    }
