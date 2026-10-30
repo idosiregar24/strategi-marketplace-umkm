@@ -6,7 +6,7 @@
 | 2 | Konstruksi variabel | SELESAI | data/processed/data_features.csv, reports/features_log.md, reports/tables/reliabilitas*.csv | 2026-10-14 |
 | 3 | EDA | SELESAI | reports/figures/eda_*, reports/tables/eda_*.csv, reports/eda_log.md, reports/eda_ringkasan.md | 2026-10-30 |
 | 4 | Analisis pengaruh | SELESAI | reports/tables/pengaruh_*.csv, reports/figures/pengaruh_*.png, shap_*.png, reports/pengaruh_log.md, reports/pengaruh_ringkasan.md | 2026-10-30 |
-| 5 | Segmentasi | BELUM | data/processed/data_segmen.csv | |
+| 5 | Segmentasi | SELESAI | data/processed/data_segmen.csv, reports/tables/profil_segmen.csv, segmen_*.csv, reports/figures/segmen_*.png, reports/segmentasi_log.md, reports/segmentasi_ringkasan.md | 2026-10-30 |
 | 6 | Rekomendasi | BELUM | reports/tables/rekomendasi_per_segmen.csv, models/v1/, reports/integration_contract.md | |
 | 7 | Pelaporan | BELUM | reports/laporan_final.md | |
 
@@ -116,3 +116,21 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
   langkah 1 diperbarui. Belum: logit Firth (EPV 6,8; dicatat sebagai keterbatasan sampel kecil).
 
 - 2026-10-30: Tahap 4 disetujui pengguna: SELESAI. Berikutnya Tahap 5 (segmentasi) di sesi baru.
+
+### 2026-10-30 - Tahap 5 (Segmentasi)
+- Keputusan sebelum mulai (pengguna): segmen dibentuk dari profil saja, k otomatis (D27, DIUSULKAN). Eksplorasi: profil + X1-X4
+  silhouette 0,13 dan tidak stabil; profil saja k=2 silhouette 0,25, ARI 0,89-0,92.
+- Dikerjakan: `segmentation.py` (siapkan_fitur, pipa scaler + K-Means, urutan dan nama segmen, metrik k, bootstrap ARI + Jaccard,
+  Ward/GMM, profil, uji beda, sensitivitas), `segmentasi_teks.py` (log, ringkasan, deskripsi segmen dari angka),
+  `stats.kruskal_eps` dan `stats.chi2_cramer`, `viz.garis_panel` dan `viz.scatter_kelompok`; config `segmentation`; pipeline
+  `--stage 5` (sekitar 40 detik); 8 tes baru (total 104 lolos); ruff + black bersih; `notebooks/05_segmentasi.ipynb` (diuji);
+  sel Tahap 5 di notebook Colab; `umkm_proyek.zip` dibuat ulang (38 berkas).
+- Hasil: k = 2, silhouette 0,247 (sangat lemah, UMKM tersebar kontinu), stabil (median ARI bootstrap 0,92; Jaccard 0,95/0,95;
+  k 3-6 median ARI 0,47-0,59). Segmen 1 "Omzet kecil, usaha muda, baru di marketplace" (74; median omzet Rp9 jt, lama usaha
+  1 th, di MP 2 th; 27 tanpa baseline; 27/47 naik). Segmen 2 "Omzet besar, usaha mapan, lama di marketplace" (75; Rp30 jt,
+  5 th, 4 th; 6 tanpa baseline; 35/69 naik). Sensitivitas ARI: fit sampel utama 0,77; tanpa log1p 0,73; + X1-X4 0,32.
+- Temuan: segmen TIDAK berbeda bermakna pada X1-X4, persepsi, y_obj, pelanggan baru, naik_penjualan (57% vs 51%, Fisher
+  p = 0,57; semua Holm >= 0,36). Segmen = kondisi usaha, bukan tingkat strategi/kinerja; benchmark Tahap 6 kemungkinan mirip.
+- Terbuka: D27 (DIUSULKAN). Tahap 5 MENUNGGU PERSETUJUAN.
+- 2026-10-30: D27 DISEPAKATI; Tahap 5 disetujui pengguna: SELESAI. Berikutnya Tahap 6 (rekomendasi) di sesi baru; sepakati
+  dulu cara menyajikan rekomendasi bila kedua segmen tidak berbeda pada skor strategi.

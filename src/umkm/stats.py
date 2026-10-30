@@ -146,6 +146,31 @@ def mann_whitney(x1: pd.Series, x0: pd.Series) -> dict[str, Any]:
     }
 
 
+def kruskal_eps(kelompok: list[pd.Series]) -> dict[str, Any]:
+    """Kruskal-Wallis antar-kelompok dengan efek epsilon-kuadrat = H / (n - 1)."""
+    kel = [pd.Series(g).dropna() for g in kelompok]
+    n = sum(len(g) for g in kel)
+    res = st.kruskal(*kel)
+    return {
+        "n": n,
+        "H": float(res.statistic),
+        "p": float(res.pvalue),
+        "efek": res.statistic / (n - 1),
+    }
+
+
+def chi2_cramer(x: pd.Series, y: pd.Series) -> dict[str, Any]:
+    """Uji keterkaitan dua variabel kategorik: Fisher (tabel 2x2) atau chi-kuadrat, + Cramer's V."""
+    tab = pd.crosstab(x, y)
+    chi2, p, _, _ = st.chi2_contingency(tab, correction=False)
+    n = int(tab.to_numpy().sum())
+    uji = "chi-kuadrat"
+    if tab.shape == (2, 2):
+        p, uji = float(st.fisher_exact(tab)[1]), "Fisher"
+    v = np.sqrt(chi2 / (n * (min(tab.shape) - 1)))
+    return {"n": n, "statistik": float(chi2), "p": float(p), "efek": float(v), "uji": uji}
+
+
 def holm(p: pd.Series) -> pd.Series:
     """p-value terkoreksi Holm; nilai kosong dibiarkan kosong."""
     out = pd.Series(np.nan, index=p.index)

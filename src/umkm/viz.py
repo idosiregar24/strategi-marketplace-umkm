@@ -11,6 +11,7 @@ from collections.abc import Sequence
 from pathlib import Path
 
 import matplotlib
+import matplotlib.lines
 import matplotlib.patches
 import matplotlib.ticker
 
@@ -505,4 +506,81 @@ def scatter_panel(
                 0.03, 0.95, teks_panel[j], transform=ax.transAxes, va="top", fontsize=8, color=INK_2
             )
     _judul(fig, judul, subjudul)
+    return fig
+
+
+def garis_panel(
+    panel: dict[str, pd.DataFrame],
+    judul: str,
+    xlabel: str,
+    subjudul: str | None = None,
+    garis_ref: dict[str, float] | None = None,
+    sorot_x: float | None = None,
+) -> Figure:
+    """Small multiples garis: satu panel per DataFrame (indeks = sumbu x, kolom = seri).
+
+    Seri pertama biru, kedua oranye; `garis_ref` = garis batas putus-putus per panel;
+    `sorot_x` = pita abu-abu pada nilai x terpilih.
+    """
+    k = len(panel)
+    fig, axes = plt.subplots(1, k, figsize=(3.3 * k, 3.4), squeeze=False)
+    warna = [SERI_1, SERI_2, INK_2]
+    for ax, (nm, data) in zip(axes.flat, panel.items()):
+        if sorot_x is not None:
+            ax.axvspan(sorot_x - 0.3, sorot_x + 0.3, color=GRID, alpha=0.7, zorder=0)
+        for col, c in zip(data.columns, warna):
+            ax.plot(data.index, data[col], color=c, marker="o", markersize=4, linewidth=1.6)
+        if garis_ref and nm in garis_ref:
+            ax.axhline(garis_ref[nm], color=INK_2, linewidth=1, linestyle=(0, (3, 3)))
+        ax.set_title(nm, fontsize=9.5, loc="left")
+        ax.set_xticks(list(data.index))
+        ax.set_xlabel(xlabel)
+        ax.yaxis.grid(True)
+        ax.set_axisbelow(True)
+    handles = [matplotlib.lines.Line2D([], [], color=c, marker="o", markersize=4) for c in warna]
+    labels = list(next(iter(panel.values())).columns)
+    y_leg = _judul(fig, judul, subjudul, ruang_legenda=0.32)
+    fig.legend(
+        handles[: len(labels)],
+        labels,
+        ncol=len(labels),
+        loc="upper left",
+        bbox_to_anchor=(0.005, y_leg),
+        handlelength=1.6,
+        columnspacing=1.2,
+    )
+    return fig
+
+
+def scatter_kelompok(
+    xy: np.ndarray,
+    kelompok: Sequence[int],
+    nama_kelompok: dict[int, str],
+    judul: str,
+    xlabel: str,
+    ylabel: str,
+    subjudul: str | None = None,
+) -> Figure:
+    """Scatter dua dimensi, warna per kelompok (urutan sesuai `nama_kelompok`)."""
+    warna = [SERI_1, SERI_2, INK_2, BIRU_MUDA, MERAH, NETRAL]
+    kel = np.asarray(kelompok)
+    fig, ax = plt.subplots(figsize=(7.5, 5.0))
+    for (g, nm), c in zip(nama_kelompok.items(), warna):
+        m = kel == g
+        ax.scatter(
+            xy[m, 0],
+            xy[m, 1],
+            s=18,
+            color=c,
+            alpha=0.75,
+            edgecolors="none",
+            label=f"{nm} (n={m.sum()})",
+        )
+    ax.axhline(0, color=GRID, linewidth=0.8, zorder=0)
+    ax.axvline(0, color=GRID, linewidth=0.8, zorder=0)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    handles, labels = ax.get_legend_handles_labels()
+    y_leg = _judul(fig, judul, subjudul, ruang_legenda=0.22 * len(labels) + 0.05)
+    fig.legend(handles, labels, ncol=1, loc="upper left", bbox_to_anchor=(0.005, y_leg))
     return fig

@@ -6,6 +6,8 @@ Keluaran: data/processed/data_segmen.csv, reports/tables/profil_segmen.csv
 ## Langkah
 1. Fitur klaster: skala_omzet (numerik terstandar), lama_usaha_pra_mp, lama_di_mp, jumlah_platform,
    skor X1-X4. JANGAN masukkan Y ke fitur klaster (hindari sirkularitas).
+   DIUBAH (D27, 2026-10-30): segmen dibentuk dari profil saja; X1-X4 hanya untuk profil/gap dan sebagai
+   set pembanding.
 2. K-Means dengan k = 2..6; pilih berdasarkan silhouette, elbow, dan ukuran klaster (minimal 15 responden).
    Pembanding: Agglomerative (Ward) dan Gaussian Mixture.
 3. Uji stabilitas: bootstrap 100x, hitung Adjusted Rand Index terhadap solusi utama.

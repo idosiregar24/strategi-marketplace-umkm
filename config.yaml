@@ -51,9 +51,16 @@ influence:   # Tahap 4 (D26)
   sensitivitas_tanpa_id: [R021]   # D25: transaksi naik 150x
   min_kelas_logit: 10   # varian sensitivitas dengan kelas lebih kecil tidak dihitung
   bobot_minimum: 0.1   # D26: bobot rekomendasi = pengaruh x P(koef > 0), minimal 0,1
-segmentation:
+segmentation:   # Tahap 5 (D27)
+  fitur: [skala_omzet_ord, lama_usaha_pra_mp, lama_di_mp, jumlah_platform]   # profil saja
+  fitur_log1p: [lama_usaha_pra_mp, lama_di_mp]   # sebaran menceng kanan (maks 22 dan 13 th)
+  fitur_pembanding: [x1_unggah, x2_promosi, x3_komunikasi, x4_konsistensi]   # profil + strategi
   k_min: 2
   k_max: 6
   min_cluster_size: 15
+  ari_min: 0.6   # median ARI bootstrap minimal agar k dianggap stabil
   bootstrap_n: 100
+  n_init: 50
+  n_init_bootstrap: 10
+  batas_deskriptor: 0.25   # |z| rata-rata segmen di atas ini -> deskriptor nama (tinggi/rendah)
 bootstrap_n: 1000

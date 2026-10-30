@@ -35,7 +35,23 @@ def _stage4() -> None:
     )
 
 
-STAGES: dict[int, Callable[[], None]] = {1: _stage1, 2: _stage2, 3: _stage3, 4: _stage4}
+def _stage5() -> None:
+    from umkm import segmentation  # butuh pustaka analisis (matplotlib, statsmodels)
+
+    rep = segmentation.run()
+    print(
+        f"Tahap 5 selesai: data_segmen.csv {rep.data.shape[0]} baris, k = {rep.info['k']}, "
+        f"silhouette {rep.info['silhouette']:.3f}, {len(rep.grafik)} grafik"
+    )
+
+
+STAGES: dict[int, Callable[[], None]] = {
+    1: _stage1,
+    2: _stage2,
+    3: _stage3,
+    4: _stage4,
+    5: _stage5,
+}
 
 
 def main(argv: list[str] | None = None) -> None:
