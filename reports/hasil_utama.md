@@ -43,7 +43,7 @@ Yang dikerjakan:
 - Nama kolom dirapikan (`x1_unggah_1`, `omzet_sebelum`, …); jawaban Likert seperti "3. Netral" diubah menjadi angka 3.
 - Omzet berformat teks ("3.500.000") diubah menjadi angka; lama usaha "3 bulan" → 0,25 tahun, tahun kalender "2018" → 8 tahun.
 - Platform dipecah menjadi kolom ya/tidak (GoFood, GrabFood, Shopee, Maxim, TikTok Shop).
-- Nilai ekstrem dipangkas di persentil 99 (winsorizing); transaksi janggal milik 4 responden dikosongkan.
+- Nilai ekstrem dipangkas di persentil 99 (winsorizing); transaksi janggal milik 4 responden diganti dengan jumlah pesanan hasil konfirmasi ulang (D25).
 - Nama usaha diganti ID R001–R149 di semua laporan.
 
 ### Tahap 2 – Konstruksi variabel (membuat skor dan target)
@@ -61,7 +61,8 @@ Yang dikerjakan:
   - `y_pelanggan_baru` = target tambahan.
 - **Sampel utama = 116 UMKM.** 33 UMKM yang berdiri bersamaan dengan masuk marketplace dikeluarkan dari analisis
   utama karena tidak punya kondisi "sebelum" yang bermakna (tetap dipakai sebagai pembanding).
-- Penanda kualitas jawaban: 10 responden menjawab semua butir strategi dengan angka sama; 3 responden omzetnya turun tajam.
+- Penanda kualitas jawaban: 10 responden menjawab semua butir strategi dengan angka sama. Omzet 3 responden yang
+  semula tampak turun tajam (R065, R130, R106) sudah dikoreksi lewat konfirmasi ulang ke responden (D25).
 
 **Reliabilitas skor strategi (Cronbach's alpha, batas ≥ 0,70):**
 
@@ -97,11 +98,11 @@ Yang dikerjakan:
 
 | Ukuran | Naik | Sama | Turun |
 |---|---|---|---|
-| Omzet | 58 (50%) | 54 (47%) | 4 (3%) |
-| Transaksi (n = 112) | 57 (51%) | 55 (49%) | 0 |
-| **Omzet atau transaksi naik** | **61 (53%)** | | |
+| Omzet | 59 (51%) | 56 (48%) | 1 (1%) |
+| Transaksi | 60 (52%) | 56 (48%) | 0 |
+| **Omzet atau transaksi naik** | **62 (53%)** | | |
 
-- Kenaikannya umumnya kecil: median selisih omzet Rp50 ribu per bulan.
+- Kenaikannya umumnya kecil: median selisih omzet Rp250 ribu per bulan.
 - Di antara UMKM yang berubah, arahnya hampir selalu naik (uji Wilcoxon, p < 0,001).
 - Tidak ada kelompok pembanding yang tidak memakai marketplace, jadi angka ini **tidak membuktikan** bahwa
   marketplace penyebab kenaikan.
@@ -121,9 +122,9 @@ Yang dikerjakan:
 
 | Strategi | Korelasi dengan kinerja gabungan (rho) | Beda skor UMKM naik vs tidak naik | Kesimpulan |
 |---|---|---|---|
-| **X2 Promosi** | **0,33** ✔ | lebih tinggi pada yang naik ✔ | Hubungan paling kuat |
-| **X3 Komunikasi pelanggan** | **0,30** ✔ | lebih tinggi pada yang naik ✔ | Kuat, dan menguat setelah responden "jawaban seragam" dikeluarkan |
-| **X1 Unggah produk** | **0,27** ✔ | lebih tinggi pada yang naik ✔ | Ada, tetapi **rapuh** (lihat 3.6) |
+| **X2 Promosi** | **0,32** ✔ | lebih tinggi pada yang naik ✔ | Hubungan paling kuat |
+| **X3 Komunikasi pelanggan** | **0,28** ✔ | lebih tinggi pada yang naik ✔ | Kuat, dan menguat setelah responden "jawaban seragam" dikeluarkan |
+| X1 Unggah produk | 0,26 | lebih tinggi pada yang naik ✔ | **Rapuh**: korelasi tidak bermakna (Holm p 0,060), beda naik vs tidak hilang tanpa responden "jawaban seragam" (lihat 3.6) |
 | X4 Konsistensi toko | 0,14 | tidak berbeda | Paling lemah, belum bermakna |
 
 ✔ = bermakna secara statistik setelah koreksi uji berganda (Holm, p < 0,05). Kekuatan hubungan: lemah–sedang.
@@ -145,8 +146,9 @@ Yang dikerjakan:
 | Temuan | Dampak |
 |---|---|
 | Jawaban netral (3) mendominasi 18 dari 26 butir; skor persepsi 67% responden tepat 3 | Variasi sempit, perbedaan antar-UMKM lebih sulit terdeteksi; masuk bagian keterbatasan |
-| 9 responden sampel utama menjawab semua butir strategi dengan angka sama (8 di antaranya naik) | Tanpa mereka, X1 tidak lagi bermakna; X3 justru menguat |
-| Omzet R065 dan R130 turun tepat 10 kali lipat | Kemungkinan salah ketik nol; diuji sensitivitasnya di Tahap 4 |
+| 9 responden sampel utama menjawab semua butir strategi dengan angka sama (8 di antaranya naik) | Tanpa mereka, beda skor X1 dan X2 antara UMKM naik vs tidak naik tidak lagi bermakna (Holm p 0,091); X3 justru menguat |
+| Omzet R065 dan R130 turun tepat 10 kali lipat, R106 kurang satu nol | Dikonfirmasi ke responden dan dikoreksi (D25); korelasi X1 dengan kinerja gabungan melemah dan tidak lagi bermakna |
+| Transaksi R002, R006, R015, R021 tidak masuk akal | Diganti jumlah pesanan hasil konfirmasi kedua (D25). R021 (Ampera Medan) naik 150 kali (100 → 15.000) dan menjadi nilai kinerja gabungan tertinggi; Tahap 4 menguji hasil dengan dan tanpa R021 |
 | Tumpang-tindih antar-variabel rendah (VIF maks 1,57) | Keempat strategi aman dimasukkan bersama ke model regresi |
 | Skor strategi UMKM tanpa baseline tidak berbeda dari UMKM lain | Mengeluarkan mereka dari analisis utama tidak menggeser gambaran strategi |
 
@@ -159,7 +161,7 @@ Yang dikerjakan:
 2. Persetujuan D23: aturan teknis uji di EDA (standar statistik).
 
 **Sebaiknya dikonfirmasi ke lapangan/dosen:**
-3. R065 dan R130: apakah omzet yang turun 10 kali lipat memang salah ketik?
+3. ~~R065 dan R130: apakah omzet yang turun 10 kali lipat memang salah ketik?~~ Terjawab 2026-10-27 (D25).
 4. "Pelanggan baru per bulan": yang dimaksud sebelum atau sesudah marketplace?
 5. Butir X1.2 dan X2.1 tercantum di instrumen tetapi tidak ada di Excel: memang tidak ditanyakan di form?
 6. Dominasi jawaban netral: cukup dibahas sebagai keterbatasan?

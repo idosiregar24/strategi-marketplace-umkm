@@ -151,7 +151,7 @@ def interpretasi(t: dict[str, pd.DataFrame], df: pd.DataFrame) -> dict[str, str]
         f"{_a(tr['median_selisih'], 1)}), tetapi di antara UMKM yang berubah, arahnya hampir "
         f"selalu naik (Wilcoxon: omzet r = {_a(om['r'])}, transaksi r = {_a(tr['r'])}, keduanya "
         f"{_p(max(om['p'], tr['p']))}); "
-        "titik merah jauh di bawah garis adalah kasus omzet turun tajam (D21)."
+        f"titik merah di bawah garis adalah {om['n_turun']} UMKM yang omzetnya turun."
     )
 
     kor = t["spearman_kinerja"].query("sampel == 'utama'")

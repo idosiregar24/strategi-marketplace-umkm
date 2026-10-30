@@ -11,9 +11,46 @@ cleaning:
   tahun_referensi: 2026
   trx_maks_wajar: 100000   # batas untuk flag_trx_tidak_wajar
   kosongkan_trx_janggal: true   # D17: transaksi ber-flag (tidak wajar/pecahan) dijadikan NaN
+  # D25: koreksi hasil konfirmasi ulang ke responden (2026-10-27). Nilai asli tetap di *_raw.
+  koreksi:
+    - {id: R065, nama_usaha: "Nasi goreng jakarta", kolom: omzet_sesudah, nilai: 90000000,
+       keterangan: "terisi 9 jt; dikonfirmasi 90 jt (omzet tetap)"}
+    - {id: R130, nama_usaha: "sate madura paus", kolom: omzet_sesudah, nilai: 320000000,
+       keterangan: "terisi 32 jt; dikonfirmasi 320 jt (omzet tetap)"}
+    - {id: R106, nama_usaha: "bakso arema 78", kolom: omzet_sesudah, nilai: 15000000,
+       keterangan: "terisi 1,5 jt; dikonfirmasi 15 jt (kurang satu nol)"}
+    # Konfirmasi kedua (2026-10-30): jumlah pesanan per bulan, menggantikan isian transaksi (D25)
+    - {id: R006, nama_usaha: "chiclin (pangsit pedas)", kolom: trx_sebelum, nilai: 300,
+       keterangan: "terisi 10,5 jt (= omzet); dikonfirmasi 300 pesanan/bulan"}
+    - {id: R006, nama_usaha: "chiclin (pangsit pedas)", kolom: trx_sesudah, nilai: 300,
+       keterangan: "terisi 540; dikonfirmasi 300 pesanan/bulan"}
+    - {id: R015, nama_usaha: "warung soto perkedel enak rase", kolom: trx_sebelum, nilai: 300,
+       keterangan: "terisi 30 jt; dikonfirmasi 300 pesanan/bulan"}
+    - {id: R015, nama_usaha: "warung soto perkedel enak rase", kolom: trx_sesudah, nilai: 400,
+       keterangan: "terisi 40 jt; dikonfirmasi 400 pesanan/bulan"}
+    - {id: R021, nama_usaha: "Ampera medan", kolom: trx_sebelum, nilai: 100,
+       keterangan: "terisi 1 jt; dikonfirmasi 100 pesanan/bulan"}
+    - {id: R021, nama_usaha: "Ampera medan", kolom: trx_sesudah, nilai: 15000,
+       keterangan: "terisi 15 jt; dikonfirmasi 15.000 pesanan/bulan (naik 150x, masih diragukan)"}
+    - {id: R002, nama_usaha: "Pondok ikan bakar firdaus", kolom: trx_sebelum, nilai: 2500,
+       keterangan: "terisi 2,5; dikonfirmasi 2.500 pesanan/bulan (dalam ribuan)"}
+    - {id: R002, nama_usaha: "Pondok ikan bakar firdaus", kolom: trx_sesudah, nilai: 2650,
+       keterangan: "terisi 2,65; dikonfirmasi 2.650 pesanan/bulan (dalam ribuan)"}
+    - {id: R019, nama_usaha: "Ngulik", kolom: lama_usaha_pra_mp, nilai: 5,
+       keterangan: "isian 2018 = tahun berdiri; marketplace sejak 2023 -> 2023 - 2018 = 5 th"}
 cv:
   n_splits: 5
   n_repeats: 5
+influence:   # Tahap 4 (D26)
+  strategi: [x1_unggah, x2_promosi, x3_komunikasi, x4_konsistensi]
+  kontrol: [lama_usaha_pra_mp, lama_di_mp, jumlah_platform, log_omzet_sebelum]
+  moderator: [log_omzet_sebelum, jumlah_platform, lama_di_mp]
+  rf: {n_estimators: 400, max_depth: 4, min_samples_leaf: 4}
+  permutation_repeats: 10
+  skor_importance: roc_auc
+  sensitivitas_tanpa_id: [R021]   # D25: transaksi naik 150x
+  min_kelas_logit: 10   # varian sensitivitas dengan kelas lebih kecil tidak dihitung
+  bobot_minimum: 0.1   # D26: bobot rekomendasi = pengaruh x P(koef > 0), minimal 0,1
 segmentation:
   k_min: 2
   k_max: 6

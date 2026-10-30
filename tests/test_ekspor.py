@@ -33,7 +33,43 @@ _PROC = config.path("processed")
 def test_ekspor_tanpa_nama_usaha_dan_kamus_lengkap(tmp_path):
     out = ek.ekspor_xlsx(tmp_path / "x.xlsx")
     sheets = pd.read_excel(out, sheet_name=None)
-    assert set(sheets) == {"Petunjuk", "Data bersih", "Data siap analisis", "Kamus data"}
+    assert set(sheets) == {
+        "Petunjuk",
+        "Data terkoreksi",
+        "Catatan koreksi",
+        "Data bersih",
+        "Data siap analisis",
+        "Kamus data",
+    }
     assert not any("nama_usaha" in df.columns for df in sheets.values())
     assert sheets["Kamus data"]["Keterangan"].notna().all()
     assert len(sheets["Data bersih"]) == len(sheets["Data siap analisis"]) == 149
+    assert len(sheets["Data terkoreksi"]) == 149
+    kolom_final = set(sheets["Data terkoreksi"].columns) - {"platform_raw"}
+    assert not any(c.endswith(("_raw", "_w")) for c in kolom_final)
+
+
+def test_tabel_koreksi_gabung_koreksi_dan_trx_kosong():
+    clean = pd.DataFrame(
+        {
+            "id_responden": ["R001", "R002"],
+            "omzet_sesudah": [90.0, 5.0],
+            "omzet_sesudah_raw": ["9", "5"],
+            "trx_sebelum": [float("nan"), 3.0],
+            "trx_sebelum_raw": ["2.5", "3"],
+            "trx_sesudah": [float("nan"), 4.0],
+            "trx_sesudah_raw": ["540", "4"],
+            "flag_trx_dikosongkan": [1, 0],
+            "flag_trx_pecahan": [1, 0],
+        }
+    )
+    koreksi = [
+        {"id": "R001", "kolom": "omzet_sesudah", "keterangan": "kurang nol"},
+        {"id": "R001", "kolom": "trx_sesudah", "keterangan": "dikonfirmasi"},
+    ]
+    t = ek.tabel_koreksi(clean, koreksi).set_index("kolom")
+    assert len(t) == 3 and set(t["id_responden"]) == {"R001"}
+    assert t.at["omzet_sesudah", "nilai_dipakai"] == 90
+    assert t.at["trx_sebelum", "nilai_dipakai"] == "kosong"
+    assert t.at["trx_sesudah", "keterangan"] == "dikonfirmasi"
+    assert "pecahan" in t.at["trx_sebelum", "keterangan"]

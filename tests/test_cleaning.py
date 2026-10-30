@@ -149,3 +149,35 @@ def test_flag_trx_tidak_wajar():
     out = cl.flag_trx_tidak_wajar(df, 100_000)
     assert out["flag_trx_tidak_wajar"].tolist() == [1, 0, 0]
     assert out["flag_trx_pecahan"].tolist() == [0, 1, 0]
+
+
+def test_apply_koreksi():
+    df = pd.DataFrame(
+        {
+            "id_responden": ["R001", "R002"],
+            "nama_usaha": ["Warung A", "Toko B"],
+            "omzet_sesudah": [9_000_000.0, 5_000_000.0],
+        }
+    )
+    koreksi = [{"id": "R001", "nama_usaha": "warung a ", "kolom": "omzet_sesudah", "nilai": 9e7}]
+    out, log = cl.apply_koreksi(df, koreksi)
+    assert out["omzet_sesudah"].tolist() == [90_000_000, 5_000_000]
+    assert out["flag_dikoreksi"].tolist() == [1, 0]
+    assert log.loc[0, "nilai_lama"] == 9_000_000
+    assert df.at[0, "omzet_sesudah"] == 9_000_000  # masukan tidak diubah
+
+
+@pytest.mark.parametrize(
+    "entri",
+    [
+        {"id": "R001", "nama_usaha": "Toko B", "kolom": "omzet_sesudah", "nilai": 1},
+        {"id": "R009", "nama_usaha": "Warung A", "kolom": "omzet_sesudah", "nilai": 1},
+        {"id": "R001", "nama_usaha": "Warung A", "kolom": "x1_unggah_1", "nilai": 1},
+    ],
+)
+def test_apply_koreksi_menolak_entri_salah(entri):
+    df = pd.DataFrame(
+        {"id_responden": ["R001"], "nama_usaha": ["Warung A"], "omzet_sesudah": [1.0]}
+    )
+    with pytest.raises(ValueError):
+        cl.apply_koreksi(df, [entri])

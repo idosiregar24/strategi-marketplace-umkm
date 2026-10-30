@@ -252,6 +252,49 @@ def add_platform_columns(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+KOREKSI_COLS = LAMA_COLS + OMZET_COLS + TRX_COLS + ["pelanggan_baru"]
+
+
+def apply_koreksi(
+    df: pd.DataFrame, koreksi: list[dict[str, Any]]
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Terapkan koreksi hasil konfirmasi ulang ke responden (D25) pada kolom hasil parsing.
+
+    Tiap entri: id, nama_usaha (pengaman agar ID tidak salah sasaran), kolom, nilai, keterangan.
+    Nilai asli tetap di *_raw. Mengembalikan (data, tabel koreksi) dan menambah flag_dikoreksi.
+    """
+    out = df.copy()
+    out["flag_dikoreksi"] = 0
+    rows = []
+    for k in koreksi:
+        if k["kolom"] not in KOREKSI_COLS:
+            raise ValueError(f"Kolom koreksi tidak didukung: {k['kolom']}")
+        idx = out.index[out["id_responden"] == k["id"]]
+        if len(idx) != 1:
+            raise ValueError(f"id_responden {k['id']} tidak ditemukan")
+        i = idx[0]
+        nama = str(out.at[i, "nama_usaha"]).strip().lower()
+        if nama != str(k["nama_usaha"]).strip().lower():
+            raise ValueError(
+                f"{k['id']}: nama_usaha '{nama}' tidak cocok dengan '{k['nama_usaha']}'"
+            )
+        rows.append(
+            {
+                "id_responden": k["id"],
+                "kolom": k["kolom"],
+                "nilai_lama": out.at[i, k["kolom"]],
+                "nilai_baru": float(k["nilai"]),
+                "keterangan": k.get("keterangan", ""),
+            }
+        )
+        out.at[i, k["kolom"]] = float(k["nilai"])
+        out.at[i, "flag_dikoreksi"] = 1
+    log = pd.DataFrame(
+        rows, columns=["id_responden", "kolom", "nilai_lama", "nilai_baru", "keterangan"]
+    )
+    return out, log
+
+
 def flag_trx_tidak_wajar(df: pd.DataFrame, trx_maks_wajar: float) -> pd.DataFrame:
     """Tandai transaksi pecahan, di atas batas wajar, atau sama persis dengan omzet baris itu."""
     out = df.copy()
@@ -363,6 +406,7 @@ class CleaningReport:
     lama_kalender: pd.DataFrame = field(default_factory=pd.DataFrame)
     angka_teks_ribuan: dict[str, int] = field(default_factory=dict)
     angka_tak_terbaca: pd.DataFrame = field(default_factory=pd.DataFrame)
+    koreksi: pd.DataFrame = field(default_factory=pd.DataFrame)
     nol: dict[str, int] = field(default_factory=dict)
     platform_tak_dikenal: list[str] = field(default_factory=list)
     trx_flagged: pd.DataFrame = field(default_factory=pd.DataFrame)
@@ -429,6 +473,8 @@ def clean(raw: pd.DataFrame, cfg: dict[str, Any]) -> tuple[pd.DataFrame, Cleanin
                 {"id_responden": r["id_responden"], "kolom": col, "nilai": r[f"{col}_raw"]}
             )
     rep.angka_tak_terbaca = pd.DataFrame(unread, columns=["id_responden", "kolom", "nilai"])
+    # Koreksi hasil konfirmasi responden (D25), sebelum flag transaksi dan winsorizing
+    df, rep.koreksi = apply_koreksi(df, c.get("koreksi") or [])
     rep.nol = {col: int((df[col] == 0).sum()) for col in OMZET_COLS + TRX_COLS + ["pelanggan_baru"]}
 
     # Platform
@@ -539,6 +585,14 @@ def build_log(rep: CleaningReport, df: pd.DataFrame, cfg: dict[str, Any]) -> str
         + (", ".join(f"`{k}`={v}" for k, v in rep.missing.items()) or "tidak ada")
         + ".\n"
     )
+
+    s.append("## Koreksi hasil konfirmasi responden (D25)\n")
+    s.append(
+        "Nilai diganti sesuai jawaban konfirmasi ulang (diatur di `config.yaml`, "
+        "`cleaning.koreksi`); isian asli tetap di kolom `*_raw`, baris ditandai `flag_dikoreksi`. "
+        "Koreksi diterapkan sebelum penandaan transaksi janggal dan winsorizing.\n"
+    )
+    s.append(_md_table(rep.koreksi))
 
     s.append("## 1. Likert: audit label vs angka\n")
     s.append(

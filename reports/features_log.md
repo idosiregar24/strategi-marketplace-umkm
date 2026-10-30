@@ -1,8 +1,8 @@
 # Log Konstruksi Variabel (Tahap 2)
 
-Dibuat oleh `umkm.features` pada 2026-10-14 15:46.
+Dibuat oleh `umkm.features` pada 2026-10-30 09:53.
 
-- data_features.csv: 149 baris x 58 kolom. Sampel utama (D14): 116 responden; `tanpa_baseline` = 33.
+- data_features.csv: 149 baris x 59 kolom. Sampel utama (D14): 116 responden; `tanpa_baseline` = 33.
 
 ## 1. Reliabilitas konstruk (semua 149 responden)
 
@@ -53,40 +53,40 @@ Kriteria: alpha >= 0.70; korelasi butir-total terkoreksi >= 0.30. Tidak ada buti
 
 | sampel | variabel | naik | sama | turun | kosong |
 |---|---|---|---|---|---|
-| semua_149 | omzet | 60 | 85 | 4 | 0 |
-| semua_149 | trx | 61 | 84 | 0 | 4 |
-| utama | omzet | 58 | 54 | 4 | 0 |
-| utama | trx | 57 | 55 | 0 | 4 |
+| semua_149 | omzet | 61 | 87 | 1 | 0 |
+| semua_149 | trx | 64 | 85 | 0 | 0 |
+| utama | omzet | 59 | 56 | 1 | 0 |
+| utama | trx | 60 | 56 | 0 | 0 |
 
 
 ## 3. Target utama `naik_penjualan` (D13)
 
 | kelompok | naik | tidak_naik | total |
 |---|---|---|---|
-| punya_baseline (utama) | 61 | 55 | 116 |
+| punya_baseline (utama) | 62 | 54 | 116 |
 | tanpa_baseline | 4 | 29 | 33 |
-| total | 65 | 84 | 149 |
+| total | 66 | 83 | 149 |
 
 
-`y_obj` = rata-rata z(d_omzet) dan z(d_trx); z memakai rata-rata/SD sampel utama. Untuk 4 responden dengan transaksi kosong (D17), `y_obj` dan `naik_penjualan` dari omzet saja. `y_pelanggan_baru` = log1p(pelanggan_baru), target tambahan (D06).
+`y_obj` = rata-rata z(d_omzet) dan z(d_trx); z memakai rata-rata/SD sampel utama. Untuk responden dengan transaksi kosong (D17), `y_obj` dan `naik_penjualan` dari omzet saja. `y_pelanggan_baru` = log1p(pelanggan_baru), target tambahan (D06).
 
 
 ## 4. Statistik deskriptif
 
 | variabel | sampel | count | mean | std | min | 25% | 50% | 75% | max |
 |---|---|---|---|---|---|---|---|---|---|
-| d_omzet | semua_149 | 149.000 | 0.197 | 1.582 | -2.303 | 0.000 | 0.000 | 0.182 | 18.826 |
-| d_trx | semua_149 | 145.000 | 0.220 | 0.778 | 0.000 | 0.000 | 0.000 | 0.223 | 8.700 |
-| y_obj | semua_149 | 149.000 | 0.190 | 3.108 | -3.118 | -0.418 | -0.418 | 0.170 | 36.608 |
+| d_omzet | semua_149 | 149.000 | 0.243 | 1.545 | -0.095 | 0.000 | 0.000 | 0.182 | 18.826 |
+| d_trx | semua_149 | 149.000 | 0.250 | 0.854 | 0.000 | 0.000 | 0.000 | 0.223 | 8.700 |
+| y_obj | semua_149 | 149.000 | 0.248 | 4.348 | -0.566 | -0.566 | -0.566 | 0.118 | 52.097 |
 | y_pelanggan_baru | semua_149 | 149.000 | 4.071 | 1.448 | 0.000 | 3.045 | 4.394 | 5.303 | 7.314 |
 | x1_unggah | semua_149 | 149.000 | 2.361 | 0.676 | 1.000 | 2.000 | 2.000 | 3.000 | 4.500 |
 | x2_promosi | semua_149 | 149.000 | 2.376 | 0.730 | 1.000 | 2.000 | 2.500 | 3.000 | 4.250 |
 | x3_komunikasi | semua_149 | 149.000 | 3.511 | 0.617 | 2.000 | 3.000 | 3.200 | 4.000 | 5.000 |
 | x4_konsistensi | semua_149 | 149.000 | 3.187 | 0.650 | 1.000 | 3.000 | 3.000 | 3.800 | 4.600 |
 | y_persepsi | semua_149 | 149.000 | 3.156 | 0.473 | 1.250 | 3.000 | 3.000 | 3.125 | 4.750 |
-| d_omzet | utama | 116.000 | 0.090 | 0.426 | -2.303 | 0.000 | 0.027 | 0.223 | 1.099 |
-| d_trx | utama | 112.000 | 0.182 | 0.291 | 0.000 | 0.000 | 0.049 | 0.286 | 2.119 |
-| y_obj | utama | 116.000 | 0.000 | 0.817 | -3.118 | -0.418 | -0.154 | 0.321 | 3.371 |
+| d_omzet | utama | 116.000 | 0.150 | 0.213 | -0.095 | 0.000 | 0.059 | 0.223 | 1.099 |
+| d_trx | utama | 116.000 | 0.221 | 0.515 | 0.000 | 0.000 | 0.078 | 0.286 | 4.785 |
+| y_obj | utama | 116.000 | -0.000 | 0.835 | -0.566 | -0.566 | -0.285 | 0.237 | 4.759 |
 | y_pelanggan_baru | utama | 116.000 | 3.924 | 1.494 | 0.000 | 2.773 | 3.932 | 5.303 | 7.314 |
 | x1_unggah | utama | 116.000 | 2.341 | 0.640 | 1.000 | 2.000 | 2.000 | 3.000 | 4.000 |
 | x2_promosi | utama | 116.000 | 2.341 | 0.740 | 1.000 | 2.000 | 2.375 | 3.000 | 4.000 |
@@ -131,11 +131,7 @@ Korelasi rendah-sedang berarti keempat strategi terukur sebagai hal yang berbeda
 - Jumlah blok strategi (dari 4) yang dijawab seragam per responden: 0 blok = 3, 1 blok = 29, 2 blok = 33, 3 blok = 48, 4 blok = 36. Pola ini ikut menjelaskan alpha yang sangat tinggi (> 0,9).
 - `flag_omzet_turun_tajam` (omzet sesudah <= 20% omzet sebelum):
 
-| id_responden | omzet_sebelum | omzet_sesudah | trx_sebelum | trx_sesudah | sampel_utama | naik_penjualan | y_obj |
-|---|---|---|---|---|---|---|---|
-| R065 | 90,000,000.00 | 9,000,000.00 | 300.00 | 300.00 | 1 | 0 | -3.12 |
-| R106 | 10,000,000.00 | 1,500,000.00 | 150.00 | 200.00 | 1 | 1 | -2.15 |
-| R130 | 320,000,000.00 | 32,000,000.00 | 2,300.00 | 2,300.00 | 1 | 0 | -3.12 |
+_(tidak ada)_
 
 
-Turun tepat 10x (R065, R130) kemungkinan salah ketik nol. `naik_penjualan` mereka tetap 0 baik salah ketik maupun tidak; yang terpengaruh hanya `y_obj` (nilai sangat negatif).
+R065, R130 (turun tepat 10x) dan R106 sudah dikoreksi lewat konfirmasi responden (D25). Yang tersisa di tabel ini adalah isian yang dikonfirmasi responden sendiri; nilainya memengaruhi `y_obj`, tetapi tidak memengaruhi `naik_penjualan`.

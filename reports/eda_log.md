@@ -1,6 +1,6 @@
 # Log EDA (Tahap 3)
 
-Dibuat oleh `umkm.eda` pada 2026-10-14 22:26.
+Dibuat oleh `umkm.eda` pada 2026-10-30 09:52.
 
 - Analisis yang menyangkut kinerja memakai **sampel utama** (n = 116, D14); semua 149 responden dilaporkan sebagai pembanding. Profil dan skor strategi memakai 149 responden.
 - Uji nonparametrik: Wilcoxon signed-rank (pasangan tanpa beda dibuang), Mann-Whitney U (pendekatan normal dengan koreksi ties), Spearman (CI 95% Fisher-z, SE Bonett-Wright). Koreksi Holm per keluarga uji. Ukuran efek: r = Z/sqrt(N) dan rank-biserial; label Cohen (0,1 kecil; 0,3 sedang; 0,5 besar).
@@ -36,11 +36,11 @@ Kombinasi platform (5 teratas):
 
 | variabel | sampel | count | mean | std | min | 25% | 50% | 75% | max |
 |---|---|---|---|---|---|---|---|---|---|
-| lama_usaha_pra_mp | utama | 116.00 | 4.77 | 3.84 | 0.08 | 2.00 | 4.00 | 6.00 | 22.00 |
+| lama_usaha_pra_mp | utama | 116.00 | 4.74 | 3.83 | 0.08 | 2.00 | 4.00 | 6.00 | 22.00 |
 | lama_di_mp | utama | 116.00 | 3.75 | 2.21 | 0.08 | 2.00 | 3.00 | 5.00 | 10.00 |
 | jumlah_platform | utama | 116.00 | 2.02 | 0.93 | 1.00 | 1.00 | 2.00 | 3.00 | 4.00 |
 | omzet_sebelum_juta | utama | 116.00 | 41.30 | 66.75 | 0.40 | 11.81 | 20.00 | 35.62 | 330.00 |
-| lama_usaha_pra_mp | semua_149 | 149.00 | 3.71 | 3.92 | 0.00 | 1.00 | 3.00 | 5.00 | 22.00 |
+| lama_usaha_pra_mp | semua_149 | 149.00 | 3.69 | 3.91 | 0.00 | 1.00 | 3.00 | 5.00 | 22.00 |
 | lama_di_mp | semua_149 | 149.00 | 3.65 | 2.34 | 0.08 | 2.00 | 3.00 | 5.00 | 13.00 |
 | jumlah_platform | semua_149 | 149.00 | 2.05 | 0.94 | 1.00 | 1.00 | 2.00 | 3.00 | 4.00 |
 | omzet_sebelum_juta | semua_149 | 149.00 | 38.50 | 65.02 | 0.00 | 9.00 | 18.00 | 30.00 | 330.00 |
@@ -127,10 +127,10 @@ Efek lantai/atap: > 15% responden di skor 1 atau 5. Dominasi: > 50% responden pa
 
 | sampel | variabel | n_pasangan | n_naik | n_sama | n_turun | median_sebelum | median_sesudah | median_selisih | z | p | r | r_semua_pasangan | r_rank_biserial | efek |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| utama | omzet (Rp) | 116 | 58 | 54 | 4 | 2e+07 | 2.1e+07 | 5e+04 | 5.3 | 1.13e-07 | 0.674 | 0.492 | 0.774 | besar |
-| utama | transaksi | 112 | 57 | 55 | 0 | 900 | 1.02e+03 | 3.5 | 6.57 | 4.89e-11 | 0.871 | 0.621 | 1 | besar |
-| semua_149 | omzet (Rp) | 149 | 60 | 85 | 4 | 1.8e+07 | 2e+07 | 0 | 5.45 | 5.01e-08 | 0.681 | 0.447 | 0.783 | besar |
-| semua_149 | transaksi | 145 | 61 | 84 | 0 | 900 | 900 | 0 | 6.8 | 1.06e-11 | 0.87 | 0.565 | 1 | besar |
+| utama | omzet (Rp) | 116 | 59 | 56 | 1 | 2e+07 | 2.18e+07 | 2.5e+05 | 6.33 | 2.41e-10 | 0.818 | 0.588 | 0.939 | besar |
+| utama | transaksi | 116 | 60 | 56 | 0 | 900 | 1.02e+03 | 7 | 6.74 | 1.55e-11 | 0.871 | 0.626 | 1 | besar |
+| semua_149 | omzet (Rp) | 149 | 61 | 87 | 1 | 1.8e+07 | 2e+07 | 0 | 6.46 | 1.08e-10 | 0.82 | 0.529 | 0.942 | besar |
+| semua_149 | transaksi | 149 | 64 | 85 | 0 | 900 | 900 | 0 | 6.96 | 3.37e-12 | 0.87 | 0.57 | 1 | besar |
 
 
 Catatan: Wilcoxon membuang pasangan tanpa beda, sehingga r dihitung dari UMKM yang berubah saja; `r_semua_pasangan` (pembagi = semua pasangan) lebih konservatif. Transaksi tidak punya satu pun penurunan, jadi rank-biserial = 1. Perbandingan sebelum-sesudah ini tidak punya kelompok pembanding, sehingga tidak dapat dipakai untuk menyimpulkan bahwa kenaikan disebabkan oleh marketplace.
@@ -138,81 +138,81 @@ Catatan: Wilcoxon membuang pasangan tanpa beda, sehingga r dihitung dari UMKM ya
 
 ![eda_arah_perubahan](figures/eda_arah_perubahan.png)
 
-**Interpretasi:** Di sampel utama, 50% UMKM mencatat omzet naik dan 51% transaksi naik, hampir separuh tidak berubah, dan penurunan jarang (omzet 4 UMKM, transaksi 0); bila 33 UMKM tanpa baseline ikut dihitung, porsi 'sama' membesar karena mereka umumnya mengisi angka sebelum = sesudah.
+**Interpretasi:** Di sampel utama, 51% UMKM mencatat omzet naik dan 52% transaksi naik, hampir separuh tidak berubah, dan penurunan jarang (omzet 1 UMKM, transaksi 0); bila 33 UMKM tanpa baseline ikut dihitung, porsi 'sama' membesar karena mereka umumnya mengisi angka sebelum = sesudah.
 
 
 ![eda_sebelum_sesudah](figures/eda_sebelum_sesudah.png)
 
-**Interpretasi:** Hampir semua titik berada pada atau sedikit di atas garis diagonal: perubahan umumnya kecil (median selisih omzet Rp50 ribu, transaksi 3,5), tetapi di antara UMKM yang berubah, arahnya hampir selalu naik (Wilcoxon: omzet r = 0,67, transaksi r = 0,87, keduanya p < 0,001); titik merah jauh di bawah garis adalah kasus omzet turun tajam (D21).
+**Interpretasi:** Hampir semua titik berada pada atau sedikit di atas garis diagonal: perubahan umumnya kecil (median selisih omzet Rp250 ribu, transaksi 7,0), tetapi di antara UMKM yang berubah, arahnya hampir selalu naik (Wilcoxon: omzet r = 0,82, transaksi r = 0,87, keduanya p < 0,001); titik merah di bawah garis adalah 1 UMKM yang omzetnya turun.
 
 
 ## 4. Korelasi Spearman strategi vs kinerja
 
 | sampel | x | y | n | rho | ci_bawah | ci_atas | p | p_holm |
 |---|---|---|---|---|---|---|---|---|
-| utama | x1_unggah | d_omzet | 116 | 0.289 | 0.109 | 0.451 | 0.002 | 0.018 |
-| utama | x1_unggah | d_trx | 112 | 0.249 | 0.063 | 0.417 | 0.008 | 0.074 |
-| utama | x1_unggah | y_obj | 116 | 0.266 | 0.084 | 0.430 | 0.004 | 0.040 |
-| utama | x1_unggah | y_pelanggan_baru | 116 | 0.060 | -0.123 | 0.240 | 0.519 | 0.678 |
-| utama | x2_promosi | d_omzet | 116 | 0.349 | 0.173 | 0.504 | 0.000 | 0.002 |
-| utama | x2_promosi | d_trx | 112 | 0.325 | 0.144 | 0.486 | 0.000 | 0.006 |
-| utama | x2_promosi | y_obj | 116 | 0.325 | 0.147 | 0.483 | 0.000 | 0.005 |
-| utama | x2_promosi | y_pelanggan_baru | 116 | 0.130 | -0.054 | 0.306 | 0.164 | 0.656 |
-| utama | x3_komunikasi | d_omzet | 116 | 0.238 | 0.055 | 0.405 | 0.010 | 0.082 |
-| utama | x3_komunikasi | d_trx | 112 | 0.319 | 0.138 | 0.480 | 0.001 | 0.008 |
-| utama | x3_komunikasi | y_obj | 116 | 0.302 | 0.122 | 0.462 | 0.001 | 0.012 |
+| utama | x1_unggah | d_omzet | 116 | 0.236 | 0.054 | 0.403 | 0.011 | 0.097 |
+| utama | x1_unggah | d_trx | 116 | 0.249 | 0.067 | 0.415 | 0.007 | 0.071 |
+| utama | x1_unggah | y_obj | 116 | 0.256 | 0.075 | 0.422 | 0.005 | 0.060 |
+| utama | x1_unggah | y_pelanggan_baru | 116 | 0.060 | -0.123 | 0.240 | 0.519 | 0.767 |
+| utama | x2_promosi | d_omzet | 116 | 0.350 | 0.173 | 0.504 | 0.000 | 0.002 |
+| utama | x2_promosi | d_trx | 116 | 0.282 | 0.102 | 0.445 | 0.002 | 0.028 |
+| utama | x2_promosi | y_obj | 116 | 0.319 | 0.141 | 0.478 | 0.000 | 0.007 |
+| utama | x2_promosi | y_pelanggan_baru | 116 | 0.130 | -0.054 | 0.306 | 0.164 | 0.676 |
+| utama | x3_komunikasi | d_omzet | 116 | 0.222 | 0.039 | 0.390 | 0.017 | 0.134 |
+| utama | x3_komunikasi | d_trx | 116 | 0.301 | 0.121 | 0.461 | 0.001 | 0.015 |
+| utama | x3_komunikasi | y_obj | 116 | 0.280 | 0.099 | 0.443 | 0.002 | 0.028 |
 | utama | x3_komunikasi | y_pelanggan_baru | 116 | -0.197 | -0.367 | -0.013 | 0.034 | 0.241 |
-| utama | x4_konsistensi | d_omzet | 116 | 0.097 | -0.088 | 0.275 | 0.302 | 0.678 |
-| utama | x4_konsistensi | d_trx | 112 | 0.176 | -0.011 | 0.352 | 0.063 | 0.378 |
-| utama | x4_konsistensi | y_obj | 116 | 0.141 | -0.043 | 0.316 | 0.131 | 0.654 |
+| utama | x4_konsistensi | d_omzet | 116 | 0.082 | -0.102 | 0.260 | 0.383 | 0.767 |
+| utama | x4_konsistensi | d_trx | 116 | 0.178 | -0.006 | 0.350 | 0.056 | 0.335 |
+| utama | x4_konsistensi | y_obj | 116 | 0.140 | -0.045 | 0.315 | 0.135 | 0.676 |
 | utama | x4_konsistensi | y_pelanggan_baru | 116 | 0.113 | -0.071 | 0.290 | 0.226 | 0.678 |
-| semua_149 | x1_unggah | d_omzet | 149 | 0.256 | 0.096 | 0.402 | 0.002 | 0.021 |
-| semua_149 | x1_unggah | d_trx | 145 | 0.238 | 0.076 | 0.388 | 0.004 | 0.043 |
-| semua_149 | x1_unggah | y_obj | 149 | 0.255 | 0.096 | 0.402 | 0.002 | 0.021 |
-| semua_149 | x1_unggah | y_pelanggan_baru | 149 | 0.106 | -0.056 | 0.263 | 0.198 | 0.513 |
-| semua_149 | x2_promosi | d_omzet | 149 | 0.280 | 0.122 | 0.424 | 0.001 | 0.009 |
-| semua_149 | x2_promosi | d_trx | 145 | 0.266 | 0.105 | 0.413 | 0.001 | 0.017 |
-| semua_149 | x2_promosi | y_obj | 149 | 0.264 | 0.106 | 0.410 | 0.001 | 0.017 |
-| semua_149 | x2_promosi | y_pelanggan_baru | 149 | 0.162 | 0.000 | 0.316 | 0.048 | 0.271 |
-| semua_149 | x3_komunikasi | d_omzet | 149 | 0.178 | 0.017 | 0.331 | 0.029 | 0.206 |
-| semua_149 | x3_komunikasi | d_trx | 145 | 0.214 | 0.051 | 0.366 | 0.010 | 0.098 |
-| semua_149 | x3_komunikasi | y_obj | 149 | 0.200 | 0.039 | 0.351 | 0.014 | 0.129 |
-| semua_149 | x3_komunikasi | y_pelanggan_baru | 149 | -0.094 | -0.251 | 0.068 | 0.253 | 0.513 |
-| semua_149 | x4_konsistensi | d_omzet | 149 | 0.116 | -0.046 | 0.272 | 0.159 | 0.513 |
-| semua_149 | x4_konsistensi | d_trx | 145 | 0.200 | 0.036 | 0.353 | 0.016 | 0.129 |
-| semua_149 | x4_konsistensi | y_obj | 149 | 0.164 | 0.003 | 0.318 | 0.045 | 0.271 |
+| semua_149 | x1_unggah | d_omzet | 149 | 0.207 | 0.046 | 0.358 | 0.011 | 0.123 |
+| semua_149 | x1_unggah | d_trx | 149 | 0.234 | 0.074 | 0.383 | 0.004 | 0.052 |
+| semua_149 | x1_unggah | y_obj | 149 | 0.246 | 0.087 | 0.394 | 0.002 | 0.034 |
+| semua_149 | x1_unggah | y_pelanggan_baru | 149 | 0.106 | -0.056 | 0.263 | 0.198 | 0.581 |
+| semua_149 | x2_promosi | d_omzet | 149 | 0.279 | 0.121 | 0.424 | 0.001 | 0.009 |
+| semua_149 | x2_promosi | d_trx | 149 | 0.227 | 0.067 | 0.376 | 0.005 | 0.064 |
+| semua_149 | x2_promosi | y_obj | 149 | 0.256 | 0.097 | 0.403 | 0.002 | 0.024 |
+| semua_149 | x2_promosi | y_pelanggan_baru | 149 | 0.162 | 0.000 | 0.316 | 0.048 | 0.290 |
+| semua_149 | x3_komunikasi | d_omzet | 149 | 0.162 | -0.000 | 0.315 | 0.049 | 0.290 |
+| semua_149 | x3_komunikasi | d_trx | 149 | 0.205 | 0.044 | 0.356 | 0.012 | 0.123 |
+| semua_149 | x3_komunikasi | y_obj | 149 | 0.185 | 0.024 | 0.337 | 0.024 | 0.189 |
+| semua_149 | x3_komunikasi | y_pelanggan_baru | 149 | -0.094 | -0.251 | 0.068 | 0.253 | 0.581 |
+| semua_149 | x4_konsistensi | d_omzet | 149 | 0.107 | -0.055 | 0.264 | 0.194 | 0.581 |
+| semua_149 | x4_konsistensi | d_trx | 149 | 0.199 | 0.037 | 0.350 | 0.015 | 0.137 |
+| semua_149 | x4_konsistensi | y_obj | 149 | 0.175 | 0.014 | 0.328 | 0.033 | 0.229 |
 | semua_149 | x4_konsistensi | y_pelanggan_baru | 149 | 0.125 | -0.037 | 0.281 | 0.128 | 0.513 |
 
 
 ![eda_spearman_heatmap](figures/eda_spearman_heatmap.png)
 
-**Interpretasi:** Promosi (X2), komunikasi pelanggan (X3) dan unggah produk (X1) berkorelasi positif lemah-sedang dengan kinerja gabungan Y_obj (rho 0,27-0,33, Holm p < 0,05), sedangkan konsistensi kelola toko (X4) paling lemah (rho 0,14, tidak bermakna); tidak satu pun strategi berkorelasi positif bermakna dengan jumlah pelanggan baru.
+**Interpretasi:** Promosi (X2) dan komunikasi pelanggan (X3) berkorelasi positif lemah-sedang dengan kinerja gabungan Y_obj (rho 0,28-0,32, Holm p < 0,05), sedangkan unggah produk (X1) dan konsistensi kelola toko (X4) paling lemah (rho 0,14-0,26, tidak bermakna); tidak satu pun strategi berkorelasi positif bermakna dengan jumlah pelanggan baru.
 
 
 ### Persepsi sebagai pembanding
 
 | sampel | x | y | n | rho | ci_bawah | ci_atas | p | p_holm | jenis |
 |---|---|---|---|---|---|---|---|---|---|
-| utama | y_persepsi | d_omzet | 116 | 0.197 | 0.013 | 0.367 | 0.034 | 0.206 | persepsi_vs_angka |
-| utama | y_persepsi | d_trx | 112 | 0.274 | 0.090 | 0.440 | 0.003 | 0.028 | persepsi_vs_angka |
-| utama | y_persepsi | y_obj | 116 | 0.245 | 0.063 | 0.411 | 0.008 | 0.057 | persepsi_vs_angka |
+| utama | y_persepsi | d_omzet | 116 | 0.182 | -0.002 | 0.354 | 0.050 | 0.301 | persepsi_vs_angka |
+| utama | y_persepsi | d_trx | 116 | 0.280 | 0.099 | 0.443 | 0.002 | 0.019 | persepsi_vs_angka |
+| utama | y_persepsi | y_obj | 116 | 0.247 | 0.065 | 0.413 | 0.008 | 0.053 | persepsi_vs_angka |
 | utama | y_persepsi | y_pelanggan_baru | 116 | -0.053 | -0.233 | 0.131 | 0.571 | 1.000 | persepsi_vs_angka |
-| utama | y_persepsi_1 | d_omzet | 116 | 0.194 | 0.011 | 0.365 | 0.037 | 0.206 | butir_vs_padanan |
-| utama | y_persepsi_4 | d_trx | 112 | 0.164 | -0.024 | 0.340 | 0.084 | 0.336 | butir_vs_padanan |
+| utama | y_persepsi_1 | d_omzet | 116 | 0.182 | -0.002 | 0.354 | 0.051 | 0.301 | butir_vs_padanan |
+| utama | y_persepsi_4 | d_trx | 116 | 0.178 | -0.006 | 0.350 | 0.056 | 0.301 | butir_vs_padanan |
 | utama | y_persepsi_5 | y_pelanggan_baru | 116 | -0.025 | -0.207 | 0.158 | 0.789 | 1.000 | butir_vs_padanan |
 | utama | y_persepsi | x1_unggah | 116 | 0.297 | 0.117 | 0.458 | 0.001 | 0.011 | persepsi_vs_strategi |
 | utama | y_persepsi | x2_promosi | 116 | 0.129 | -0.055 | 0.305 | 0.167 | 0.501 | persepsi_vs_strategi |
 | utama | y_persepsi | x3_komunikasi | 116 | 0.375 | 0.200 | 0.526 | 0.000 | 0.000 | persepsi_vs_strategi |
 | utama | y_persepsi | x4_konsistensi | 116 | 0.374 | 0.199 | 0.525 | 0.000 | 0.000 | persepsi_vs_strategi |
-| semua_149 | y_persepsi | d_omzet | 149 | 0.169 | 0.007 | 0.322 | 0.039 | 0.200 | persepsi_vs_angka |
-| semua_149 | y_persepsi | d_trx | 145 | 0.195 | 0.031 | 0.348 | 0.019 | 0.150 | persepsi_vs_angka |
-| semua_149 | y_persepsi | y_obj | 149 | 0.174 | 0.013 | 0.327 | 0.033 | 0.200 | persepsi_vs_angka |
+| semua_149 | y_persepsi | d_omzet | 149 | 0.158 | -0.004 | 0.312 | 0.054 | 0.272 | persepsi_vs_angka |
+| semua_149 | y_persepsi | d_trx | 149 | 0.207 | 0.046 | 0.357 | 0.011 | 0.092 | persepsi_vs_angka |
+| semua_149 | y_persepsi | y_obj | 149 | 0.193 | 0.032 | 0.344 | 0.018 | 0.129 | persepsi_vs_angka |
 | semua_149 | y_persepsi | y_pelanggan_baru | 149 | -0.008 | -0.169 | 0.153 | 0.923 | 1.000 | persepsi_vs_angka |
-| semua_149 | y_persepsi_1 | d_omzet | 149 | 0.159 | -0.003 | 0.312 | 0.053 | 0.213 | butir_vs_padanan |
-| semua_149 | y_persepsi_4 | d_trx | 145 | 0.134 | -0.031 | 0.291 | 0.108 | 0.325 | butir_vs_padanan |
+| semua_149 | y_persepsi_1 | d_omzet | 149 | 0.147 | -0.015 | 0.301 | 0.074 | 0.294 | butir_vs_padanan |
+| semua_149 | y_persepsi_4 | d_trx | 149 | 0.143 | -0.019 | 0.297 | 0.083 | 0.294 | butir_vs_padanan |
 | semua_149 | y_persepsi_5 | y_pelanggan_baru | 149 | 0.033 | -0.129 | 0.193 | 0.692 | 1.000 | butir_vs_padanan |
 | semua_149 | y_persepsi | x1_unggah | 149 | 0.352 | 0.198 | 0.489 | 0.000 | 0.000 | persepsi_vs_strategi |
-| semua_149 | y_persepsi | x2_promosi | 149 | 0.181 | 0.019 | 0.333 | 0.027 | 0.192 | persepsi_vs_strategi |
+| semua_149 | y_persepsi | x2_promosi | 149 | 0.181 | 0.019 | 0.333 | 0.027 | 0.165 | persepsi_vs_strategi |
 | semua_149 | y_persepsi | x3_komunikasi | 149 | 0.266 | 0.107 | 0.412 | 0.001 | 0.009 | persepsi_vs_strategi |
 | semua_149 | y_persepsi | x4_konsistensi | 149 | 0.379 | 0.227 | 0.513 | 0.000 | 0.000 | persepsi_vs_strategi |
 
@@ -229,26 +229,26 @@ Holm dihitung per varian atas 4 strategi; baris y_persepsi diuji terpisah (pemba
 
 | varian | variabel | n_1 | n_0 | median_1 | median_0 | z | p | p_holm | r | r_rank_biserial | efek |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| utama | x1_unggah | 61 | 55 | 2.250 | 2.000 | 2.696 | 0.007 | 0.014 | 0.250 | 0.277 | kecil |
-| utama | x2_promosi | 61 | 55 | 2.750 | 2.000 | 3.130 | 0.002 | 0.007 | 0.291 | 0.333 | kecil |
-| utama | x3_komunikasi | 61 | 55 | 3.600 | 3.000 | 3.089 | 0.002 | 0.007 | 0.287 | 0.314 | kecil |
-| utama | x4_konsistensi | 61 | 55 | 3.000 | 3.000 | 1.144 | 0.253 | 0.253 | 0.106 | 0.116 | kecil |
-| utama | y_persepsi | 61 | 55 | 3.000 | 3.000 | 2.321 | 0.020 | 0.020 | 0.216 | 0.212 | kecil |
-| utama_tanpa_seragam | x1_unggah | 53 | 54 | 2.000 | 2.000 | 1.928 | 0.054 | 0.108 | 0.186 | 0.204 | kecil |
-| utama_tanpa_seragam | x2_promosi | 53 | 54 | 2.500 | 2.000 | 2.467 | 0.014 | 0.041 | 0.238 | 0.274 | kecil |
-| utama_tanpa_seragam | x3_komunikasi | 53 | 54 | 3.800 | 3.000 | 3.673 | 0.000 | 0.001 | 0.355 | 0.393 | sedang |
-| utama_tanpa_seragam | x4_konsistensi | 53 | 54 | 3.000 | 3.000 | 1.352 | 0.176 | 0.176 | 0.131 | 0.144 | kecil |
-| utama_tanpa_seragam | y_persepsi | 53 | 54 | 3.000 | 3.000 | 2.489 | 0.013 | 0.013 | 0.241 | 0.241 | kecil |
-| semua_149 | x1_unggah | 65 | 84 | 2.250 | 2.000 | 2.807 | 0.005 | 0.020 | 0.230 | 0.255 | kecil |
-| semua_149 | x2_promosi | 65 | 84 | 2.750 | 2.250 | 2.698 | 0.007 | 0.021 | 0.221 | 0.255 | kecil |
-| semua_149 | x3_komunikasi | 65 | 84 | 3.600 | 3.200 | 2.214 | 0.027 | 0.054 | 0.181 | 0.202 | kecil |
-| semua_149 | x4_konsistensi | 65 | 84 | 3.000 | 3.000 | 1.729 | 0.084 | 0.084 | 0.142 | 0.157 | kecil |
-| semua_149 | y_persepsi | 65 | 84 | 3.000 | 3.000 | 2.046 | 0.041 | 0.041 | 0.168 | 0.164 | kecil |
+| utama | x1_unggah | 62 | 54 | 2.250 | 2.000 | 2.903 | 0.004 | 0.011 | 0.270 | 0.298 | kecil |
+| utama | x2_promosi | 62 | 54 | 2.750 | 2.000 | 2.838 | 0.005 | 0.011 | 0.264 | 0.302 | kecil |
+| utama | x3_komunikasi | 62 | 54 | 3.700 | 3.000 | 3.295 | 0.001 | 0.004 | 0.306 | 0.335 | sedang |
+| utama | x4_konsistensi | 62 | 54 | 3.000 | 3.000 | 1.331 | 0.183 | 0.183 | 0.124 | 0.135 | kecil |
+| utama | y_persepsi | 62 | 54 | 3.000 | 3.000 | 2.647 | 0.008 | 0.008 | 0.246 | 0.242 | kecil |
+| utama_tanpa_seragam | x1_unggah | 54 | 53 | 2.000 | 2.000 | 2.162 | 0.031 | 0.091 | 0.209 | 0.229 | kecil |
+| utama_tanpa_seragam | x2_promosi | 54 | 53 | 2.500 | 2.000 | 2.164 | 0.030 | 0.091 | 0.209 | 0.240 | kecil |
+| utama_tanpa_seragam | x3_komunikasi | 54 | 53 | 3.900 | 3.000 | 3.873 | 0.000 | 0.000 | 0.374 | 0.414 | sedang |
+| utama_tanpa_seragam | x4_konsistensi | 54 | 53 | 3.000 | 3.000 | 1.536 | 0.125 | 0.125 | 0.148 | 0.164 | kecil |
+| utama_tanpa_seragam | y_persepsi | 54 | 53 | 3.000 | 3.000 | 2.815 | 0.005 | 0.005 | 0.272 | 0.272 | kecil |
+| semua_149 | x1_unggah | 66 | 83 | 2.375 | 2.000 | 2.982 | 0.003 | 0.011 | 0.244 | 0.270 | kecil |
+| semua_149 | x2_promosi | 66 | 83 | 2.750 | 2.250 | 2.430 | 0.015 | 0.045 | 0.199 | 0.229 | kecil |
+| semua_149 | x3_komunikasi | 66 | 83 | 3.600 | 3.200 | 2.381 | 0.017 | 0.045 | 0.195 | 0.217 | kecil |
+| semua_149 | x4_konsistensi | 66 | 83 | 3.000 | 3.000 | 1.894 | 0.058 | 0.058 | 0.155 | 0.171 | kecil |
+| semua_149 | y_persepsi | 66 | 83 | 3.000 | 3.000 | 2.333 | 0.020 | 0.020 | 0.191 | 0.186 | kecil |
 
 
 ![eda_boxplot_naik_penjualan](figures/eda_boxplot_naik_penjualan.png)
 
-**Interpretasi:** UMKM yang penjualannya naik cenderung memiliki skor promosi (X2), komunikasi pelanggan (X3) dan unggah produk (X1) lebih tinggi (rank-biserial 0,28-0,33, efek kecil-sedang, Holm p < 0,05), sedangkan skor konsistensi kelola toko (X4) tidak berbeda nyata antara kedua kelompok.
+**Interpretasi:** UMKM yang penjualannya naik cenderung memiliki skor komunikasi pelanggan (X3), promosi (X2) dan unggah produk (X1) lebih tinggi (rank-biserial 0,30-0,34, efek kecil-sedang, Holm p < 0,05), sedangkan skor konsistensi kelola toko (X4) tidak berbeda nyata antara kedua kelompok.
 
 
 ### tanpa_baseline (1) vs punya baseline (0), 149 responden
@@ -273,7 +273,7 @@ Holm dihitung per varian atas 4 strategi; baris y_persepsi diuji terpisah (pemba
 
 ## 6. VIF
 
-Batas waspada VIF > 5. VIF maksimum: semua_149 / A_strategi = 1,44; semua_149 / B_strategi_profil = 1,50; semua_149 / C_strategi_profil_dummy_platform = 1,57; utama / A_strategi = 1,31; utama / B_strategi_profil = 1,37; utama / C_strategi_profil_dummy_platform = 1,49. `jumlah_platform` dan dummy platform tidak dimasukkan bersamaan (kolinear sempurna).
+Batas waspada VIF > 5. VIF maksimum: semua_149 / A_strategi = 1,44; semua_149 / B_strategi_profil = 1,50; semua_149 / C_strategi_profil_dummy_platform = 1,57; utama / A_strategi = 1,31; utama / B_strategi_profil = 1,37; utama / C_strategi_profil_dummy_platform = 1,48. `jumlah_platform` dan dummy platform tidak dimasukkan bersamaan (kolinear sempurna).
 
 
 | sampel | set | variabel | vif | waspada |
@@ -293,12 +293,12 @@ Batas waspada VIF > 5. VIF maksimum: semua_149 / A_strategi = 1,44; semua_149 / 
 | utama | C_strategi_profil_dummy_platform | x1_unggah | 1.44 | TIDAK |
 | utama | C_strategi_profil_dummy_platform | x2_promosi | 1.31 | TIDAK |
 | utama | C_strategi_profil_dummy_platform | x3_komunikasi | 1.43 | TIDAK |
-| utama | C_strategi_profil_dummy_platform | x4_konsistensi | 1.42 | TIDAK |
-| utama | C_strategi_profil_dummy_platform | lama_usaha_pra_mp | 1.49 | TIDAK |
-| utama | C_strategi_profil_dummy_platform | lama_di_mp | 1.37 | TIDAK |
-| utama | C_strategi_profil_dummy_platform | log_omzet_sebelum | 1.07 | TIDAK |
+| utama | C_strategi_profil_dummy_platform | x4_konsistensi | 1.41 | TIDAK |
+| utama | C_strategi_profil_dummy_platform | lama_usaha_pra_mp | 1.48 | TIDAK |
+| utama | C_strategi_profil_dummy_platform | lama_di_mp | 1.38 | TIDAK |
+| utama | C_strategi_profil_dummy_platform | log_omzet_sebelum | 1.06 | TIDAK |
 | utama | C_strategi_profil_dummy_platform | mp_gofood | 1.26 | TIDAK |
 | utama | C_strategi_profil_dummy_platform | mp_grabfood | 1.25 | TIDAK |
-| utama | C_strategi_profil_dummy_platform | mp_shopee | 1.30 | TIDAK |
+| utama | C_strategi_profil_dummy_platform | mp_shopee | 1.29 | TIDAK |
 | utama | C_strategi_profil_dummy_platform | mp_maxim | 1.14 | TIDAK |
 | utama | C_strategi_profil_dummy_platform | mp_tiktok | 1.16 | TIDAK |

@@ -1,15 +1,34 @@
 # Log Cleaning (Tahap 1)
 
-Dibuat oleh `umkm.cleaning` pada 2026-10-14 14:15.
+Dibuat oleh `umkm.cleaning` pada 2026-10-30 09:52.
 
 ## Ringkasan
 
 - Data mentah: 149 baris x 37 kolom.
-- Data bersih: 149 baris x 64 kolom.
+- Data bersih: 149 baris x 65 kolom.
 - Kolom `score` konstan, dibuang.
 - `nama_usaha` hanya sebagai pengenal; laporan memakai `id_responden` (R001-R149).
 - Nilai Likert di luar 1-5 atau kosong: 0.
-- Missing setelah cleaning: `trx_sebelum`=4, `trx_sebelum_w`=4, `trx_sesudah`=4, `trx_sesudah_w`=4.
+- Missing setelah cleaning: tidak ada.
+
+## Koreksi hasil konfirmasi responden (D25)
+
+Nilai diganti sesuai jawaban konfirmasi ulang (diatur di `config.yaml`, `cleaning.koreksi`); isian asli tetap di kolom `*_raw`, baris ditandai `flag_dikoreksi`. Koreksi diterapkan sebelum penandaan transaksi janggal dan winsorizing.
+
+| id_responden | kolom | nilai_lama | nilai_baru | keterangan |
+|---|---|---|---|---|
+| R065 | omzet_sesudah | 9,000,000 | 90,000,000 | terisi 9 jt; dikonfirmasi 90 jt (omzet tetap) |
+| R130 | omzet_sesudah | 32,000,000 | 320,000,000 | terisi 32 jt; dikonfirmasi 320 jt (omzet tetap) |
+| R106 | omzet_sesudah | 1,500,000 | 15,000,000 | terisi 1,5 jt; dikonfirmasi 15 jt (kurang satu nol) |
+| R006 | trx_sebelum | 10,500,000 | 300 | terisi 10,5 jt (= omzet); dikonfirmasi 300 pesanan/bulan |
+| R006 | trx_sesudah | 540 | 300 | terisi 540; dikonfirmasi 300 pesanan/bulan |
+| R015 | trx_sebelum | 30,000,000 | 300 | terisi 30 jt; dikonfirmasi 300 pesanan/bulan |
+| R015 | trx_sesudah | 40,000,000 | 400 | terisi 40 jt; dikonfirmasi 400 pesanan/bulan |
+| R021 | trx_sebelum | 1,000,000 | 100 | terisi 1 jt; dikonfirmasi 100 pesanan/bulan |
+| R021 | trx_sesudah | 15,000,000 | 15,000 | terisi 15 jt; dikonfirmasi 15.000 pesanan/bulan (naik 150x, masih diragukan) |
+| R002 | trx_sebelum | 2.50 | 2,500 | terisi 2,5; dikonfirmasi 2.500 pesanan/bulan (dalam ribuan) |
+| R002 | trx_sesudah | 2.65 | 2,650 | terisi 2,65; dikonfirmasi 2.650 pesanan/bulan (dalam ribuan) |
+| R019 | lama_usaha_pra_mp | 8 | 5 | isian 2018 = tahun berdiri; marketplace sejak 2023 -> 2023 - 2018 = 5 th |
 
 ## 1. Likert: audit label vs angka
 
@@ -48,15 +67,10 @@ Variasi format seperti "1.Tidak Pernah" (tanpa spasi) ditangani regex dan tidak 
 
 Kriteria `flag_trx_tidak_wajar`: transaksi > 100,000 atau sama persis dengan omzet di baris yang sama. `flag_trx_pecahan`: transaksi bukan bilangan bulat.
 
-| id_responden | omzet_sebelum | omzet_sesudah | trx_sebelum | trx_sesudah | flag_trx_pecahan | flag_trx_tidak_wajar |
-|---|---|---|---|---|---|---|
-| R002 | 100,000,000 | 120,000,000 | 2.50 | 2.65 | 1 | 0 |
-| R006 | 10,500,000 | 10,500,000 | 10,500,000 | 540 | 0 | 1 |
-| R015 | 800,000,000 | 300,000,000 | 30,000,000 | 40,000,000 | 0 | 1 |
-| R021 | 15,000,000 | 20,000,000 | 1,000,000 | 15,000,000 | 0 | 1 |
+_(tidak ada)_
 
 
-Transaksi sebelum dan sesudah 4 responden di atas DIKOSONGKAN (NaN), ditandai `flag_trx_dikosongkan`. Nilai asli tetap di `trx_*_raw`; omzet dan jawaban lain responden ini tetap dipakai. Inilah satu-satunya sumber missing di data bersih.
+Transaksi di atas hanya ditandai, tidak diubah.
 
 
 ## 4. Platform
@@ -72,7 +86,7 @@ Persentil atas 99%; ekor bawah tidak dibatasi (D16). Batas dihitung dari gabunga
 | Variabel | Batas bawah | Batas atas |
 |---|---|---|
 | omzet | - | 330,000,000 |
-| trx | - | 10,220 |
+| trx | - | 12,090 |
 
 - Sel yang berubah: `omzet_sebelum` = 1, `omzet_sesudah` = 1, `trx_sebelum` = 1, `trx_sesudah` = 2.
 - Responden dengan `flag_outlier` = 1: 4.
@@ -80,10 +94,10 @@ Persentil atas 99%; ekor bawah tidak dibatasi (D16). Batas dihitung dari gabunga
 
 | id_responden | omzet_sebelum | omzet_sebelum_w | omzet_sesudah | omzet_sesudah_w | trx_sebelum | trx_sebelum_w | trx_sesudah | trx_sesudah_w |
 |---|---|---|---|---|---|---|---|---|
-| R015 | 800,000,000 | 330,000,000 | 300,000,000 | 300,000,000 |  |  |  |  |
-| R019 | 300,000,000 | 300,000,000 | 300,000,000 | 300,000,000 | 60,000 | 10,220 | 60,000 | 10,220 |
+| R015 | 800,000,000 | 330,000,000 | 300,000,000 | 300,000,000 | 300 | 300 | 400 | 400 |
+| R019 | 300,000,000 | 300,000,000 | 300,000,000 | 300,000,000 | 60,000 | 12,090 | 60,000 | 12,090 |
 | R020 | 300,000,000 | 300,000,000 | 600,000,000 | 330,000,000 | 3,000 | 3,000 | 6,000 | 6,000 |
-| R107 | 200,000,000 | 200,000,000 | 250,000,000 | 250,000,000 | 10,000 | 10,000 | 12,000 | 10,220 |
+| R021 | 15,000,000 | 15,000,000 | 20,000,000 | 20,000,000 | 100 | 100 | 15,000 | 12,090 |
 
 
 ### Dampak winsorizing pada arah perubahan (naik/sama/turun)

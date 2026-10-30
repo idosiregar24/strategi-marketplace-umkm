@@ -1,6 +1,7 @@
 """Ekspor data_clean dan data_features ke satu berkas Excel untuk dibagikan: `python -m umkm.ekspor`.
 
-Isi: sheet Petunjuk, Data bersih, Data siap analisis, dan Kamus data. Kolom `nama_usaha` tidak ikut
+Isi: sheet Petunjuk, Data terkoreksi, Catatan koreksi, Data bersih, Data siap analisis, dan Kamus data.
+Kolom `nama_usaha` tidak ikut
 (identitas usaha); responden dikenali lewat `id_responden` (R001-R149, urut sesuai baris Excel asli).
 Berkas ditulis ke data/processed/ (tidak masuk repo).
 """
@@ -16,6 +17,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 from umkm import config
+from umkm.cleaning import LIKERT_COLS, OMZET_COLS, PLATFORM_COLS, TRX_COLS
 
 KOLOM_PRIBADI = ["nama_usaha"]
 NAMA_BERKAS = "data_umkm.xlsx"
@@ -90,9 +92,10 @@ KAMUS: dict[str, str] = {
     "flag_kalender_lama_di_mp": "1 = lama di marketplace diisi tahun kalender lalu dikonversi",
     "flag_lama_tahun_kalender": "1 = salah satu isian lama usaha berupa tahun kalender",
     "flag_outlier": "1 = ada nilai omzet/transaksi yang dipangkas di persentil 99",
-    "flag_trx_dikosongkan": "1 = transaksi janggal sehingga dikosongkan (4 responden)",
+    "flag_trx_dikosongkan": "1 = transaksi janggal sehingga dikosongkan (D17)",
     "flag_trx_pecahan": "1 = transaksi bukan bilangan bulat",
     "flag_trx_tidak_wajar": "1 = transaksi > 100.000 atau sama persis dengan omzet",
+    "flag_dikoreksi": "1 = ada isian yang dikoreksi sesuai konfirmasi ulang ke responden (isian asli di kolom _raw)",
     "tanpa_baseline": "1 = usaha berdiri bersamaan dengan masuk marketplace (tidak punya kondisi sebelum)",
     "sampel_utama": "1 = dipakai di analisis utama (punya kondisi sebelum marketplace); 116 responden",
     "log_omzet_sebelum": "log(1 + omzet sebelum terpangkas)",
@@ -136,24 +139,84 @@ def keterangan(kolom: str) -> str:
     return ""
 
 
-def tabel_kamus(kolom_clean: list[str], kolom_feat: list[str]) -> pd.DataFrame:
+def tabel_kamus(kolom_per_sheet: dict[str, list[str]]) -> pd.DataFrame:
     """Kamus data: kolom, sheet tempat kolom muncul, dan penjelasannya."""
-    semua = list(dict.fromkeys([*kolom_clean, *kolom_feat]))
+    semua = list(dict.fromkeys(k for cols in kolom_per_sheet.values() for k in cols))
     rows = []
     for k in semua:
-        sheet = " & ".join(
-            s
-            for s, cols in (("Data bersih", kolom_clean), ("Data siap analisis", kolom_feat))
-            if k in cols
-        )
+        sheet = " & ".join(s for s, cols in kolom_per_sheet.items() if k in cols)
         rows.append({"Kolom": k, "Ada di sheet": sheet, "Keterangan": keterangan(k)})
     return pd.DataFrame(rows)
+
+
+KOLOM_TERKOREKSI = [
+    "id_responden",
+    "lama_usaha_pra_mp",
+    "lama_di_mp",
+    "platform_raw",
+    *PLATFORM_COLS,
+    "jumlah_platform",
+    *LIKERT_COLS,
+    *OMZET_COLS,
+    *TRX_COLS,
+    "pelanggan_baru",
+]
+KET_TRX_KOSONG = {
+    0: (
+        "transaksi tidak masuk akal (dikonfirmasi responden, tetapi kemungkinan yang diisi nilai "
+        "rupiah, bukan jumlah pesanan); dikosongkan (D17), kinerja dinilai dari omzet saja"
+    ),
+    1: (
+        "transaksi berupa pecahan, satuan belum jelas (mis. dalam ribuan?); dikosongkan (D17), "
+        "kinerja dinilai dari omzet saja"
+    ),
+}
+
+
+def tabel_terkoreksi(clean: pd.DataFrame) -> pd.DataFrame:
+    """Data kuesioner dengan nilai final (sudah dikoreksi), tanpa kolom teknis _raw/_w/flag."""
+    return clean[KOLOM_TERKOREKSI].copy()
+
+
+def tabel_koreksi(clean: pd.DataFrame, koreksi: list[dict]) -> pd.DataFrame:
+    """Daftar sel yang nilainya berbeda dari isian asli: koreksi konfirmasi (D25) dan
+    transaksi yang dikosongkan (D17)."""
+    ket = {(k["id"], k["kolom"]): k.get("keterangan", "") for k in koreksi}
+    kosong = clean.loc[clean["flag_trx_dikosongkan"] == 1]
+    for rid, pecahan in zip(kosong["id_responden"], kosong["flag_trx_pecahan"]):
+        for col in TRX_COLS:
+            ket.setdefault((rid, col), KET_TRX_KOSONG[int(pecahan)])
+    baris = clean.set_index("id_responden")
+    rows = [
+        {
+            "id_responden": rid,
+            "kolom": col,
+            "isian_asli": baris.at[rid, f"{col}_raw"],
+            "nilai_dipakai": "kosong" if pd.isna(baris.at[rid, col]) else baris.at[rid, col],
+            "keterangan": k,
+        }
+        for (rid, col), k in sorted(ket.items())
+    ]
+    return pd.DataFrame(
+        rows, columns=["id_responden", "kolom", "isian_asli", "nilai_dipakai", "keterangan"]
+    )
 
 
 PETUNJUK = [
     ("Data kuesioner strategi marketplace UMKM Pekanbaru", ""),
     ("", ""),
     ("Sheet", "Isi"),
+    (
+        "Data terkoreksi",
+        (
+            "Data kuesioner dengan nilai final yang dipakai analisis (sudah dikoreksi sesuai"
+            " konfirmasi responden). Sel kuning = berbeda dari isian asli; rincian di Catatan koreksi."
+        ),
+    ),
+    (
+        "Catatan koreksi",
+        "Daftar sel yang diubah atau dikosongkan: isian asli, nilai dipakai, alasan.",
+    ),
     (
         "Data bersih",
         "Hasil Tahap 1: data kuesioner yang sudah dirapikan (149 responden). Nama usaha tidak disertakan.",
@@ -181,6 +244,7 @@ PETUNJUK = [
 
 FONT = "Arial"
 HEADER_FILL = PatternFill("solid", start_color="DCE6F1")
+KOREKSI_FILL = PatternFill("solid", start_color="FFF2CC")
 
 
 def _rapikan_sheet(ws, df: pd.DataFrame) -> None:
@@ -216,11 +280,21 @@ def ekspor_xlsx(path: Path | None = None) -> Path:
     proc = config.path("processed")
     clean = pd.read_csv(proc / "data_clean.csv").drop(columns=KOLOM_PRIBADI, errors="ignore")
     feat = pd.read_csv(proc / "data_features.csv").drop(columns=KOLOM_PRIBADI, errors="ignore")
-    kamus = tabel_kamus(list(clean.columns), list(feat.columns))
+    final = tabel_terkoreksi(clean)
+    catatan = tabel_koreksi(clean, config.load_config()["cleaning"].get("koreksi") or [])
+    kamus = tabel_kamus(
+        {
+            "Data terkoreksi": list(final.columns),
+            "Data bersih": list(clean.columns),
+            "Data siap analisis": list(feat.columns),
+        }
+    )
     path = path or proc / NAMA_BERKAS
 
     with pd.ExcelWriter(path, engine="openpyxl") as xw:
         pd.DataFrame(PETUNJUK).to_excel(xw, sheet_name="Petunjuk", index=False, header=False)
+        final.to_excel(xw, sheet_name="Data terkoreksi", index=False)
+        catatan.to_excel(xw, sheet_name="Catatan koreksi", index=False)
         clean.to_excel(xw, sheet_name="Data bersih", index=False)
         feat.to_excel(xw, sheet_name="Data siap analisis", index=False)
         kamus.to_excel(xw, sheet_name="Kamus data", index=False)
@@ -228,13 +302,23 @@ def ekspor_xlsx(path: Path | None = None) -> Path:
         ws = xw.sheets["Petunjuk"]
         for row in ws.iter_rows():
             for c in row:
-                c.font = Font(name=FONT, size=10, bold=c.row in (1, 3, 8))
+                c.font = Font(name=FONT, size=10, bold=c.row in (1, 3, 10))
                 c.alignment = Alignment(wrap_text=True, vertical="top")
         ws["A1"].font = Font(name=FONT, size=13, bold=True)
         ws.column_dimensions["A"].width = 22
         ws.column_dimensions["B"].width = 95
-        for nama, df in (("Data bersih", clean), ("Data siap analisis", feat)):
+        for nama, df in (
+            ("Data terkoreksi", final),
+            ("Catatan koreksi", catatan),
+            ("Data bersih", clean),
+            ("Data siap analisis", feat),
+        ):
             _rapikan_sheet(xw.sheets[nama], df)
+        wf = xw.sheets["Data terkoreksi"]
+        baris = {rid: i + 2 for i, rid in enumerate(final["id_responden"])}
+        for rid, col in zip(catatan["id_responden"], catatan["kolom"]):
+            wf.cell(baris[rid], final.columns.get_loc(col) + 1).fill = KOREKSI_FILL
+        xw.sheets["Catatan koreksi"].column_dimensions["E"].width = 95
         wk = xw.sheets["Kamus data"]
         _rapikan_sheet(wk, kamus)
         wk.freeze_panes = "A2"

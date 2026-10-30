@@ -333,7 +333,6 @@ const KAPSI_FIGUR = {
 const URUT_FIGUR = Object.keys(KAPSI_FIGUR);
 const PERTANYAAN = [
   { g: "Ke responden atau pengumpul data", sub: "memperbaiki data", items: [
-    { id: "q3", a: "Omzet R065 (90 jt → 9 jt) dan R130 (320 jt → 32 jt): apakah salah ketik nol?", w: "Dua UMKM ini menarik skor kinerja gabungan sangat ke bawah.", d: "data dibiarkan; Tahap 4 menguji hasil dengan dan tanpa mereka." },
     { id: "q4", a: "\"Pelanggan baru per bulan\" itu kondisi sebelum atau sesudah memakai marketplace?", w: "Karena ambigu, variabel ini lemah dan tidak berhubungan dengan strategi mana pun.", d: "tetap target tambahan, dibaca hati-hati." },
     { id: "q5", a: "Butir X1.2 (perbarui katalog) dan X2.1 (fitur promo) ada di instrumen tetapi tidak di Excel. Apakah memang tidak ditanyakan di form?", w: "Skor X1 dan X2 kini dari 4 butir, bukan 5.", d: "dicatat sebagai keterbatasan." },
   ]},
@@ -484,8 +483,8 @@ function renderHasil(h) {
     rows.push([`${a.n_seragam_utama} responden sampel utama menjawab semua butir strategi dengan angka sama (${a.n_seragam_naik} di antaranya naik)`,
       x1 ? `Tanpa mereka, beda skor unggah produk (X1) naik vs tidak naik: p Holm ${fmt(x1.p_mw, 3)} → ${fmt(x1.p_mw_tanpa_seragam, 3)}` : "Diuji ulang di Tahap 4", "wait", "perlu hati-hati"]);
   }
-  if (a) rows.push([`Omzet ${a.n_turun_tajam} responden turun tajam (R065 dan R130 tepat 10 kali lipat)`, "Kemungkinan salah ketik nol; diuji dengan dan tanpa mereka", "wait", "perlu konfirmasi"]);
-  if (a) rows.push([`Transaksi ${a.n_trx_dikosongkan} responden janggal`, "Dikosongkan; kinerja mereka dinilai dari omzet saja", "done", "sudah ditangani"]);
+  if (a) rows.push([`Omzet R065, R130, R106 salah ketik; dikoreksi lewat konfirmasi responden`, a.n_turun_tajam ? `${a.n_turun_tajam} responden masih turun tajam (isian dikonfirmasi); diuji dengan dan tanpa mereka` : "Tidak ada lagi omzet yang turun tajam", "done", "sudah ditangani"]);
+  if (a) rows.push([`Transaksi R002, R006, R015, R021 janggal; diganti jumlah pesanan hasil konfirmasi responden`, a.n_trx_dikosongkan ? `${a.n_trx_dikosongkan} responden masih dikosongkan` : "R021 naik 150 kali (100 → 15.000); diuji dengan dan tanpa R021 di Tahap 4", a.n_trx_dikosongkan ? "wait" : "done", "sudah ditangani"]);
   if (h.alpha) rows.push([`Reliabilitas skor strategi alpha ${fmt(h.alpha.min)}-${fmt(h.alpha.max)}`, "Butir tiap strategi konsisten mengukur hal yang sama", "done", "baik"]);
   if (h.vif_maks != null) rows.push([`Tumpang-tindih antar-variabel rendah (VIF maksimum ${fmt(h.vif_maks)})`, "Keempat strategi aman dimasukkan bersama ke model", h.vif_maks < 5 ? "done" : "wait", h.vif_maks < 5 ? "aman" : "perlu cek"]);
   $("kualitas").innerHTML = rows.length ? rows.map(([t, d, s, l]) => `<tr><td>${esc(t)}</td><td>${esc(d)}</td><td><span class="chip ${s}">${esc(l)}</span></td></tr>`).join("") : '<tr><td colspan="3" class="empty">Belum ada hasil.</td></tr>';

@@ -338,7 +338,7 @@ def build_log(rep: FeaturesReport, df: pd.DataFrame) -> str:
     s.append(_md(rep.kelas))
     s.append(
         "\n`y_obj` = rata-rata z(d_omzet) dan z(d_trx); z memakai rata-rata/SD sampel utama. "
-        "Untuk 4 responden dengan transaksi kosong (D17), `y_obj` dan `naik_penjualan` dari omzet "
+        "Untuk responden dengan transaksi kosong (D17), `y_obj` dan `naik_penjualan` dari omzet "
         "saja. `y_pelanggan_baru` = log1p(pelanggan_baru), target tambahan (D06).\n"
     )
     s.append("\n## 4. Statistik deskriptif\n")
@@ -390,8 +390,9 @@ def build_log(rep: FeaturesReport, df: pd.DataFrame) -> str:
     )
     s.append(_md(rep.turun_tajam, "{:,.2f}"))
     s.append(
-        "\nTurun tepat 10x (R065, R130) kemungkinan salah ketik nol. `naik_penjualan` mereka tetap 0 "
-        "baik salah ketik maupun tidak; yang terpengaruh hanya `y_obj` (nilai sangat negatif).\n"
+        "\nR065, R130 (turun tepat 10x) dan R106 sudah dikoreksi lewat konfirmasi responden (D25). "
+        "Yang tersisa di tabel ini adalah isian yang dikonfirmasi responden sendiri; "
+        "nilainya memengaruhi `y_obj`, tetapi tidak memengaruhi `naik_penjualan`.\n"
     )
     return "\n".join(s)
 
