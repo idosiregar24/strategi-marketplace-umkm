@@ -181,6 +181,74 @@ def ringkasan_hasil() -> dict[str, Any]:
     if rel is not None:
         r = rel[rel["peran"] == "strategi"]
         out["alpha"] = {"min": float(r["alpha"].min()), "max": float(r["alpha"].max())}
+
+    cv = _csv("pengaruh_cv_ringkas")
+    if cv is not None:
+        cv_naik = cv[cv["target"] == "naik_penjualan"].set_index(["model", "metrik"])
+        models_list = [
+            ("random_forest", "Random Forest"),
+            ("logistik", "Regresi Logistik"),
+            ("dummy_mayoritas", "Baseline Mayoritas"),
+        ]
+        out["model_performa"] = []
+        for m_key, m_nama in models_list:
+            if (m_key, "auc") in cv_naik.index:
+                out["model_performa"].append(
+                    {
+                        "model": m_nama,
+                        "auc": float(cv_naik.loc[(m_key, "auc"), "rata_rata"]),
+                        "f1": float(cv_naik.loc[(m_key, "f1_macro"), "rata_rata"]),
+                        "akurasi": float(cv_naik.loc[(m_key, "akurasi_seimbang"), "rata_rata"]),
+                    }
+                )
+
+    gab = _csv("pengaruh_gabungan")
+    if gab is not None:
+        out["rf_pengaruh"] = [
+            {
+                "strategi": r["strategi"],
+                "nama": STRATEGI.get(r["strategi"], r["nama"]),
+                "perm_importance": float(r["perm_importance"]),
+                "shap": float(r["mean_abs_shap"]),
+                "pengaruh": float(r["pengaruh"]),
+                "bobot": float(r["bobot_rekomendasi"]),
+                "peringkat": int(r["peringkat"]),
+                "p_p1": float(r["p_peringkat_1"]),
+                "or_logit": float(r["or_logit"]),
+                "meyakinkan": bool(r["meyakinkan"]),
+            }
+            for _, r in gab.iterrows()
+        ]
+
+    wif = _csv("rekomendasi_whatif")
+    if wif is not None:
+        out["simulasi_whatif"] = [
+            {
+                "segmen": str(r["segmen"]),
+                "model": str(r["model"]),
+                "strategi": STRATEGI.get(r["strategi"], r["strategi"]),
+                "selisih_pp": float(r["selisih_pp"]),
+                "peluang_dasar": float(r["peluang_dasar_persen"]),
+            }
+            for _, r in wif.iterrows()
+        ]
+
+    rek = _csv("rekomendasi_per_segmen")
+    if rek is not None:
+        out["rekomendasi_segmen"] = [
+            {
+                "segmen": str(r["segmen"]),
+                "nama_segmen": str(r["nama_segmen"]),
+                "peringkat": int(r["peringkat"]),
+                "strategi": STRATEGI.get(r["strategi"], r["nama_strategi"]),
+                "prioritas": float(r["prioritas"]),
+                "gap": float(r["gap"]),
+                "bobot": float(r["bobot"]),
+                "tindakan": str(r["tindakan"]),
+                "alasan": str(r["alasan"]),
+            }
+            for _, r in rek.iterrows()
+        ]
     return out
 
 
@@ -243,6 +311,27 @@ class _Handler(BaseHTTPRequestHandler):
             self._kirim(200, isi, "application/json; charset=utf-8")
         elif jalur.startswith("/figures/") and (p := figur_aman(jalur[len("/figures/") :])):
             self._kirim(200, p.read_bytes(), "image/png")
+        else:
+            self._kirim(404, b"Tidak ditemukan", "text/plain; charset=utf-8")
+
+    def do_POST(self) -> None:
+        jalur = self.path.split("?", 1)[0]
+        if jalur == "/api/recommend":
+            try:
+                panjang = int(self.headers.get("Content-Length", 0))
+                badan = self.rfile.read(panjang)
+                masukan = json.loads(badan.decode("utf-8"))
+                from umkm.recommend import recommend
+
+                hasil = recommend(masukan)
+                self._kirim(
+                    200,
+                    json.dumps(hasil, ensure_ascii=False).encode("utf-8"),
+                    "application/json; charset=utf-8",
+                )
+            except Exception as e:  # noqa: BLE001
+                pesan_err = json.dumps({"error": str(e)}, ensure_ascii=False).encode("utf-8")
+                self._kirim(400, pesan_err, "application/json; charset=utf-8")
         else:
             self._kirim(404, b"Tidak ditemukan", "text/plain; charset=utf-8")
 
