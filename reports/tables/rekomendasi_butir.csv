@@ -1,0 +1,55 @@
+segmen,strategi,butir,tindakan,skor,benchmark,gap,fokus,peringkat_butir
+1,x1_unggah,x1_unggah_1,menjadwalkan unggah produk rutin setiap minggu,2.2972972972972974,2.4074074074074074,0.11011011011011007,False,4.0
+1,x1_unggah,x1_unggah_2,menambah produk atau varian baru secara berkala,2.2972972972972974,2.4814814814814814,0.18418418418418403,False,3.0
+1,x1_unggah,x1_unggah_3,mengunggah ulang produk lama agar tetap terlihat pembeli,2.3513513513513513,2.5555555555555554,0.20420420420420404,True,1.0
+1,x1_unggah,x1_unggah_4,memantau produk yang sepi dan perlu diunggah ulang,2.391891891891892,2.5925925925925926,0.20070070070070045,True,2.0
+1,x2_promosi,x2_promosi_1,"memakai voucher, diskon, atau cashback dengan anggaran yang ditetapkan",2.5,2.5925925925925926,0.09259259259259256,False,3.0
+1,x2_promosi,x2_promosi_2,mencoba iklan berbayar atau promosi internal marketplace dalam skala kecil,2.189189189189189,2.259259259259259,0.07007007007007005,False,4.0
+1,x2_promosi,x2_promosi_3,memanfaatkan fitur promosi bawaan marketplace,2.445945945945946,2.5925925925925926,0.1466466466466465,True,2.0
+1,x2_promosi,x2_promosi_4,mengevaluasi hasil tiap promosi (pesanan sebelum vs selama promo),2.4324324324324325,2.6296296296296298,0.1971971971971973,True,1.0
+1,x3_komunikasi,x3_komunikasi_1,membalas chat pelanggan dengan cepat,3.4054054054054053,3.5555555555555554,0.1501501501501501,True,2.0
+1,x3_komunikasi,x3_komunikasi_2,menjawab pertanyaan pelanggan dengan jelas dan sopan,3.554054054054054,3.6666666666666665,0.11261261261261257,False,5.0
+1,x3_komunikasi,x3_komunikasi_3,membalas semua pesan pelanggan pada hari yang sama,3.4054054054054053,3.5555555555555554,0.1501501501501501,False,3.0
+1,x3_komunikasi,x3_komunikasi_4,menanggapi keluhan atau komplain pelanggan segera,3.5,3.6296296296296298,0.12962962962962976,False,4.0
+1,x3_komunikasi,x3_komunikasi_5,menjaga komunikasi sampai pesanan diterima pelanggan,3.4594594594594597,3.6296296296296298,0.1701701701701701,True,1.0
+1,x4_konsistensi,x4_konsistensi_1,menjaga toko tetap aktif dan terkelola,3.081081081081081,3.2222222222222223,0.14114114114114118,True,2.0
+1,x4_konsistensi,x4_konsistensi_2,memperbarui stok produk secara rutin,3.0405405405405403,3.1481481481481484,0.10760760760760801,False,4.0
+1,x4_konsistensi,x4_konsistensi_3,memperbarui foto dan deskripsi produk,3.0945945945945947,3.185185185185185,0.09059059059059038,False,5.0
+1,x4_konsistensi,x4_konsistensi_4,memastikan informasi harga dan stok selalu akurat,3.175675675675676,3.2962962962962963,0.1206206206206204,False,3.0
+1,x4_konsistensi,x4_konsistensi_5,tetap mengelola toko saat sedang sibuk,3.135135135135135,3.3333333333333335,0.1981981981981984,True,1.0
+2,x1_unggah,x1_unggah_1,menjadwalkan unggah produk rutin setiap minggu,2.44,2.5714285714285716,0.13142857142857167,True,2.0
+2,x1_unggah,x1_unggah_2,menambah produk atau varian baru secara berkala,2.3733333333333335,2.4571428571428573,0.08380952380952378,False,4.0
+2,x1_unggah,x1_unggah_3,mengunggah ulang produk lama agar tetap terlihat pembeli,2.32,2.4857142857142858,0.16571428571428592,True,1.0
+2,x1_unggah,x1_unggah_4,memantau produk yang sepi dan perlu diunggah ulang,2.4133333333333336,2.5428571428571427,0.12952380952380915,False,3.0
+2,x2_promosi,x2_promosi_1,"memakai voucher, diskon, atau cashback dengan anggaran yang ditetapkan",2.506666666666667,2.6,0.09333333333333327,False,4.0
+2,x2_promosi,x2_promosi_2,mencoba iklan berbayar atau promosi internal marketplace dalam skala kecil,2.24,2.3714285714285714,0.13142857142857123,False,3.0
+2,x2_promosi,x2_promosi_3,memanfaatkan fitur promosi bawaan marketplace,2.36,2.5714285714285716,0.21142857142857174,True,1.0
+2,x2_promosi,x2_promosi_4,mengevaluasi hasil tiap promosi (pesanan sebelum vs selama promo),2.3333333333333335,2.5142857142857142,0.18095238095238075,True,2.0
+2,x3_komunikasi,x3_komunikasi_1,membalas chat pelanggan dengan cepat,3.52,3.742857142857143,0.22285714285714286,True,2.0
+2,x3_komunikasi,x3_komunikasi_2,menjawab pertanyaan pelanggan dengan jelas dan sopan,3.533333333333333,3.7142857142857144,0.1809523809523812,False,3.0
+2,x3_komunikasi,x3_komunikasi_3,membalas semua pesan pelanggan pada hari yang sama,3.533333333333333,3.6857142857142855,0.15238095238095228,False,5.0
+2,x3_komunikasi,x3_komunikasi_4,menanggapi keluhan atau komplain pelanggan segera,3.6,3.8285714285714287,0.22857142857142865,True,1.0
+2,x3_komunikasi,x3_komunikasi_5,menjaga komunikasi sampai pesanan diterima pelanggan,3.6,3.7714285714285714,0.17142857142857126,False,4.0
+2,x4_konsistensi,x4_konsistensi_1,menjaga toko tetap aktif dan terkelola,3.2933333333333334,3.4,0.10666666666666647,False,5.0
+2,x4_konsistensi,x4_konsistensi_2,memperbarui stok produk secara rutin,3.2266666666666666,3.4,0.17333333333333334,True,1.0
+2,x4_konsistensi,x4_konsistensi_3,memperbarui foto dan deskripsi produk,3.2,3.3142857142857145,0.11428571428571432,False,4.0
+2,x4_konsistensi,x4_konsistensi_4,memastikan informasi harga dan stok selalu akurat,3.3866666666666667,3.5142857142857142,0.12761904761904752,False,3.0
+2,x4_konsistensi,x4_konsistensi_5,tetap mengelola toko saat sedang sibuk,3.2266666666666666,3.3714285714285714,0.14476190476190487,True,2.0
+Semua,x1_unggah,x1_unggah_1,menjadwalkan unggah produk rutin setiap minggu,2.3691275167785233,2.5,0.1308724832214767,False,4.0
+Semua,x1_unggah,x1_unggah_2,menambah produk atau varian baru secara berkala,2.335570469798658,2.467741935483871,0.1321714656852131,False,3.0
+Semua,x1_unggah,x1_unggah_3,mengunggah ulang produk lama agar tetap terlihat pembeli,2.335570469798658,2.5161290322580645,0.1805585624594066,True,1.0
+Semua,x1_unggah,x1_unggah_4,memantau produk yang sepi dan perlu diunggah ulang,2.402684563758389,2.564516129032258,0.16183156527386888,True,2.0
+Semua,x2_promosi,x2_promosi_1,"memakai voucher, diskon, atau cashback dengan anggaran yang ditetapkan",2.5033557046979866,2.596774193548387,0.09341848885040038,False,4.0
+Semua,x2_promosi,x2_promosi_2,mencoba iklan berbayar atau promosi internal marketplace dalam skala kecil,2.214765100671141,2.3225806451612905,0.1078155444901494,False,3.0
+Semua,x2_promosi,x2_promosi_3,memanfaatkan fitur promosi bawaan marketplace,2.402684563758389,2.5806451612903225,0.17796059753193338,True,2.0
+Semua,x2_promosi,x2_promosi_4,mengevaluasi hasil tiap promosi (pesanan sebelum vs selama promo),2.38255033557047,2.564516129032258,0.1819657934617882,True,1.0
+Semua,x3_komunikasi,x3_komunikasi_1,membalas chat pelanggan dengan cepat,3.4630872483221475,3.661290322580645,0.19820307425849748,True,1.0
+Semua,x3_komunikasi,x3_komunikasi_2,menjawab pertanyaan pelanggan dengan jelas dan sopan,3.5436241610738257,3.693548387096774,0.1499242260229483,False,5.0
+Semua,x3_komunikasi,x3_komunikasi_3,membalas semua pesan pelanggan pada hari yang sama,3.469798657718121,3.629032258064516,0.15923360034639522,False,4.0
+Semua,x3_komunikasi,x3_komunikasi_4,menanggapi keluhan atau komplain pelanggan segera,3.5503355704697985,3.7419354838709675,0.191599913401169,True,2.0
+Semua,x3_komunikasi,x3_komunikasi_5,menjaga komunikasi sampai pesanan diterima pelanggan,3.530201342281879,3.7096774193548385,0.17947607707295932,False,3.0
+Semua,x4_konsistensi,x4_konsistensi_1,menjaga toko tetap aktif dan terkelola,3.1879194630872485,3.3225806451612905,0.13466118207404199,False,4.0
+Semua,x4_konsistensi,x4_konsistensi_2,memperbarui stok produk secara rutin,3.134228187919463,3.2903225806451615,0.15609439272569858,True,2.0
+Semua,x4_konsistensi,x4_konsistensi_3,memperbarui foto dan deskripsi produk,3.1476510067114094,3.2580645161290325,0.11041350941762307,False,5.0
+Semua,x4_konsistensi,x4_konsistensi_4,memastikan informasi harga dan stok selalu akurat,3.2818791946308723,3.4193548387096775,0.1374756440788052,False,3.0
+Semua,x4_konsistensi,x4_konsistensi_5,tetap mengelola toko saat sedang sibuk,3.1812080536912752,3.3548387096774195,0.17363065598614424,True,1.0

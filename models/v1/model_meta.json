@@ -1,0 +1,113 @@
+{
+  "versi_model": "v1",
+  "dibuat": "2026-10-30T15:54:36",
+  "seed": 42,
+  "versi_pustaka": {
+    "python": "3.11.9",
+    "pandas": "3.0.6",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "pydantic": "2.14.1"
+  },
+  "n_responden": 149,
+  "k_segmen": 2,
+  "fitur_segmen": [
+    "skala_omzet_ord",
+    "lama_usaha_pra_mp",
+    "lama_di_mp",
+    "jumlah_platform"
+  ],
+  "fitur_segmen_log1p": [
+    "lama_usaha_pra_mp",
+    "lama_di_mp"
+  ],
+  "model_terbaik": "random_forest",
+  "fitur_model": [
+    "x1_unggah",
+    "x2_promosi",
+    "x3_komunikasi",
+    "x4_konsistensi",
+    "lama_usaha_pra_mp",
+    "lama_di_mp",
+    "jumlah_platform",
+    "log_omzet_sebelum"
+  ],
+  "target_model": "naik_penjualan",
+  "n_latih_model": 116,
+  "n_naik_latih": 62,
+  "metrik_cv_naik_penjualan": {
+    "dummy_mayoritas": {
+      "f1_macro": {
+        "rata_rata": 0.3482067782067782,
+        "sd": 0.007391802090402
+      },
+      "akurasi_seimbang": {
+        "rata_rata": 0.5,
+        "sd": 0.0
+      },
+      "auc": {
+        "rata_rata": 0.5,
+        "sd": 0.0
+      }
+    },
+    "logistik": {
+      "f1_macro": {
+        "rata_rata": 0.6180155713580874,
+        "sd": 0.1118191445692835
+      },
+      "akurasi_seimbang": {
+        "rata_rata": 0.6220792540792541,
+        "sd": 0.1097450601742889
+      },
+      "auc": {
+        "rata_rata": 0.7165547785547786,
+        "sd": 0.1147316444613158
+      }
+    },
+    "random_forest": {
+      "f1_macro": {
+        "rata_rata": 0.6994799166107017,
+        "sd": 0.0923859761638567
+      },
+      "akurasi_seimbang": {
+        "rata_rata": 0.7063846153846154,
+        "sd": 0.090289155817092
+      },
+      "auc": {
+        "rata_rata": 0.7348904428904429,
+        "sd": 0.0916714695713917
+      }
+    }
+  },
+  "skema_cv": "RepeatedStratifiedKFold 5x5",
+  "whatif_tambah": 1.0,
+  "rentang_latih": {
+    "omzet_bulanan": [
+      0.0,
+      329999999.9999995
+    ],
+    "lama_usaha_pra_mp": [
+      0.0,
+      22.0
+    ],
+    "lama_di_mp": [
+      0.0833333333333333,
+      13.0
+    ],
+    "jumlah_platform": [
+      1.0,
+      4.0
+    ]
+  },
+  "hash_data_sha256": {
+    "data_features.csv": "fb7fde3f26e436f0a9aa86d74637ed9b2a16d6b3bc15223993354adc9d294631",
+    "data_segmen.csv": "fccdf57c6d4cb475d084a92cf58e80c5a575c1dcc35ca6a1cf6722da7c6c66cb"
+  },
+  "keputusan": [
+    "D14",
+    "D26",
+    "D27",
+    "D28"
+  ]
+}

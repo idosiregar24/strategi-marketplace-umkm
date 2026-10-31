@@ -1,0 +1,48 @@
+{
+  "sumber": "reports/tables/pengaruh_gabungan.csv (Tahap 4, D26)",
+  "target": "naik_penjualan",
+  "rumus_bobot": "pengaruh gabungan x p_koef_positif, minimal bobot_minimum",
+  "bobot_minimum": 0.1,
+  "strategi": {
+    "x1_unggah": {
+      "nama": "X1 Unggah produk",
+      "bobot": 0.5898149459638697,
+      "pengaruh": 0.5909969398435568,
+      "p_koef_positif": 0.998,
+      "meyakinkan": true,
+      "or_logit": 2.194323787817356,
+      "p_logit": 0.005136453850698,
+      "peringkat": 2
+    },
+    "x2_promosi": {
+      "nama": "X2 Promosi",
+      "bobot": 0.294731714783844,
+      "pengaruh": 0.3568180566390364,
+      "p_koef_positif": 0.826,
+      "meyakinkan": false,
+      "or_logit": 1.2551459539729344,
+      "p_logit": 0.3438101475072522,
+      "peringkat": 3
+    },
+    "x3_komunikasi": {
+      "nama": "X3 Komunikasi pelanggan",
+      "bobot": 1.0,
+      "pengaruh": 1.0,
+      "p_koef_positif": 1.0,
+      "meyakinkan": true,
+      "or_logit": 2.4929919706849275,
+      "p_logit": 0.0013087036760294,
+      "peringkat": 1
+    },
+    "x4_konsistensi": {
+      "nama": "X4 Konsistensi toko",
+      "bobot": 0.1,
+      "pengaruh": 0.0,
+      "p_koef_positif": 0.369,
+      "meyakinkan": false,
+      "or_logit": 0.9274210185398434,
+      "p_logit": 0.7771289861814785,
+      "peringkat": 4
+    }
+  }
+}

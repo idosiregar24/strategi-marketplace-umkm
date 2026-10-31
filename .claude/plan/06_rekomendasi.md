@@ -7,6 +7,8 @@ Keluaran: reports/tables/rekomendasi_per_segmen.csv, reports/rekomendasi_ringkas
 ## Langkah
 1. Hitung benchmark per segmen: median skor X1-X4 pada UMKM dengan naik_penjualan = 1 di segmen itu.
    Jika kelompok itu di suatu segmen < 5 orang, pakai benchmark seluruh responden dengan naik_penjualan = 1.
+   DIUBAH (D28, 2026-10-30): benchmark = RATA-RATA (bukan median) skor UMKM naik, agar sebanding dengan
+   rata-rata skor segmen; median dihitung sebagai sensitivitas.
 2. Hitung gap dan skor prioritas (rumus di recommendation_logic.md).
 3. Peringkat strategi per segmen -> ambil 3 teratas.
 4. (Opsional) Simulasi what-if: naikkan satu strategi +1 poin pada model terbaik; catat perubahan prediksi.
