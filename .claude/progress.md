@@ -7,8 +7,8 @@
 | 3 | EDA | SELESAI | reports/figures/eda_*, reports/tables/eda_*.csv, reports/eda_log.md, reports/eda_ringkasan.md | 2026-10-30 |
 | 4 | Analisis pengaruh | SELESAI | reports/tables/pengaruh_*.csv, reports/figures/pengaruh_*.png, shap_*.png, reports/pengaruh_log.md, reports/pengaruh_ringkasan.md | 2026-10-30 |
 | 5 | Segmentasi | SELESAI | data/processed/data_segmen.csv, reports/tables/profil_segmen.csv, segmen_*.csv, reports/figures/segmen_*.png, reports/segmentasi_log.md, reports/segmentasi_ringkasan.md | 2026-10-30 |
-| 6 | Rekomendasi | BELUM | reports/tables/rekomendasi_per_segmen.csv, models/v1/, reports/integration_contract.md | |
-| 7 | Pelaporan | BELUM | reports/laporan_final.md | |
+| 6 | Rekomendasi | SELESAI | reports/tables/rekomendasi_per_segmen.csv, rekomendasi_*.csv, reports/figures/rekomendasi_*.png, models/v1/, reports/rekomendasi_log.md, reports/rekomendasi_ringkas.md, reports/integration_contract.md | 2026-10-31 |
+| 7 | Pelaporan | SELESAI | reports/laporan_final.md, notebooks/07_pelaporan.ipynb, tests/test_pelaporan.py | 2026-10-31 |
 
 Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
 
@@ -134,3 +134,35 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
 - Terbuka: D27 (DIUSULKAN). Tahap 5 MENUNGGU PERSETUJUAN.
 - 2026-10-30: D27 DISEPAKATI; Tahap 5 disetujui pengguna: SELESAI. Berikutnya Tahap 6 (rekomendasi) di sesi baru; sepakati
   dulu cara menyajikan rekomendasi bila kedua segmen tidak berbeda pada skor strategi.
+
+### 2026-10-30 - Tahap 6 (Rekomendasi)
+- Keputusan sebelum mulai (pengguna): gap = rata-rata UMKM naik vs rata-rata segmen (rumus plan awal median vs rata-rata
+  hanya memberi 2 prioritas > 0 per segmen); penyajian = urutan umum + penyesuaian tindakan per segmen (D28, DIUSULKAN).
+- Dikerjakan: `schemas.py` (Pydantic ProfilUMKM / HasilRekomendasi), `recommend.py` (benchmark, gap, prioritas, templat teks,
+  simpan/muat artefak, `recommend()`, CLI `python -m umkm.recommend profil.json`), `rekomendasi.py` (latih ulang pipa segmen +
+  cek identik dengan data_segmen, bootstrap gap 1000x, butir fokus, sensitivitas 8 varian, model terbaik + simulasi +1, tabel,
+  artefak, cek kecocokan), `rekomendasi_teks.py` (log, ringkasan, integration_contract.md dari skema); config `recommendation`;
+  pipeline `--stage 6` (sekitar 10 detik); 18 tes baru (total 119 lolos); ruff + black bersih; `notebooks/06_rekomendasi.ipynb`
+  (semua sel diuji); sel Tahap 6 di notebook Colab; `umkm_proyek.zip` dibuat ulang (44 berkas) dan alur Colab disimulasikan
+  dengan UMKM_BASE_DIR (tabel identik dengan lokal); README diperbarui.
+- Hasil: urutan X3 > X1 > X2 di segmen 1, segmen 2, dan seluruh UMKM. Prioritas S1: X3 0,143 / X1 0,103 / X2 0,037; S2: X3 0,191 /
+  X1 0,075 / X2 0,045 (X4 0,013, bobot 0,10). Gap 0,13-0,19 poin; P(gap > 0) 90-99%, tetapi CI bootstrap 7 dari 8 gap segmen
+  mencakup nol (hanya X3 di S2 > 0). Masuk tiga besar: X3 92%/99%, X1 95%/90%, X2 82%/89%.
+- Butir fokus: S1 X3 = jaga komunikasi sampai pesanan diterima + balas cepat; S2 X3 = tanggapi komplain + balas cepat;
+  X1 kedua segmen = unggah ulang produk lama; X2 = fitur promosi bawaan + evaluasi promosi. Selisih antar-butir kecil (0,07-0,23).
+- Sensitivitas: urutan bertahan di 4/8 varian (skor sampel utama, tanpa jawaban seragam, benchmark semua UMKM); bobot sama rata
+  memasukkan X4 dan S1 jadi X1 teratas; median-vs-median S2 dan rumus plan awal hanya 2 prioritas. X3 teratas di 14/16.
+- Simulasi +1 poin (RF, in-sample): X3 +14/+18 pp, X1 +7/+9 pp, X2 +7 pp, X4 sekitar 0. recommend() pada profil wakil segmen
+  cocok dengan tabel (selisih < 0,0001); 3 contoh: A -> S1 X3>X1>X2, B -> S2 X3>X2, C (sketsa kontrak) -> S2 X1>X4>X2.
+- Terbuka: D28 (DIUSULKAN); validasi kewajaran tindakan dengan pembimbing (plan/06 langkah 6); apakah `selisih_prediksi_plus1`
+  per UMKM tetap ditampilkan (nilai individual RF bisa besar, mis. X2 +21,6 pp). Tahap 6 SELESAI.
+
+### 2026-10-31 - Tahap 6 disetujui & Tahap 7 (Pelaporan) selesai
+- D28 DISEPAKATI pengguna; Tahap 6 resmi SELESAI.
+- Tahap 7 (Pelaporan): modul `src/umkm/pelaporan.py` dibuat untuk menyusun `reports/laporan_final.md`
+  yang mengintegrasikan seluruh temuan dari Tahap 1 sampai 6, memvalidasi keterlacakan seluruh angka
+  ke berkas di `reports/tables/`, serta menguji kesiapan kontrak integrasi `recommend()`.
+- Pipeline diperbarui (`pipeline.py --stage 7`); tes unit `tests/test_pelaporan.py` (total 121 tes lolos);
+  notebook `notebooks/07_pelaporan.ipynb` dibuat.
+- Dashboard lokal `src/umkm/dashboard.py` dan `src/umkm/static/dashboard.html` diperbarui menjadi 2 mode tampilan:
+  Tampilan Umum (pemilik UMKM/bisnis) dan Tampilan Developer/Kompleks (data scientist/statistik mendalam).

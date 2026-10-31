@@ -13,3 +13,4 @@ umkm_proyek.zip
 # cache alat
 .pytest_cache/
 .ruff_cache/
+scratch/

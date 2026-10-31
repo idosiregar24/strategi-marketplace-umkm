@@ -45,12 +45,36 @@ def _stage5() -> None:
     )
 
 
+def _stage6() -> None:
+    from umkm import rekomendasi  # butuh pustaka analisis (scipy, matplotlib)
+
+    rep = rekomendasi.run()
+    cocok = bool(rep.tabel["konsistensi"]["cocok"].all())
+    print(
+        f"Tahap 6 selesai: {len(rep.tabel['per_segmen'])} baris rekomendasi, model "
+        f"{rep.info['model_terbaik']}, artefak {len(rep.info['path_artefak'])} berkas, "
+        f"recommend() cocok dengan tabel: {cocok}"
+    )
+
+
+def _stage7() -> None:
+    from umkm import pelaporan
+
+    res = pelaporan.run()
+    print(
+        f"Tahap 7 selesai: laporan_final.md dibuat, {res.angka_tervalidasi} tabel terhubung, "
+        f"inferensi recommend(): {'VALID' if res.inferensi_valid else 'GAGAL'}"
+    )
+
+
 STAGES: dict[int, Callable[[], None]] = {
     1: _stage1,
     2: _stage2,
     3: _stage3,
     4: _stage4,
     5: _stage5,
+    6: _stage6,
+    7: _stage7,
 }
 
 

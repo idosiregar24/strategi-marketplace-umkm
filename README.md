@@ -11,13 +11,13 @@ Hasil bersifat **asosiasi**, bukan sebab-akibat.
 |---|---|---|
 | 1 | Cleaning | Selesai |
 | 2 | Konstruksi variabel | Selesai |
-| 3 | EDA | Menunggu persetujuan |
-| 4 | Analisis pengaruh (regresi, Random Forest, SHAP) | Belum |
-| 5 | Segmentasi | Belum |
-| 6 | Rekomendasi | Belum |
-| 7 | Pelaporan | Belum |
+| 3 | EDA | Selesai |
+| 4 | Analisis pengaruh (regresi, Random Forest, SHAP) | Selesai |
+| 5 | Segmentasi | Selesai |
+| 6 | Rekomendasi | Selesai |
+| 7 | Pelaporan (Laporan Akhir) | Selesai |
 
-Ringkasan hasil sejauh ini: [reports/hasil_utama.md](reports/hasil_utama.md).
+Laporan akhir lengkap: [reports/laporan_final.md](reports/laporan_final.md) | Ringkasan awal: [reports/hasil_utama.md](reports/hasil_utama.md).
 
 ## Struktur
 
@@ -44,10 +44,20 @@ python -m umkm.pipeline --all     # atau --stage N
 pytest
 ```
 
+## Rekomendasi untuk satu UMKM
+
+Tahap 6 menyimpan artefak di `models/v1/`; `recommend()` hanya memuat artefak itu (tanpa data survei).
+
+```
+python -m umkm.recommend profil.json      # atau: cat profil.json | python -m umkm.recommend -
+```
+
+Skema masukan/keluaran dan contoh JSON: [reports/integration_contract.md](reports/integration_contract.md).
+
 ## Dashboard ringkasan (lokal)
 
 ```
-python -m umkm.dashboard              # buka http://localhost:8000
+python -m umkm.dashboard              # buka http://localhost:8000 (mendukung mode Umum & Developer)
 python -m umkm.dashboard --port 8050  # port lain
 ```
 

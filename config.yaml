@@ -63,4 +63,11 @@ segmentation:   # Tahap 5 (D27)
   n_init: 50
   n_init_bootstrap: 10
   batas_deskriptor: 0.25   # |z| rata-rata segmen di atas ini -> deskriptor nama (tinggi/rendah)
+recommendation:   # Tahap 6 (D28)
+  versi_model: v1   # artefak di models/v1/; perubahan model = folder baru (v2)
+  ukuran_gap: rata_rata   # benchmark rata-rata UMKM naik vs rata-rata skor segmen (D28)
+  min_naik_benchmark: 5   # UMKM naik per segmen; kurang dari ini pakai benchmark semua UMKM naik
+  n_prioritas: 3
+  n_butir_fokus: 2   # butir kuesioner dengan gap terbesar yang dijadikan tindakan
+  whatif_tambah: 1.0   # simulasi skor strategi +1 poin (maks 5) pada model terbaik
 bootstrap_n: 1000
