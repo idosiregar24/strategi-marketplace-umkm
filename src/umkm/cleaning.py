@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 
 # ---------------------------------------------------------------------------
-# Nama kolom (urutan sesuai .claude/guides/data_dictionary.md)
+# Nama kolom (urutan sesuai kolom kuesioner)
 # ---------------------------------------------------------------------------
 X1_COLS = [f"x1_unggah_{i}" for i in range(1, 5)]
 X2_COLS = [f"x2_promosi_{i}" for i in range(1, 5)]
@@ -616,7 +616,7 @@ def build_log(rep: CleaningReport, df: pd.DataFrame, cfg: dict[str, Any]) -> str
     )
     s.append(
         f"- Isian tahun kalender (>= 1900) diubah ke {c['tahun_referensi']} - tahun "
-        "(D10, DISEPAKATI), ditandai `flag_lama_tahun_kalender`:\n"
+        "dan ditandai `flag_lama_tahun_kalender`:\n"
     )
     s.append(_md_table(rep.lama_kalender))
     for col in LAMA_COLS:
@@ -683,7 +683,7 @@ def build_log(rep: CleaningReport, df: pd.DataFrame, cfg: dict[str, Any]) -> str
     )
     s.append(
         f"Persentil atas {c['winsor_upper']:.0%}; {bawah}. Batas dihitung dari gabungan "
-        "nilai sebelum + sesudah per variabel (D15, DIUSULKAN) agar responden yang nilainya tidak "
+        "nilai sebelum + sesudah per variabel agar responden yang nilainya tidak "
         "berubah tetap tidak berubah. Kolom asli disimpan; kolom terwinsor berakhiran `_w`.\n"
     )
     s.append("| Variabel | Batas bawah | Batas atas |\n|---|---|---|")

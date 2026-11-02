@@ -1,13 +1,13 @@
 # Log Tahap 6: Rekomendasi Strategi
 
-Dibuat oleh `umkm.rekomendasi` pada 2026-10-30 15:54. 149 UMKM (116 sampel utama, 62 naik), seed 42.
+Dibuat oleh `umkm.rekomendasi` pada 2026-11-02 18:31. 149 UMKM (116 sampel utama, 62 naik), seed 42.
 
 ## Pengaturan (D28)
 
 - Benchmark_s(segmen) = rata-rata skor strategi s pada UMKM `naik_penjualan` = 1 di sampel utama segmen itu (D14); bila kurang dari 5 UMKM, benchmark seluruh UMKM yang naik.
 - Skor_s(segmen) = rata-rata skor seluruh anggota segmen (149 UMKM, termasuk tanpa baseline; D27). gap = max(0, benchmark - skor); prioritas = bobot x gap; ambil 3 teratas dengan prioritas > 0.
-- Rata-rata vs rata-rata (pilihan pengguna, 2026-10-30): rumus plan awal (median UMKM naik vs rata-rata segmen) mencampur dua ukuran dan, karena skor Likert menumpuk di angka bulat, hanya memberi 2 strategi berprioritas > 0 per segmen. Dihitung sebagai sensitivitas.
-- Bobot dari Tahap 4 (D26), sama untuk semua segmen. Penyajian: satu urutan umum + penyesuaian tindakan per segmen (pilihan pengguna, 2026-10-30).
+- Rata-rata vs rata-rata: rumus alternatif (median UMKM naik vs rata-rata segmen) mencampur dua ukuran dan, karena skor Likert menumpuk di angka bulat, hanya memberi 2 strategi berprioritas > 0 per segmen. Dihitung sebagai sensitivitas.
+- Bobot dari Tahap 4 (D26), sama untuk semua segmen. Penyajian: satu urutan umum + penyesuaian tindakan per segmen.
 - Butir fokus: 2 butir kuesioner dengan gap terbesar per strategi; penyesuaian tindakan dipilih dari kondisi usaha segmen (pusat skala omzet di bawah rata-rata = 'kecil', selain itu 'besar').
 - Bootstrap 1000x (baris di dalam tiap kelompok, bobot tetap). Simulasi: skor satu strategi +1 poin (maks 5) pada model terbaik Tahap 4 (random_forest, AUC CV tertinggi) yang dilatih pada sampel utama; logistik sebagai pembanding.
 
@@ -103,9 +103,9 @@ Tabel semua butir: `tables/rekomendasi_butir.csv`.
 | median UMKM naik vs median segmen | 1 | 74 | 27 | X3 > X1 > X2 | 3 | ya | 1.000 | 0.147 | 0.074 | 0.400 | 0.000 |
 | median UMKM naik vs median segmen | 2 | 75 | 35 | X3 > X2 | 2 | TIDAK | 0.632 | 0.000 | 0.147 | 0.400 | 0.000 |
 | median UMKM naik vs median segmen | Semua | 149 | 62 | X3 > X1 > X2 | 3 | ya | 1.000 | 0.147 | 0.074 | 0.500 | 0.000 |
-| median UMKM naik vs rata-rata segmen (rumus plan awal) | 1 | 74 | 27 | X3 > X2 | 2 | TIDAK | 0.632 | 0.000 | 0.106 | 0.135 | 0.000 |
-| median UMKM naik vs rata-rata segmen (rumus plan awal) | 2 | 75 | 35 | X3 > X2 | 2 | TIDAK | 0.632 | 0.000 | 0.115 | 0.243 | 0.000 |
-| median UMKM naik vs rata-rata segmen (rumus plan awal) | Semua | 149 | 62 | X3 > X2 | 2 | TIDAK | 0.632 | 0.000 | 0.110 | 0.189 | 0.000 |
+| median UMKM naik vs rata-rata segmen (rumus alternatif) | 1 | 74 | 27 | X3 > X2 | 2 | TIDAK | 0.632 | 0.000 | 0.106 | 0.135 | 0.000 |
+| median UMKM naik vs rata-rata segmen (rumus alternatif) | 2 | 75 | 35 | X3 > X2 | 2 | TIDAK | 0.632 | 0.000 | 0.115 | 0.243 | 0.000 |
+| median UMKM naik vs rata-rata segmen (rumus alternatif) | Semua | 149 | 62 | X3 > X2 | 2 | TIDAK | 0.632 | 0.000 | 0.110 | 0.189 | 0.000 |
 | benchmark dari semua UMKM naik (tanpa segmen) | 1 | 74 | 27 | X3 > X1 > X2 | 3 | ya | 1.000 | 0.105 | 0.037 | 0.222 | 0.022 |
 | benchmark dari semua UMKM naik (tanpa segmen) | 2 | 75 | 35 | X3 > X1 > X2 | 3 | ya | 1.000 | 0.074 | 0.046 | 0.130 | 0.006 |
 | benchmark dari semua UMKM naik (tanpa segmen) | Semua | 149 | 62 | X3 > X1 > X2 | 3 | ya | 1.000 | 0.089 | 0.041 | 0.176 | 0.014 |
@@ -189,7 +189,7 @@ Masukan dan keluaran lengkap: `integration_contract.md`.
 ## Keterbatasan
 
 - Gap kecil (0,13-0,19 poin pada skala 1-5) dan interval bootstrap 7 dari 8 gap segmen mencakup nol. Arahnya konsisten (peluang gap > 0: 90%-99%), tetapi beda skor UMKM yang naik dan rata-rata segmen tidak besar.
-- Karena gap keempat strategi hampir sama, urutan prioritas terutama ditentukan oleh bobot Tahap 4. Urutan utama bertahan di 4 dari 8 varian sensitivitas; berubah pada bobot sama rata (1 untuk semua strategi), bobot dari koefisien logit saja, median UMKM naik vs median segmen dan median UMKM naik vs rata-rata segmen (rumus plan awal). X3 tetap teratas di 14 dari 16 kombinasi varian x segmen.
+- Karena gap keempat strategi hampir sama, urutan prioritas terutama ditentukan oleh bobot Tahap 4. Urutan utama bertahan di 4 dari 8 varian sensitivitas; berubah pada bobot sama rata (1 untuk semua strategi), bobot dari koefisien logit saja, median UMKM naik vs median segmen dan median UMKM naik vs rata-rata segmen (rumus alternatif). X3 tetap teratas di 14 dari 16 kombinasi varian x segmen.
 - Benchmark = UMKM yang melaporkan kenaikan penjualan. Di sampel utama pembandingnya adalah UMKM yang menulis angka omzet dan transaksi sama persis (D26), bukan UMKM yang turun.
 - Kedua segmen tidak berbeda bermakna pada skor strategi maupun kinerja (Tahap 5), sehingga perbedaan rekomendasi antar-segmen hanya pada penyesuaian tindakan. Teks penyesuaian adalah templat yang disusun dari kondisi usaha segmen, bukan hasil uji data.
 - Butir fokus dipilih dari selisih butir yang kecil dan mirip (0,07-0,23 poin); urutan butir hanya panduan, bukan temuan yang kuat.

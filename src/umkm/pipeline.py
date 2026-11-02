@@ -33,6 +33,17 @@ def _stage4() -> None:
         f"Tahap 4 selesai: {len(rep.tabel)} tabel pengaruh_*.csv, {len(rep.grafik)} grafik, "
         f"bootstrap {rep.info['n_boot']}x"
     )
+    _stage4_sem()
+
+
+def _stage4_sem() -> None:
+    from umkm import sem  # analisis pembanding PLS-SEM, memakai tabel pengaruh_*.csv
+
+    rep = sem.run()
+    print(
+        f"Tahap 4 (pembanding PLS-SEM): {len(rep.tabel)} tabel sem_*.csv, {len(rep.grafik)} grafik, "
+        f"bootstrap {rep.info['n_boot']}x"
+    )
 
 
 def _stage5() -> None:

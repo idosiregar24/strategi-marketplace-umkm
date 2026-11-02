@@ -1,6 +1,6 @@
 # Kontrak Integrasi: `recommend(profil) -> dict`
 
-Dibuat ulang oleh Tahap 6 (`python -m umkm.pipeline --stage 6`) pada 2026-10-30T15:54:36. Versi artefak: **v1**. Aplikasi/API belum dibangun (D09); dokumen ini menjelaskan cara sistem lain memanggil kode yang sudah ada.
+Dibuat ulang oleh Tahap 6 (`python -m umkm.pipeline --stage 6`) pada 2026-11-02T18:30:59. Versi artefak: **v1**. Aplikasi/API belum dibangun (D09); dokumen ini menjelaskan cara sistem lain memanggil kode yang sudah ada.
 
 ## Ringkas
 

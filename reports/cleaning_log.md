@@ -1,6 +1,6 @@
 # Log Cleaning (Tahap 1)
 
-Dibuat oleh `umkm.cleaning` pada 2026-10-30 09:52.
+Dibuat oleh `umkm.cleaning` pada 2026-11-02 18:30.
 
 ## Ringkasan
 
@@ -47,7 +47,7 @@ Variasi format seperti "1.Tidak Pernah" (tanpa spasi) ditangani regex dan tidak 
 ## 2. Lama usaha
 
 - Isian "N bulan" diubah ke N/12 tahun: `lama_usaha_pra_mp` = 4, `lama_di_mp` = 4.
-- Isian tahun kalender (>= 1900) diubah ke 2026 - tahun (D10, DISEPAKATI), ditandai `flag_lama_tahun_kalender`:
+- Isian tahun kalender (>= 1900) diubah ke 2026 - tahun dan ditandai `flag_lama_tahun_kalender`:
 
 | id_responden | kolom | nilai_asli | hasil_tahun |
 |---|---|---|---|
@@ -81,7 +81,7 @@ Transaksi di atas hanya ditandai, tidak diubah.
 
 ## 5. Winsorizing (D03, D16)
 
-Persentil atas 99%; ekor bawah tidak dibatasi (D16). Batas dihitung dari gabungan nilai sebelum + sesudah per variabel (D15, DIUSULKAN) agar responden yang nilainya tidak berubah tetap tidak berubah. Kolom asli disimpan; kolom terwinsor berakhiran `_w`.
+Persentil atas 99%; ekor bawah tidak dibatasi (D16). Batas dihitung dari gabungan nilai sebelum + sesudah per variabel agar responden yang nilainya tidak berubah tetap tidak berubah. Kolom asli disimpan; kolom terwinsor berakhiran `_w`.
 
 | Variabel | Batas bawah | Batas atas |
 |---|---|---|

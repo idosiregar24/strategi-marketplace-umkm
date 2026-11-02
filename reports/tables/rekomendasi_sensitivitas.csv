@@ -17,9 +17,9 @@ tanpa_seragam,tanpa jawaban seragam (D20),Semua,139,54,X3 > X1 > X2,3,True,1.0,0
 median_vs_median,median UMKM naik vs median segmen,1,74,27,X3 > X1 > X2,3,True,1.0,0.14745373649096744,0.073682928695961,0.3999999999999999,0.0
 median_vs_median,median UMKM naik vs median segmen,2,75,35,X3 > X2,2,False,0.632455532033676,0.0,0.147365857391922,0.3999999999999999,0.0
 median_vs_median,median UMKM naik vs median segmen,Semua,149,62,X3 > X1 > X2,3,True,1.0,0.14745373649096744,0.073682928695961,0.5,0.0
-median_vs_rata,median UMKM naik vs rata-rata segmen (rumus plan awal),1,74,27,X3 > X2,2,False,0.632455532033676,0.0,0.10554581678070084,0.13513513513513553,0.0
-median_vs_rata,median UMKM naik vs rata-rata segmen (rumus plan awal),2,75,35,X3 > X2,2,False,0.632455532033676,0.0,0.1149453687656992,0.24266666666666614,0.0
-median_vs_rata,median UMKM naik vs rata-rata segmen (rumus plan awal),Semua,149,62,X3 > X2,2,False,0.632455532033676,0.0,0.11027713489395509,0.18859060402684635,0.0
+median_vs_rata,median UMKM naik vs rata-rata segmen (rumus alternatif),1,74,27,X3 > X2,2,False,0.632455532033676,0.0,0.10554581678070084,0.13513513513513553,0.0
+median_vs_rata,median UMKM naik vs rata-rata segmen (rumus alternatif),2,75,35,X3 > X2,2,False,0.632455532033676,0.0,0.1149453687656992,0.24266666666666614,0.0
+median_vs_rata,median UMKM naik vs rata-rata segmen (rumus alternatif),Semua,149,62,X3 > X2,2,False,0.632455532033676,0.0,0.11027713489395509,0.18859060402684635,0.0
 benchmark_semua,benchmark dari semua UMKM naik (tanpa segmen),1,74,27,X3 > X1 > X2,3,True,1.0,0.10477314319105353,0.03661662541996312,0.2222319093286842,0.022362685265911078
 benchmark_semua,benchmark dari semua UMKM naik (tanpa segmen),2,75,35,X3 > X1 > X2,3,True,1.0,0.07398055209321014,0.046016177404961486,0.12976344086021507,0.006236559139784959
 benchmark_semua,benchmark dari semua UMKM naik (tanpa segmen),Semua,149,62,X3 > X1 > X2,3,True,1.0,0.08927351679952175,0.04134794353321737,0.17568737822039493,0.014245507685646253

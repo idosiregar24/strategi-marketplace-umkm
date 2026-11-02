@@ -179,5 +179,4 @@ Yang dikerjakan:
 | `src/umkm/` | Seluruh kode analisis |
 | `notebooks/` | `03_eda.ipynb` (lokal), `00_setup_colab.ipynb` (Google Colab) |
 | `tests/` | 58 tes otomatis (semua lolos) |
-| `.claude/` | Rencana tiap tahap, log keputusan (`decisions.md`), progres (`progress.md`) |
 | `umkm_proyek.zip` | Paket untuk Google Colab (berisi data mentah, jangan dibagikan publik) |

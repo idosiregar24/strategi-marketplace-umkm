@@ -12,7 +12,7 @@ Hasil bersifat **asosiasi**, bukan sebab-akibat.
 | 1 | Cleaning | Selesai |
 | 2 | Konstruksi variabel | Selesai |
 | 3 | EDA | Selesai |
-| 4 | Analisis pengaruh (regresi, Random Forest, SHAP) | Selesai |
+| 4 | Analisis pengaruh (regresi, Random Forest, SHAP; pembanding PLS-SEM) | Selesai |
 | 5 | Segmentasi | Selesai |
 | 6 | Rekomendasi | Selesai |
 | 7 | Pelaporan (Laporan Akhir) | Selesai |
@@ -57,10 +57,24 @@ Skema masukan/keluaran dan contoh JSON: [reports/integration_contract.md](report
 ## Dashboard ringkasan (lokal)
 
 ```
-python -m umkm.dashboard              # buka http://localhost:8000 (mendukung mode Umum & Developer)
+python -m umkm.dashboard              # buka http://localhost:8000
 python -m umkm.dashboard --port 8050  # port lain
 ```
 
-Halaman menampilkan alur tahap, angka kunci, grafik hasil, keputusan terbuka, dan galeri grafik. Angka dibaca
-langsung dari `reports/` dan `.claude/progress.md` setiap kali halaman dimuat. Server hanya bisa diakses dari
+Cukup perintah ini saja: bila hasil analisis belum ada (mis. setelah clone baru), pipeline Tahap 1-7 dijalankan
+otomatis lebih dulu (perlu file kuesioner di `data/raw/`; matikan dengan `--no-pipeline`). Data disiapkan sebelum
+browser dibuka, jadi halaman langsung terisi.
+
+Halaman menampilkan alur tahap, angka kunci, grafik hasil, perbandingan dengan PLS-SEM, rekomendasi per segmen,
+dan galeri grafik. Angka dibaca langsung dari `reports/` setiap kali halaman dimuat. Server hanya bisa diakses dari
 komputer sendiri (127.0.0.1). Hentikan dengan Ctrl+C.
+
+### Versi publik (situs statis)
+
+```
+python -m umkm.dashboard --export site
+```
+
+Folder `site/` berisi `index.html`, `data.json` (hanya angka ringkasan, tanpa data per responden) dan
+`figures/`. Folder ini bisa disajikan oleh web server apa pun (nginx, Caddy, GitHub Pages, Cloudflare Pages)
+tanpa Python. Jalankan ulang perintah di atas setiap kali pipeline diperbarui, lalu unggah ulang `site/`.

@@ -158,7 +158,7 @@ def moderasi(
 def daftar_varian(
     utama: pd.DataFrame, semua: pd.DataFrame, kontrol: list[str], tanpa_id: list[str]
 ) -> list[dict[str, Any]]:
-    """Varian sensitivitas (plan/04 langkah 7): data, kontrol, dan target per varian."""
+    """Varian sensitivitas: data, kontrol, dan target per varian."""
     tanpa_log = [k for k in kontrol if k != "log_omzet_sebelum"]
     base = ["naik_penjualan", "y_obj"]
     return [

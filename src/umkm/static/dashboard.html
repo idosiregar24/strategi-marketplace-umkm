@@ -273,6 +273,7 @@ footer { font-size: 0.76rem; color: var(--muted); }
     <a href="#overview" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Overview</a>
     <a href="#kondisi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Kondisi penjualan</a>
     <a href="#random-forest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M12 7.5v4M12 11.5l-5 4.5M12 11.5l5 4.5"/></svg>Random Forest</a>
+    <a href="#pls-sem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2.5" y="4" width="6" height="5" rx="1.2"/><rect x="2.5" y="15" width="6" height="5" rx="1.2"/><circle cx="18" cy="12" r="3.5"/><path d="M8.5 6.5l6.5 4M8.5 17.5l6.5-4"/></svg>PLS-SEM</a>
     <a href="#rekomendasi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Rekomendasi</a>
     <a href="#aktivitas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>Rangkuman aktivitas<span class="count" id="nav-tahap">-</span></a>
     <a href="#teknis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Detail teknis</a>
@@ -285,7 +286,7 @@ footer { font-size: 0.76rem; color: var(--muted); }
   <header class="topbar">
     <div class="hello">
       <span class="avatar">UP</span>
-      <div><h1>Strategi marketplace UMKM Pekanbaru</h1><p>Data diolah <span id="m-data">-</span> · dimuat <span id="m-muat">-</span></p></div>
+      <div><h1>Strategi marketplace UMKM Pekanbaru</h1><p>Data diolah <span id="m-data">memuat data…</span> · dimuat <span id="m-muat">-</span></p></div>
     </div>
     <div class="tools">
       <button class="btn" id="reload" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>Muat ulang</button>
@@ -345,6 +346,20 @@ footer { font-size: 0.76rem; color: var(--muted); }
       <div style="display:grid; gap:4px;"><span class="eyebrow">Kesimpulan setelah memakai Random Forest</span><h3 id="rf-title">-</h3></div>
       <div class="findings" id="rf-findings"></div>
       <div class="limits" id="rf-limits"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="pls-sem">
+    <div class="sec-head"><div><h2>Pembanding: PLS-SEM</h2><p>Hubungan strategi dengan kinerja diestimasi ulang dengan model persamaan struktural berbasis varians. Skor strategi dibentuk dari butir kuesioner sebagai konstruk laten, profil usaha dikendalikan, dan kepastian hasil diuji dengan bootstrap.</p></div></div>
+    <div class="g4" id="sem-stats"></div>
+    <div class="card">
+      <div class="card-head"><h3>Koefisien jalur strategi pada tiga ukuran kinerja</h3><span class="badge up" id="sem-badge"></span></div>
+      <div class="scroll"><table><thead><tr><th>Strategi</th><th>Melaporkan kenaikan</th><th>Besar kenaikan (y_obj)</th><th>Persepsi kinerja (Y1–Y8)</th></tr></thead><tbody id="sem-tab"></tbody></table></div>
+      <p class="note" id="sem-note"></p>
+    </div>
+    <div class="card conclusion">
+      <div style="display:grid; gap:4px;"><span class="eyebrow">Kesimpulan perbandingan metode</span><h3 id="sem-title">-</h3></div>
+      <div class="findings" id="sem-findings"></div>
     </div>
   </section>
 
@@ -426,16 +441,15 @@ footer { font-size: 0.76rem; color: var(--muted); }
 
   <!-- DETAIL TEKNIS -->
   <section class="sec" id="teknis">
-    <div class="sec-head"><div><h2>Detail teknis</h2><p>Untuk pembimbing dan peninjau: angka lengkap model, bobot rekomendasi, keputusan terbuka, dan semua grafik laporan.</p></div></div>
+    <div class="sec-head"><div><h2>Detail teknis</h2><p>Untuk pembimbing dan peninjau: angka lengkap model, bobot rekomendasi, dan semua grafik laporan.</p></div></div>
     <details class="card">
       <summary>Evaluasi model dan bobot pengaruh</summary>
       <div style="display:grid; gap:18px;">
         <div><h4>Validasi silang 5×5, target naik_penjualan</h4>
           <div class="scroll"><table><thead><tr><th>Model</th><th>ROC-AUC</th><th>F1-macro</th><th>Akurasi seimbang</th></tr></thead><tbody id="t-model"></tbody></table></div></div>
-        <div><h4>Skor pengaruh gabungan dan bobot rekomendasi (D26)</h4>
+        <div><h4>Skor pengaruh gabungan dan bobot rekomendasi</h4>
           <div class="scroll"><table><thead><tr><th>#</th><th>Strategi</th><th>OR logit</th><th>p</th><th>Permutation</th><th>Mean |SHAP|</th><th>Pengaruh</th><th>P(peringkat 1)</th><th>Bobot</th><th>Status</th></tr></thead><tbody id="t-gab"></tbody></table></div>
           <p class="note" style="margin-top:6px;">"Meyakinkan" = batas bawah CI 95% bootstrap koefisien logit &gt; 0.</p></div>
-        <div id="open-dec"></div>
       </div>
     </details>
     <details class="card">
@@ -444,7 +458,7 @@ footer { font-size: 0.76rem; color: var(--muted); }
     </details>
   </section>
 
-  <footer>Dijalankan lokal dengan <span class="mono">python -m umkm.dashboard</span> · analisis ulang: <span class="mono">python -m umkm.pipeline --all</span> · hasil bersifat asosiasi, bukan kausalitas.</footer>
+  <footer id="foot">Dijalankan lokal dengan <span class="mono">python -m umkm.dashboard</span> · analisis ulang: <span class="mono">python -m umkm.pipeline --all</span> · hasil bersifat asosiasi, bukan kausalitas.</footer>
 </div>
 </div>
 
@@ -880,7 +894,7 @@ function renderAktivitas(d) {
   $("side-proj").textContent = `${a.n_semua ?? "-"} UMKM · ${tahap.length} tahap analisis`;
   $("akt-stats").innerHTML = [
     [`${selesai}/${tahap.length}`, "Tahap selesai"], [akt.n_tabel ?? "-", "Tabel hasil (CSV)"], [akt.n_figur ?? "-", "Grafik laporan"],
-    [akt.n_keputusan != null ? `${akt.n_keputusan_sepakat}/${akt.n_keputusan}` : "-", "Keputusan analitis disepakati"],
+    [h.sem ? `${h.sem.model.length} model` : "-", "PLS-SEM pembanding"],
   ].map(([v, k]) => `<div class="card stat"><span class="v">${esc(v)}</span><span class="k">${esc(k)}</span></div>`).join("");
   $("akt-badge").textContent = selesai === tahap.length ? "Semua tahap selesai" : `${selesai} dari ${tahap.length} selesai`;
 
@@ -888,7 +902,7 @@ function renderAktivitas(d) {
     1: ["Merapikan data kuesioner", `${a.n_semua ?? "-"} respons dirapikan dan dianonimkan; Likert diubah ke angka 1-5; nilai ekstrem omzet/transaksi dibatasi P99; galat isian dikoreksi lewat konfirmasi ulang ke responden.`],
     2: ["Menyusun skor strategi dan target", `${akt.n_butir_strategi ?? "-"} butir Likert menjadi 4 skor strategi (reliabilitas alpha ${num(h.alpha?.min)}–${num(h.alpha?.max)}); ${a.n_utama ?? "-"} UMKM sampel utama, ${a.n_tanpa_baseline ?? "-"} tanpa data sebelum marketplace.`],
     3: ["Eksplorasi data (EDA)", `${om && a.n_utama ? `${pct(om.naik / a.n_utama)} omzet naik, median +${rupiah(om.median_selisih)}/bulan (Wilcoxon p < 0,001). ` : ""}${h.butir_netral ? `${h.butir_netral.n} dari ${h.butir_netral.total} butir didominasi jawaban netral; ` : ""}VIF maksimum ${num(h.vif_maks)}.`],
-    4: ["Analisis pengaruh: regresi + Random Forest", `${rf ? `Random Forest AUC ${num(rf.auc)}, logistik ${num(lg?.auc)}. ` : ""}${top ? `${top.nama} teratas (OR ${num(top.or_logit)}); bobot ${gab.map((g) => `${kode(g.nama)} ${num(g.bobot)}`).join(", ")}.` : ""}`],
+    4: ["Analisis pengaruh: regresi, Random Forest, PLS-SEM", `${rf ? `Random Forest AUC ${num(rf.auc)}, logistik ${num(lg?.auc)}. ` : ""}${top ? `${top.nama} teratas (OR ${num(top.or_logit)}); bobot ${gab.map((g) => `${kode(g.nama)} ${num(g.bobot)}`).join(", ")}.` : ""}${h.sem ? ` PLS-SEM: urutan ${h.sem.peringkat_sama ? "sama" : "berbeda"}.` : ""}`],
     5: ["Segmentasi UMKM (K-Means)", `${sg.k ?? "-"} segmen (${sg.ukuran ?? "-"} UMKM) dari profil usaha; stabil saat diulang (ARI median ${num(sg.ari_median)}, Jaccard ≥ ${num(sg.jaccard_min)}).`],
     6: ["Menyusun rekomendasi per segmen", `Prioritas = bobot × gap. Urutan: ${urut || "-"}.${wtop ? ` Simulasi: ${pendek(wtop.strategi)} +1 poin → ${sgn(wtop.selisih_pp)} pp.` : ""}${m ? ` Model disimpan sebagai ${m.versi}.` : ""}`],
     7: ["Pelaporan dan validasi", `Laporan final, ${akt.n_tabel ?? "-"} tabel, ${akt.n_figur ?? "-"} grafik; angka laporan ditelusuri ke tabel; kontrak integrasi recommend() diuji.`],
@@ -926,6 +940,43 @@ function renderAktivitas(d) {
   }
 }
 
+/* ---------------- PLS-SEM ---------------- */
+function renderSEM(h) {
+  const s = h.sem;
+  $("pls-sem").hidden = !s;
+  if (!s) return;
+  const M = Object.fromEntries(s.model.map((m) => [m.model, m])), P = s.pengukuran;
+  const jal = (model) => s.jalur.filter((j) => j.model === model).sort((p, q) => q.koef - p.koef);
+  const sig = (j) => j.ci_bawah > 0 || j.ci_atas < 0;
+  const naik = jal("naik_penjualan"), pers = jal("persepsi");
+  const rf = (h.model_performa || []).find((x) => x.model === "Random Forest");
+  const urut = naik.map((j) => kode(j.strategi)).join(" > ");
+  const LABEL = { naik_penjualan: "kenaikan", y_obj: "y_obj", persepsi: "persepsi" };
+  $("sem-stats").innerHTML = [
+    [`${num(P.alpha[0])}–${num(P.alpha[1])}`, "Cronbach alpha (≥ 0,70)"], [`${num(P.ave[0])}–${num(P.ave[1])}`, "AVE (≥ 0,50)"],
+    [num(P.htmt_maks), "HTMT tertinggi (< 0,85)"], [num(M.naik_penjualan?.auc), "AUC PLS, validasi silang"],
+  ].map(([v, k]) => `<div class="card stat"><span class="v">${esc(v)}</span><span class="k">${esc(k)}</span></div>`).join("");
+  const sel = (model, nama) => {
+    const j = s.jalur.find((x) => x.model === model && x.strategi === nama);
+    return j ? `<b>${num(j.koef)}</b>${sig(j) ? ' <span class="badge up">bermakna</span>' : ""}<br><small>f² ${num(j.f2)}</small>` : "-";
+  };
+  $("sem-tab").innerHTML = naik.map((j) => `<tr><td>${esc(j.strategi)}</td><td>${sel("naik_penjualan", j.strategi)}</td><td>${sel("y_obj", j.strategi)}</td><td>${sel("persepsi", j.strategi)}</td></tr>`).join("");
+  $("sem-badge").textContent = s.peringkat_sama ? "Urutan sama dengan Random Forest" : "Urutan berbeda dari Random Forest";
+  $("sem-badge").className = `badge ${s.peringkat_sama ? "up" : "warn"}`;
+  $("sem-note").textContent = `Koefisien jalur terstandar; "bermakna" = interval bootstrap 95% (${s.n_boot}×) tidak mencakup nol. R² ${s.model.map((m) => `${LABEL[m.model]} ${num(m.r2)}`).join(", ")}. Profil usaha dikendalikan di semua model.`;
+  $("sem-title").textContent = `Urutan ${urut} ${s.peringkat_sama ? "tetap sama" : "berubah"} saat diuji dengan PLS-SEM`;
+  const bm = naik.filter(sig).map((j) => kode(j.strategi));
+  const yobjSig = jal("y_obj").some(sig);
+  const f = [
+    ["Instrumen kuesioner layak", `Reliabilitas tinggi (alpha ${num(P.alpha[0])}–${num(P.alpha[1])}, composite reliability ${num(P.rho_c[0])}–${num(P.rho_c[1])}), validitas konvergen terpenuhi (AVE ${num(P.ave[0])}–${num(P.ave[1])}), dan keempat strategi terukur sebagai konsep berbeda (HTMT ≤ ${num(P.htmt_ci_maks)} termasuk batas atas bootstrap).`],
+    [s.peringkat_sama ? "Hasil Random Forest terkonfirmasi" : "Sebagian berbeda dari Random Forest", `Jalur terkuat ke pelaporan kenaikan adalah <b>${esc(naik[0].strategi)}</b> (β ${num(naik[0].koef)}); yang bermakna: ${esc(bm.join(", ") || "tidak ada")}. AUC PLS ${num(M.naik_penjualan?.auc)} vs Random Forest ${num(rf?.auc)}. Untuk besar kenaikan (y_obj) ${yobjSig ? "sebagian jalur juga bermakna" : "arahnya serupa tetapi tidak bermakna"} (Q² prediksi ${num(M.y_obj?.q2)}).`],
+    pers[0].strategi === naik[0].strategi
+      ? ["Persepsi searah dengan angka", `Penilaian diri pelaku usaha juga paling dekat dengan ${esc(pers[0].strategi)}.`]
+      : ["Persepsi pelaku usaha berbeda", `Penilaian diri pelaku usaha paling dekat dengan <b>${esc(pers[0].strategi)}</b> dan ${esc(pers[1].strategi)}, bukan ${esc(naik[0].strategi)}. Karena itu kinerja diukur dari angka omzet dan transaksi, bukan dari persepsi.`],
+  ];
+  $("sem-findings").innerHTML = f.map(([t, p], i) => `<div class="finding"><span class="n">TEMUAN ${i + 1}</span><h4>${esc(t)}</h4><p>${p}</p></div>`).join("");
+}
+
 /* ---------------- Detail teknis ---------------- */
 const JUDUL_FIGUR = {
   "rekomendasi_prioritas.png": "Skor prioritas per segmen", "rekomendasi_gap.png": "Gap skor terhadap UMKM yang naik",
@@ -935,7 +986,7 @@ const JUDUL_FIGUR = {
   "eda_spearman_heatmap.png": "Korelasi Spearman", "eda_boxplot_naik_penjualan.png": "Skor strategi: naik vs tidak", "eda_arah_perubahan.png": "Arah perubahan",
   "eda_sebelum_sesudah.png": "Sebelum vs sesudah", "eda_distribusi_konstruk.png": "Sebaran skor strategi", "eda_butir_likert.png": "Sebaran jawaban per butir",
   "eda_boxplot_tanpa_baseline.png": "Tanpa baseline vs punya baseline", "eda_profil_platform.png": "Platform", "eda_profil_lama_usaha.png": "Lama usaha",
-  "eda_profil_skala_omzet.png": "Skala omzet",
+  "eda_profil_skala_omzet.png": "Skala omzet", "sem_jalur.png": "PLS-SEM: koefisien jalur", "sem_loading.png": "PLS-SEM: loading indikator",
 };
 function renderTeknis(d) {
   const h = d.hasil || {};
@@ -944,10 +995,6 @@ function renderTeknis(d) {
     <td>${p.peringkat}</td><td>${esc(p.nama)}</td><td>${num(p.or_logit)}</td><td>${num(p.p_logit, 3)}</td><td>${num(p.perm_importance, 3)}</td>
     <td>${num(p.shap, 3)}</td><td>${num(p.pengaruh)}</td><td>${pct(p.p_p1, 1)}</td><td><b>${num(p.bobot)}</b></td>
     <td><span class="badge ${p.meyakinkan ? "up" : "warn"}">${p.meyakinkan ? "meyakinkan" : "belum meyakinkan"}</span></td></tr>`).join("");
-  const kt = d.keputusan_terbuka || [];
-  $("open-dec").innerHTML = kt.length
-    ? `<h4>Keputusan terbuka</h4><div class="scroll"><table><thead><tr><th>ID</th><th>Topik</th><th>Isi</th><th>Status</th></tr></thead><tbody>${kt.map((k) => `<tr><td>${esc(k.id)}</td><td>${esc(k.topik)}</td><td>${esc(k.isi)}</td><td>${esc(k.status)}</td></tr>`).join("")}</tbody></table></div>`
-    : '<p class="note">Tidak ada keputusan terbuka di decisions.md.</p>';
   const v = Date.now();
   $("gallery").innerHTML = (d.figur || []).map((f) => {
     const src = `figures/${encodeURIComponent(f)}`;
@@ -1022,12 +1069,17 @@ async function muat() {
     const h = D.hasil || {};
     $("m-data").textContent = D.data_dari || "-";
     $("m-muat").textContent = D.diperbarui;
+    if (D.statis) {
+      $("foot").textContent = `Penelitian strategi marketplace UMKM Pekanbaru · data diolah ${D.data_dari || "-"} · hasil bersifat asosiasi, bukan kausalitas.`;
+      $("reload").hidden = true;
+    }
     DASAR = (h.simulasi_whatif || []).find((w) => w.model === "random_forest" && w.segmen === "Semua")?.peluang_dasar ?? null;
     if (TAMPILKAN_SIMULATOR) $("r-dasar").textContent = DASAR != null ? num(DASAR, 0) + "%" : "-";
-    [() => renderOverview(D), () => renderKondisi(h), () => renderRF(h), () => renderRekomendasi(h), () => renderAktivitas(D), () => renderTeknis(D)]
+    [() => renderOverview(D), () => renderKondisi(h), () => renderRF(h), () => renderSEM(h), () => renderRekomendasi(h), () => renderAktivitas(D), () => renderTeknis(D)]
       .forEach((fn) => { try { fn(); } catch (e) { console.error(e); } });
   } catch (e) {
-    $("err").textContent = `Data tidak bisa dimuat (${e.message}). Pastikan server masih berjalan: python -m umkm.dashboard`;
+    const lokal = ["localhost", "127.0.0.1"].includes(location.hostname);
+    $("err").textContent = `Data tidak bisa dimuat (${e.message}). ${lokal ? "Pastikan server masih berjalan: python -m umkm.dashboard" : "Coba muat ulang halaman."}`;
     $("err").hidden = false;
   }
 }

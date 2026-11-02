@@ -227,13 +227,13 @@ def build_log(rep: RekomendasiReport, cfg: dict[str, Any]) -> str:
             f"{r['n_prioritas']} teratas dengan prioritas > 0."
         ),
         (
-            "- Rata-rata vs rata-rata (pilihan pengguna, 2026-10-30): rumus plan awal (median UMKM naik "
+            "- Rata-rata vs rata-rata: rumus alternatif (median UMKM naik "
             "vs rata-rata segmen) mencampur dua ukuran dan, karena skor Likert menumpuk di angka bulat, "
             "hanya memberi 2 strategi berprioritas > 0 per segmen. Dihitung sebagai sensitivitas."
         ),
         (
             "- Bobot dari Tahap 4 (D26), sama untuk semua segmen. Penyajian: satu urutan umum + "
-            "penyesuaian tindakan per segmen (pilihan pengguna, 2026-10-30)."
+            "penyesuaian tindakan per segmen."
         ),
         (
             f"- Butir fokus: {r['n_butir_fokus']} butir kuesioner dengan gap terbesar per strategi; "
@@ -415,7 +415,7 @@ def build_ringkasan(rep: RekomendasiReport, cfg: dict[str, Any]) -> str:
         s.append(f"| `figures/{nm}.png` | {interp[nm]} |")
     s.append(
         "\n_Rekomendasi ini perlu divalidasi kewajarannya dengan pembimbing/pelaku UMKM sebelum "
-        "difinalkan (plan/06 langkah 6)._\n"
+        "difinalkan._\n"
     )
     return "\n".join(s)
 

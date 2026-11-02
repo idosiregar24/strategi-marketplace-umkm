@@ -5,7 +5,7 @@
 | 1 | Cleaning | SELESAI | data/processed/data_clean.csv, reports/cleaning_log.md, notebooks/00_setup_colab.ipynb | 2026-10-14 |
 | 2 | Konstruksi variabel | SELESAI | data/processed/data_features.csv, reports/features_log.md, reports/tables/reliabilitas*.csv | 2026-10-14 |
 | 3 | EDA | SELESAI | reports/figures/eda_*, reports/tables/eda_*.csv, reports/eda_log.md, reports/eda_ringkasan.md | 2026-10-30 |
-| 4 | Analisis pengaruh | SELESAI | reports/tables/pengaruh_*.csv, reports/figures/pengaruh_*.png, shap_*.png, reports/pengaruh_log.md, reports/pengaruh_ringkasan.md | 2026-10-30 |
+| 4 | Analisis pengaruh | SELESAI | reports/tables/pengaruh_*.csv, sem_*.csv, reports/figures/pengaruh_*.png, shap_*.png, sem_*.png, reports/pengaruh_log.md, reports/pengaruh_ringkasan.md, reports/sem_log.md | 2026-10-30 |
 | 5 | Segmentasi | SELESAI | data/processed/data_segmen.csv, reports/tables/profil_segmen.csv, segmen_*.csv, reports/figures/segmen_*.png, reports/segmentasi_log.md, reports/segmentasi_ringkasan.md | 2026-10-30 |
 | 6 | Rekomendasi | SELESAI | reports/tables/rekomendasi_per_segmen.csv, rekomendasi_*.csv, reports/figures/rekomendasi_*.png, models/v1/, reports/rekomendasi_log.md, reports/rekomendasi_ringkas.md, reports/integration_contract.md | 2026-10-31 |
 | 7 | Pelaporan | SELESAI | reports/laporan_final.md, notebooks/07_pelaporan.ipynb, tests/test_pelaporan.py | 2026-10-31 |
@@ -31,7 +31,7 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
 - Kesiapan Colab: `parse_timestamp` diperbaiki (pandas 2.2 membaca tanggal Excel sebagai datetime -> overflow);
   33 tes lolos dan data_clean.csv identik di pandas 2.2 dan 3. Dibuat `notebooks/00_setup_colab.ipynb` dan
   `umkm_proyek.zip` (jalur Drive, tanpa GitHub); alur notebook disimulasikan pada zip dan berhasil.
-- D15 dan D18 disepakati. Tahap 1 disetujui pengguna: SELESAI.
+- D15 dan D18 disepakati. Tahap 1 disetujui: SELESAI.
 
 ### 2026-10-14 - Tahap 2 (Konstruksi variabel)
 - Keputusan sebelum mulai: D04, D05, D06, D13 disepakati; D14 = analisis utama TANPA 33 responden
@@ -44,7 +44,7 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
 - Temuan: 10 responden straightlining (D20); omzet turun tepat 10x pada R065 dan R130 (D21).
 - Terbuka: D20, D21, D22 (DIUSULKAN). Rencana Tahap 4 diperbarui (sensitivitas c, e, f, g).
 - Catatan: file xlsx asli juga masih ada di root proyek (salinan identik dengan data/raw/).
-- Tahap 2 disetujui pengguna (2026-10-14): SELESAI. D20, D21, D22 DISEPAKATI sesuai usulan.
+- Tahap 2 disetujui (2026-10-14): SELESAI. D20, D21, D22 DISEPAKATI sesuai usulan.
 
 ### 2026-10-14 - Tahap 3 (EDA)
 - Dikerjakan: modul `stats.py` (Wilcoxon, Mann-Whitney, Spearman+CI, Holm, VIF, ringkas skor), `viz.py`
@@ -90,8 +90,8 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
   R015 dan R021. R021 (100 -> 15.000) jadi y_obj tertinggi (4,76) -> sensitivitas (f) Tahap 4 tanpa R021.
   Spearman y_obj: X2 0,32, X3 0,28 bermakna; X1 0,26 (Holm 0,060), X4 0,14 tidak. Mann-Whitney: X1/X2/X3 bermakna;
   tanpa responden seragam X1 dan X2 tidak lagi bermakna (Holm 0,091), X3 menguat.
-- D25 DISEPAKATI pengguna (2026-10-30). Terbuka: D23 (DIUSULKAN). Tahap 3 MENUNGGU PERSETUJUAN.
-- 2026-10-30: D23 DISEPAKATI; Tahap 3 disetujui pengguna: SELESAI. Lanjut Tahap 4.
+- D25 DISEPAKATI (2026-10-30). Terbuka: D23 (DIUSULKAN). Tahap 3 MENUNGGU PERSETUJUAN.
+- 2026-10-30: D23 DISEPAKATI; Tahap 3 disetujui: SELESAI. Lanjut Tahap 4.
 
 ### 2026-10-30 - Tahap 4 (Analisis pengaruh)
 - Dikerjakan: `stats.py` (+standarkan, ols_hc3, logit_or), `models.py` (CV 5x5, kandidat + baseline, RF, permutation
@@ -109,16 +109,16 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
   terang (54/54 naik=0 = angka sama) + tabel `pengaruh_pola_isian` (tidak ada beda bermakna); (2) hubungan negatif
   dilaporkan (X3 vs y_pelanggan_baru koef -0,53, p < 0,001); (3) bug tanda permutation di `skor_gabungan` diperbaiki
   + tes; (4) OR ditulis sebagai odds + peluang prediksi -1/+1 SD (X3 34% -> 76%, X1 37% -> 73%) + SD poin; (5) bobot
-  rekomendasi = pengaruh x p_koef_positif, minimal 0,1 (pilihan pengguna); (6) CV y_obj tanpa R021 + R2 out-of-fold;
+  rekomendasi = pengaruh x p_koef_positif, minimal 0,1; (6) CV y_obj tanpa R021 + R2 out-of-fold;
   (7) bagian Keterbatasan, penjelasan spekulatif diperlunak; (8) skor gabungan untuk skenario c dan e (X3 tetap #1).
   Tambahan: Holm 4 strategi, uji LR blok strategi (p < 0,001), diagnostik residual OLS (R021 Cook 0,71), confusion
   matrix, SHAP per kelas, penanganan format SHAP lama. 96 tes lolos. D26 DISEPAKATI. `recommendation_logic.md`
   langkah 1 diperbarui. Belum: logit Firth (EPV 6,8; dicatat sebagai keterbatasan sampel kecil).
 
-- 2026-10-30: Tahap 4 disetujui pengguna: SELESAI. Berikutnya Tahap 5 (segmentasi) di sesi baru.
+- 2026-10-30: Tahap 4 disetujui: SELESAI. Berikutnya Tahap 5 (segmentasi) di sesi baru.
 
 ### 2026-10-30 - Tahap 5 (Segmentasi)
-- Keputusan sebelum mulai (pengguna): segmen dibentuk dari profil saja, k otomatis (D27, DIUSULKAN). Eksplorasi: profil + X1-X4
+- Keputusan sebelum mulai: segmen dibentuk dari profil saja, k otomatis (D27, DIUSULKAN). Eksplorasi: profil + X1-X4
   silhouette 0,13 dan tidak stabil; profil saja k=2 silhouette 0,25, ARI 0,89-0,92.
 - Dikerjakan: `segmentation.py` (siapkan_fitur, pipa scaler + K-Means, urutan dan nama segmen, metrik k, bootstrap ARI + Jaccard,
   Ward/GMM, profil, uji beda, sensitivitas), `segmentasi_teks.py` (log, ringkasan, deskripsi segmen dari angka),
@@ -132,11 +132,11 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
 - Temuan: segmen TIDAK berbeda bermakna pada X1-X4, persepsi, y_obj, pelanggan baru, naik_penjualan (57% vs 51%, Fisher
   p = 0,57; semua Holm >= 0,36). Segmen = kondisi usaha, bukan tingkat strategi/kinerja; benchmark Tahap 6 kemungkinan mirip.
 - Terbuka: D27 (DIUSULKAN). Tahap 5 MENUNGGU PERSETUJUAN.
-- 2026-10-30: D27 DISEPAKATI; Tahap 5 disetujui pengguna: SELESAI. Berikutnya Tahap 6 (rekomendasi) di sesi baru; sepakati
+- 2026-10-30: D27 DISEPAKATI; Tahap 5 disetujui: SELESAI. Berikutnya Tahap 6 (rekomendasi) di sesi baru; sepakati
   dulu cara menyajikan rekomendasi bila kedua segmen tidak berbeda pada skor strategi.
 
 ### 2026-10-30 - Tahap 6 (Rekomendasi)
-- Keputusan sebelum mulai (pengguna): gap = rata-rata UMKM naik vs rata-rata segmen (rumus plan awal median vs rata-rata
+- Keputusan sebelum mulai: gap = rata-rata UMKM naik vs rata-rata segmen (rumus rencana awal median vs rata-rata
   hanya memberi 2 prioritas > 0 per segmen); penyajian = urutan umum + penyesuaian tindakan per segmen (D28, DIUSULKAN).
 - Dikerjakan: `schemas.py` (Pydantic ProfilUMKM / HasilRekomendasi), `recommend.py` (benchmark, gap, prioritas, templat teks,
   simpan/muat artefak, `recommend()`, CLI `python -m umkm.recommend profil.json`), `rekomendasi.py` (latih ulang pipa segmen +
@@ -151,14 +151,14 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
 - Butir fokus: S1 X3 = jaga komunikasi sampai pesanan diterima + balas cepat; S2 X3 = tanggapi komplain + balas cepat;
   X1 kedua segmen = unggah ulang produk lama; X2 = fitur promosi bawaan + evaluasi promosi. Selisih antar-butir kecil (0,07-0,23).
 - Sensitivitas: urutan bertahan di 4/8 varian (skor sampel utama, tanpa jawaban seragam, benchmark semua UMKM); bobot sama rata
-  memasukkan X4 dan S1 jadi X1 teratas; median-vs-median S2 dan rumus plan awal hanya 2 prioritas. X3 teratas di 14/16.
+  memasukkan X4 dan S1 jadi X1 teratas; median-vs-median S2 dan rumus rencana awal hanya 2 prioritas. X3 teratas di 14/16.
 - Simulasi +1 poin (RF, in-sample): X3 +14/+18 pp, X1 +7/+9 pp, X2 +7 pp, X4 sekitar 0. recommend() pada profil wakil segmen
   cocok dengan tabel (selisih < 0,0001); 3 contoh: A -> S1 X3>X1>X2, B -> S2 X3>X2, C (sketsa kontrak) -> S2 X1>X4>X2.
 - Terbuka: D28 (DIUSULKAN); validasi kewajaran tindakan dengan pembimbing (plan/06 langkah 6); apakah `selisih_prediksi_plus1`
   per UMKM tetap ditampilkan (nilai individual RF bisa besar, mis. X2 +21,6 pp). Tahap 6 SELESAI.
 
 ### 2026-10-31 - Tahap 6 disetujui & Tahap 7 (Pelaporan) selesai
-- D28 DISEPAKATI pengguna; Tahap 6 resmi SELESAI.
+- D28 DISEPAKATI; Tahap 6 resmi SELESAI.
 - Tahap 7 (Pelaporan): modul `src/umkm/pelaporan.py` dibuat untuk menyusun `reports/laporan_final.md`
   yang mengintegrasikan seluruh temuan dari Tahap 1 sampai 6, memvalidasi keterlacakan seluruh angka
   ke berkas di `reports/tables/`, serta menguji kesiapan kontrak integrasi `recommend()`.
@@ -176,7 +176,19 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
   endpoint `/api/recommend` (peluang RF asli). Diperbaiki: angka manual dan bahasa sebab-akibat di halaman lama,
   peluang simulator palsu, serta `PERTANYAAN` tidak terdefinisi yang membuat galeri gagal tampil.
 - 2 tes baru di `tests/test_dashboard.py` (total 123 lolos). Diperiksa di browser headless (desktop dan 390 px).
-- Revisi kedua (permintaan pengguna, contoh desain dashboard SaaS): tata letak sidebar + kartu, aksen oranye; kolom
+- Revisi kedua: tata letak sidebar + kartu, aksen oranye; kolom
   tersorot (importance), matriks titik (simulasi +1 poin), donat segmen, menu "Unduh" per kartu. Bagian baru "Rangkuman
   aktivitas dan hasil learning": tabel tahap 1-7 dengan hasil utama, info model (data latih, fitur, parameter RF, validasi),
   matriks kebingungan. `dashboard.py`: `info_model()`, `ringkasan_aktivitas()`. Simulator disembunyikan, kodenya disimpan.
+
+### 2026-11-02 - Tahap 4: analisis pembanding PLS-SEM (D08)
+- Dikerjakan: `sem.py` (algoritma PLS Mode A + skema bobot jalur, reliabilitas alpha/rho_A/rho_C/AVE, HTMT,
+  Fornell-Larcker, bootstrap paralel 2000x, f2, VIF inner, Q2_predict/AUC CV 5x5, perbandingan dengan regresi dan RF),
+  `sem_teks.py` (log + ringkasan dari angka); dipanggil di akhir `--stage 4` (sekitar 3,5 menit); config `sem`;
+  5 tes baru (`tests/test_sem.py`). Bagian 3.3 laporan_final, bagian "Pembanding: PLS-SEM" di dashboard.
+- Hasil: model pengukuran memadai (alpha 0,93-0,96; rho_C 0,95-0,97; AVE 0,77-0,89; HTMT maks 0,54, batas atas
+  bootstrap 0,65). naik_penjualan: X3 0,34 dan X1 0,27 bermakna, X2 0,10, X4 -0,02; R2 0,26; AUC 0,72 (logit 0,72,
+  RF 0,73). Urutan sama dengan peringkat gabungan Tahap 4 (rho 1,00). y_obj: urutan sama, tidak ada yang bermakna
+  setelah Holm, Q2_predict 0,00. Persepsi Y1-Y8: X4 0,33 dan X1 0,30 teratas (R2 0,37), berbeda dari kinerja objektif.
+- Catatan: rho_A sedikit > 1 pada X3/X4 (model y_obj); interval loading X2-X4 lebar karena bobot Mode A mengikuti
+  hubungan lemah dengan target. Dashboard tidak lagi membaca decisions.md.

@@ -37,7 +37,7 @@ VARIAN = {
     "skor_sampel_utama": "skor segmen hanya dari sampel utama",
     "tanpa_seragam": "tanpa jawaban seragam (D20)",
     "median_vs_median": "median UMKM naik vs median segmen",
-    "median_vs_rata": "median UMKM naik vs rata-rata segmen (rumus plan awal)",
+    "median_vs_rata": "median UMKM naik vs rata-rata segmen (rumus alternatif)",
     "benchmark_semua": "benchmark dari semua UMKM naik (tanpa segmen)",
 }
 # Tiga profil contoh (rekaan, bukan responden); C = sketsa di backend_architecture.md
@@ -355,7 +355,7 @@ def tabel_rekomendasi(
     seg: dict[str, Any],
     bob: pd.DataFrame,
 ) -> pd.DataFrame:
-    """segmen | strategi prioritas 1-3 | angka | alasan | tindakan (plan/06 langkah 5)."""
+    """segmen | strategi prioritas 1-3 | angka | alasan | tindakan."""
     t = gap[gap["peringkat"] > 0].merge(boot, on=["segmen", "strategi"], how="left")
     t = t.merge(whatif[["segmen", "strategi", "selisih_pp"]], on=["segmen", "strategi"], how="left")
     rows = []

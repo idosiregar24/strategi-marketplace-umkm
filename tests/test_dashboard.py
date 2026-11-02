@@ -13,25 +13,12 @@ PROGRESS = """
 | 4 | Analisis pengaruh | BELUM | reports/tables/pengaruh_*.csv | |
 """
 
-DECISIONS = """
-| ID | Topik | Keputusan | Status | Tanggal |
-|---|---|---|---|---|
-| D01 | Tujuan | Opsi a | DISEPAKATI | 2026-10-13 |
-| D08 | SEM | Opsional | BELUM DISEPAKATI | |
-| D23 | Konvensi | Holm | DIUSULKAN | 2026-10-14 |
-"""
-
 
 def test_tahap_dari_progress():
     t = db.tahap_dari_progress(PROGRESS)
     assert [(x["n"], x["status"]) for x in t] == [(1, "done"), (3, "wait"), (4, "todo")]
     assert t[0]["keluaran"] == ["data/processed/data_clean.csv", "reports/cleaning_log.md"]
     assert t[0]["selesai"] == "2026-10-14" and t[1]["selesai"] == ""
-
-
-def test_keputusan_terbuka_hanya_yang_belum_final():
-    k = db.keputusan_terbuka(DECISIONS)
-    assert [x["id"] for x in k] == ["D08", "D23"]
 
 
 @pytest.mark.parametrize("nama", ["../config.yaml", "..%2Fx.png", "a/b.png", "x.csv", ""])
@@ -71,14 +58,24 @@ _MODEL = config.path("models")
 @pytest.mark.skipif(not (_MODEL / "v1" / "model.joblib").exists(), reason="artefak model belum ada")
 def test_simulasi_menambah_peluang_rf_tanpa_mengubah_kontrak():
     profil = {
-        "omzet_bulanan": 15_000_000, "lama_usaha_pra_mp": 2.5, "lama_di_mp": 1.5,
-        "platform": ["gofood", "shopee"], "x1_unggah": 2.5, "x2_promosi": 2.5,
-        "x3_komunikasi": 3.0, "x4_konsistensi": 3.0,
+        "omzet_bulanan": 15_000_000,
+        "lama_usaha_pra_mp": 2.5,
+        "lama_di_mp": 1.5,
+        "platform": ["gofood", "shopee"],
+        "x1_unggah": 2.5,
+        "x2_promosi": 2.5,
+        "x3_komunikasi": 3.0,
+        "x4_konsistensi": 3.0,
     }
     out = db.simulasi(profil)
     il = out.pop("ilustrasi_model")
     assert 0 <= il["peluang_naik_persen"] <= 100
-    assert set(il["selisih_plus1_pp"]) == {"x1_unggah", "x2_promosi", "x3_komunikasi", "x4_konsistensi"}
+    assert set(il["selisih_plus1_pp"]) == {
+        "x1_unggah",
+        "x2_promosi",
+        "x3_komunikasi",
+        "x4_konsistensi",
+    }
     from umkm.recommend import recommend
 
     assert out == recommend(profil)
@@ -89,6 +86,32 @@ def test_bangun_data_memuat_rangkuman_aktivitas():
     d = db.bangun_data()
     akt = d["aktivitas"]
     assert akt["n_tabel"] > 0 and akt["n_figur"] > 0
-    assert 0 < akt["n_keputusan_sepakat"] <= akt["n_keputusan"]
+    assert "keputusan_terbuka" not in d
+    sem = d["hasil"].get("sem")
+    if sem is not None:
+        assert {j["model"] for j in sem["jalur"]} == {"y_obj", "naik_penjualan", "persepsi"}
     if d["model"] is not None:
         assert d["model"]["nama"] == "random_forest" and d["model"]["n_latih"] > 0
+
+
+def test_keluaran_hilang_dan_siapkan_tanpa_data_mentah(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("UMKM_BASE_DIR", str(tmp_path))
+    hilang = db.keluaran_hilang()
+    assert any("data_features.csv" in h for h in hilang) and any(
+        "model_meta.json" in h for h in hilang
+    )
+    db.siapkan()  # data mentah tidak ada: hanya peringatan, pipeline tidak dijalankan
+    assert "Peringatan" in capsys.readouterr().out
+
+
+@pytest.mark.skipif(not _FEAT.exists(), reason="data_features.csv belum dibuat")
+def test_ekspor_situs_statis(tmp_path):
+    (tmp_path / "figures").mkdir()
+    (tmp_path / "figures" / "usang.png").write_bytes(b"x")
+    out = db.ekspor(tmp_path / ".", pipeline=False)
+    data = json.loads((out / "data.json").read_text(encoding="utf-8"))
+    assert data["statis"] and data["hasil"]
+    assert "keputusan_terbuka" not in data
+    assert (out / "index.html").read_bytes() == db.STATIC.read_bytes()
+    assert sorted(p.name for p in (out / "figures").glob("*.png")) == data["figur"]
+    assert (out / ".nojekyll").exists()

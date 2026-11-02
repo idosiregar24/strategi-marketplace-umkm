@@ -14,3 +14,5 @@ umkm_proyek.zip
 .pytest_cache/
 .ruff_cache/
 scratch/
+# situs statis hasil `python -m umkm.dashboard --export site`
+site/

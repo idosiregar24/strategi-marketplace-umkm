@@ -161,7 +161,7 @@ def benchmark(
     ukuran: str = "rata_rata",
 ) -> tuple[pd.Series, str]:
     """Skor acuan dari UMKM naik_penjualan = 1 di segmen; bila kurang dari `min_naik` UMKM,
-    pakai seluruh UMKM yang naik (plan/06 langkah 1). Mengembalikan (benchmark, sumber)."""
+    pakai seluruh UMKM yang naik. Mengembalikan (benchmark, sumber)."""
     if len(naik_segmen) >= min_naik:
         return agregat(naik_segmen, cols, ukuran), "segmen"
     return agregat(naik_semua, cols, ukuran), "semua"

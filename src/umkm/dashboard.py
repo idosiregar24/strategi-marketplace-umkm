@@ -1,8 +1,9 @@
 """Dashboard lokal ringkasan proyek: `python -m umkm.dashboard [--port 8000]`.
 
 Menyajikan satu halaman (static/dashboard.html) yang membaca `data.json`. JSON dibangun ulang dari
-progress.md, decisions.md, reports/tables, dan data_features.csv pada setiap permintaan, sehingga
-angka selalu mengikuti hasil pipeline terakhir. Grafik PNG diambil dari reports/figures.
+status tahap, reports/tables, dan data_features.csv pada setiap permintaan, sehingga angka selalu
+mengikuti hasil pipeline terakhir. Grafik PNG diambil dari reports/figures.
+Sebelum browser dibuka, pipeline dijalankan otomatis bila hasilnya belum ada (lihat `siapkan`).
 Server hanya mendengarkan 127.0.0.1 (komputer sendiri) dan hanya melayani tiga jenis alamat.
 Tidak ada data per responden yang dikirim ke halaman; hanya angka ringkasan.
 """
@@ -13,6 +14,7 @@ import argparse
 import json
 import math
 import re
+import shutil
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -42,10 +44,18 @@ PROFIL = {
     "log_omzet_sebelum": "Omzet sebelum (log)",
 }
 NAMA_FIGUR = re.compile(r"^[A-Za-z0-9_\-]+\.png$")
+# Keluaran pipeline yang wajib ada agar dashboard terisi (tabel dari reports/tables, model dari Tahap 6)
+TABEL_WAJIB = (
+    "eda_sebelum_sesudah",
+    "pengaruh_gabungan",
+    "sem_jalur",
+    "profil_segmen",
+    "rekomendasi_per_segmen",
+)
 
 
 # ---------------------------------------------------------------------------
-# Membaca berkas markdown .claude/
+# Status tahap
 # ---------------------------------------------------------------------------
 def _baris_tabel(teks: str) -> list[list[str]]:
     """Baris tabel markdown (tanpa header dan pemisah) sebagai daftar sel."""
@@ -72,15 +82,6 @@ def tahap_dari_progress(teks: str) -> list[dict[str, Any]]:
                     "selesai": r[4],
                 }
             )
-    return out
-
-
-def keputusan_terbuka(teks: str) -> list[dict[str, str]]:
-    """Keputusan berstatus DIUSULKAN atau BELUM DISEPAKATI dari decisions.md."""
-    out = []
-    for r in _baris_tabel(teks):
-        if len(r) >= 4 and r[0].startswith("D") and r[3] in ("DIUSULKAN", "BELUM DISEPAKATI"):
-            out.append({"id": r[0], "topik": r[1], "isi": r[2], "status": r[3]})
     return out
 
 
@@ -294,6 +295,10 @@ def ringkasan_hasil() -> dict[str, Any]:
             for _, r in wif.iterrows()
         ]
 
+    sem = ringkasan_sem()
+    if sem:
+        out["sem"] = sem
+
     rek = _csv("rekomendasi_per_segmen")
     if rek is not None:
         out["rekomendasi_segmen"] = [
@@ -311,6 +316,50 @@ def ringkasan_hasil() -> dict[str, Any]:
             for _, r in rek.iterrows()
         ]
     return out
+
+
+def ringkasan_sem() -> dict[str, Any] | None:
+    """Hasil analisis pembanding PLS-SEM (tabel sem_*.csv); None bila belum dijalankan."""
+    mdl, jal, rel, ht, bnd = (
+        _csv(f"sem_{n}") for n in ("model", "jalur", "reliabilitas", "htmt", "perbandingan")
+    )
+    if any(t is None for t in (mdl, jal, rel, ht, bnd)):
+        return None
+    jal = jal[jal["jenis"] == "strategi"]
+    return {
+        "model": [
+            {
+                "model": r["model"],
+                "nama": r["nama"],
+                "n": int(r["n"]),
+                "r2": float(r["r2"]),
+                "auc": float(r["auc"]) if pd.notna(r["auc"]) else None,
+                "q2": float(r["q2_predict"]) if pd.notna(r["q2_predict"]) else None,
+            }
+            for _, r in mdl.iterrows()
+        ],
+        "jalur": [
+            {
+                "model": r["model"],
+                "strategi": STRATEGI[r["prediktor"]],
+                "koef": float(r["koef"]),
+                "ci_bawah": float(r["ci_bawah"]),
+                "ci_atas": float(r["ci_atas"]),
+                "p_holm": float(r["p_holm"]),
+                "f2": float(r["f2"]),
+            }
+            for _, r in jal.iterrows()
+        ],
+        "pengukuran": {
+            "alpha": [float(rel["alpha"].min()), float(rel["alpha"].max())],
+            "rho_c": [float(rel["rho_c"].min()), float(rel["rho_c"].max())],
+            "ave": [float(rel["ave"].min()), float(rel["ave"].max())],
+            "htmt_maks": float(ht["htmt"].max()),
+            "htmt_ci_maks": float(ht["htmt_ci_atas"].max()),
+        },
+        "peringkat_sama": bool((bnd["peringkat_pls_naik"] == bnd["peringkat_tahap4"]).all()),
+        "n_boot": int(config.load_config()["sem"]["n_bootstrap"]),
+    }
 
 
 def info_model() -> dict[str, Any] | None:
@@ -339,7 +388,7 @@ def info_model() -> dict[str, Any] | None:
 
 
 def ringkasan_aktivitas() -> dict[str, Any]:
-    """Angka pendukung rangkuman tahap 1-7: segmentasi, reliabilitas, jumlah keluaran, keputusan."""
+    """Angka pendukung rangkuman tahap 1-7: segmentasi, reliabilitas, jumlah keluaran."""
     out: dict[str, Any] = {}
     k = _csv("segmen_pemilihan_k")
     if k is not None:
@@ -359,13 +408,6 @@ def ringkasan_aktivitas() -> dict[str, Any]:
     rep = config.path("reports")
     out["n_tabel"] = len(list((rep / "tables").glob("*.csv")))
     out["n_figur"] = len(list((rep / "figures").glob("*.png")))
-    dec = config.project_dir() / ".claude" / "decisions.md"
-    if dec.exists():
-        rows = [
-            r for r in _baris_tabel(dec.read_text(encoding="utf-8")) if r and r[0].startswith("D")
-        ]
-        out["n_keputusan"] = len(rows)
-        out["n_keputusan_sepakat"] = sum(len(r) >= 4 and r[3] == "DISEPAKATI" for r in rows)
     return out
 
 
@@ -377,9 +419,7 @@ def daftar_figur() -> list[str]:
 
 def bangun_data() -> dict[str, Any]:
     """Seluruh isi data.json untuk halaman dashboard."""
-    claude = config.project_dir() / ".claude"
-    prog = claude / "progress.md"
-    dec = claude / "decisions.md"
+    prog = config.project_dir() / ".claude" / "progress.md"
     hasil = [config.path("processed") / "data_features.csv"]
     hasil += list((config.path("reports") / "tables").glob("*.csv"))
     waktu = [p.stat().st_mtime for p in hasil if p.exists()]
@@ -390,9 +430,6 @@ def bangun_data() -> dict[str, Any]:
                 pd.Timestamp.fromtimestamp(max(waktu)).strftime("%d-%m-%Y %H:%M") if waktu else None
             ),
             "tahap": tahap_dari_progress(prog.read_text(encoding="utf-8")) if prog.exists() else [],
-            "keputusan_terbuka": (
-                keputusan_terbuka(dec.read_text(encoding="utf-8")) if dec.exists() else []
-            ),
             "hasil": ringkasan_hasil(),
             "aktivitas": ringkasan_aktivitas(),
             "model": info_model(),
@@ -476,8 +513,67 @@ class _Handler(BaseHTTPRequestHandler):
         return
 
 
-def serve(port: int = 8000, host: str = "127.0.0.1", buka: bool = True) -> None:
-    """Jalankan server dashboard sampai dihentikan dengan Ctrl+C."""
+def keluaran_hilang() -> list[str]:
+    """Keluaran pipeline wajib yang belum ada (kosong = dashboard bisa langsung terisi)."""
+    from umkm import recommend as rk
+
+    wajib = [
+        config.path("processed") / "data_features.csv",
+        rk.dir_model_default() / "model_meta.json",
+    ]
+    wajib += [config.path("reports") / "tables" / f"{t}.csv" for t in TABEL_WAJIB]
+    return [str(p.relative_to(config.base_dir())) for p in wajib if not p.exists()]
+
+
+def siapkan(jalankan_pipeline: bool = True) -> None:
+    """Pastikan hasil analisis tersedia sebelum halaman dibuka: jalankan pipeline Tahap 1-7 bila
+    keluaran wajib belum ada, lalu bangun data.json sekali agar impor berat (sklearn, model) sudah
+    selesai saat browser meminta data pertama kali."""
+    hilang = keluaran_hilang()
+    if hilang and jalankan_pipeline:
+        if config.path("raw").exists():
+            from umkm import pipeline
+
+            print(
+                f"Hasil analisis belum lengkap ({', '.join(hilang)}); menjalankan pipeline Tahap 1-7..."
+            )
+            pipeline.main(["--all"])
+        else:
+            print(
+                f"Peringatan: hasil analisis belum ada dan data mentah tidak ditemukan di {config.path('raw')}."
+            )
+    elif hilang:
+        print(
+            f"Peringatan: hasil analisis belum lengkap ({', '.join(hilang)}); dashboard bisa kosong sebagian."
+        )
+    print("Menyiapkan data dashboard...")
+    bangun_data()
+
+
+def ekspor(folder: Path, pipeline: bool = True) -> Path:
+    """Tulis dashboard sebagai situs statis (tanpa server Python) untuk dipublikasikan:
+    index.html, data.json (angka ringkasan, ditandai `statis`), figures/*.png, dan .nojekyll
+    (GitHub Pages). Hanya berkas-berkas itu yang ditimpa; PNG lama di figures/ dibersihkan."""
+    siapkan(pipeline)
+    folder = Path(folder)
+    fig = folder / "figures"
+    fig.mkdir(parents=True, exist_ok=True)
+    for lama in fig.glob("*.png"):
+        lama.unlink()
+    data = bangun_data() | {"statis": True}
+    for nama in data["figur"]:
+        shutil.copyfile(config.path("reports") / "figures" / nama, fig / nama)
+    (folder / "index.html").write_bytes(STATIC.read_bytes())
+    (folder / "data.json").write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    (folder / ".nojekyll").touch()
+    return folder
+
+
+def serve(
+    port: int = 8000, host: str = "127.0.0.1", buka: bool = True, pipeline: bool = True
+) -> None:
+    """Siapkan data lalu jalankan server dashboard sampai dihentikan dengan Ctrl+C."""
+    siapkan(pipeline)
     server = ThreadingHTTPServer((host, port), _Handler)
     url = f"http://localhost:{port}" if host == "127.0.0.1" else f"http://{host}:{port}"
     print(f"Dashboard berjalan di {url}  (Ctrl+C untuk berhenti)")
@@ -495,8 +591,22 @@ def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Dashboard lokal ringkasan proyek UMKM.")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--no-browser", action="store_true", help="jangan buka browser otomatis")
+    parser.add_argument(
+        "--no-pipeline",
+        action="store_true",
+        help="jangan jalankan pipeline otomatis bila hasil belum ada",
+    )
+    parser.add_argument(
+        "--export",
+        metavar="FOLDER",
+        help="tulis situs statis ke FOLDER (untuk hosting publik) lalu keluar, tanpa menjalankan server",
+    )
     args = parser.parse_args(argv)
-    serve(args.port, buka=not args.no_browser)
+    if args.export:
+        out = ekspor(Path(args.export), pipeline=not args.no_pipeline)
+        print(f"Situs statis ditulis ke {out.resolve()}")
+        return
+    serve(args.port, buka=not args.no_browser, pipeline=not args.no_pipeline)
 
 
 if __name__ == "__main__":

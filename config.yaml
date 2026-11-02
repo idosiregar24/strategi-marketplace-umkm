@@ -71,3 +71,9 @@ recommendation:   # Tahap 6 (D28)
   n_butir_fokus: 2   # butir kuesioner dengan gap terbesar yang dijadikan tindakan
   whatif_tambah: 1.0   # simulasi skor strategi +1 poin (maks 5) pada model terbaik
 bootstrap_n: 1000
+sem:   # Tahap 4, analisis pembanding PLS-SEM (D08, D30)
+  n_bootstrap: 2000
+  cv_lipatan: 5
+  cv_ulang: 5
+  ambang_loading: 0.708
+  ambang_htmt: 0.85

@@ -1,6 +1,6 @@
 # Ringkasan Tahap 6: Rekomendasi Strategi per Segmen
 
-Dibuat oleh `umkm.rekomendasi` pada 2026-10-30 15:54. Untuk tiap segmen, skor rata-rata tiap strategi dibandingkan dengan rata-rata UMKM di segmen yang sama yang melaporkan kenaikan penjualan. Selisihnya (gap) dikalikan bobot hubungan strategi dengan kenaikan penjualan dari Tahap 4. Hasilnya adalah prioritas berbasis pola asosiasi, bukan jaminan hasil.
+Dibuat oleh `umkm.rekomendasi` pada 2026-11-02 18:31. Untuk tiap segmen, skor rata-rata tiap strategi dibandingkan dengan rata-rata UMKM di segmen yang sama yang melaporkan kenaikan penjualan. Selisihnya (gap) dikalikan bobot hubungan strategi dengan kenaikan penjualan dari Tahap 4. Hasilnya adalah prioritas berbasis pola asosiasi, bukan jaminan hasil.
 
 ## Prioritas umum
 
@@ -48,7 +48,7 @@ Angka = skor prioritas (bobot x gap); #n = peringkat. Urutan prioritas sama di s
 ## Keterbatasan
 
 - Gap kecil (0,13-0,19 poin pada skala 1-5) dan interval bootstrap 7 dari 8 gap segmen mencakup nol. Arahnya konsisten (peluang gap > 0: 90%-99%), tetapi beda skor UMKM yang naik dan rata-rata segmen tidak besar.
-- Karena gap keempat strategi hampir sama, urutan prioritas terutama ditentukan oleh bobot Tahap 4. Urutan utama bertahan di 4 dari 8 varian sensitivitas; berubah pada bobot sama rata (1 untuk semua strategi), bobot dari koefisien logit saja, median UMKM naik vs median segmen dan median UMKM naik vs rata-rata segmen (rumus plan awal). X3 tetap teratas di 14 dari 16 kombinasi varian x segmen.
+- Karena gap keempat strategi hampir sama, urutan prioritas terutama ditentukan oleh bobot Tahap 4. Urutan utama bertahan di 4 dari 8 varian sensitivitas; berubah pada bobot sama rata (1 untuk semua strategi), bobot dari koefisien logit saja, median UMKM naik vs median segmen dan median UMKM naik vs rata-rata segmen (rumus alternatif). X3 tetap teratas di 14 dari 16 kombinasi varian x segmen.
 - Benchmark = UMKM yang melaporkan kenaikan penjualan. Di sampel utama pembandingnya adalah UMKM yang menulis angka omzet dan transaksi sama persis (D26), bukan UMKM yang turun.
 - Kedua segmen tidak berbeda bermakna pada skor strategi maupun kinerja (Tahap 5), sehingga perbedaan rekomendasi antar-segmen hanya pada penyesuaian tindakan. Teks penyesuaian adalah templat yang disusun dari kondisi usaha segmen, bukan hasil uji data.
 - Butir fokus dipilih dari selisih butir yang kecil dan mirip (0,07-0,23 poin); urutan butir hanya panduan, bukan temuan yang kuat.
@@ -63,4 +63,4 @@ Angka = skor prioritas (bobot x gap); #n = peringkat. Urutan prioritas sama di s
 | `figures/rekomendasi_prioritas.png` | Urutan prioritas sama di semua segmen dan seluruh UMKM (X3 > X1 > X2). X3 Komunikasi pelanggan mendapat skor prioritas tertinggi (0,143 dan 0,191) terutama karena bobotnya paling besar (1,00); gap keempat strategi hampir sama (0,13-0,19 poin). |
 | `figures/rekomendasi_gap.png` | Semua gap positif (skor segmen sedikit di bawah UMKM yang penjualannya naik), tetapi kecil (0,13-0,19 poin pada skala 1-5); interval bootstrap 7 dari 8 gap mencakup nol, hanya X3 di segmen 2 yang seluruhnya di atas nol. |
 
-_Rekomendasi ini perlu divalidasi kewajarannya dengan pembimbing/pelaku UMKM sebelum difinalkan (plan/06 langkah 6)._
+_Rekomendasi ini perlu divalidasi kewajarannya dengan pembimbing/pelaku UMKM sebelum difinalkan._
