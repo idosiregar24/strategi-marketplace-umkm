@@ -166,3 +166,17 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
   notebook `notebooks/07_pelaporan.ipynb` dibuat.
 - Dashboard lokal `src/umkm/dashboard.py` dan `src/umkm/static/dashboard.html` diperbarui menjadi 2 mode tampilan:
   Tampilan Umum (pemilik UMKM/bisnis) dan Tampilan Developer/Kompleks (data scientist/statistik mendalam).
+
+### 2026-11-02 - Di luar tahap: desain ulang dashboard (D29)
+- `src/umkm/static/dashboard.html` ditulis ulang: satu halaman dengan navigasi; 6 grafik SVG (arah perubahan, platform,
+  AUC model, permutation importance RF, simulasi +1 poin, skor segmen vs UMKM naik) dengan tombol unduh PNG/SVG/CSV dan
+  kotak "Kesimpulan" per grafik; bagian "Kesimpulan setelah memakai Random Forest"; rekomendasi per segmen (tab);
+  simulator; detail teknis (tabel model, bobot D26, status tahap, galeri PNG); tombol Cetak/PDF.
+- `dashboard.py`: data baru (`rf_importance`, `rf_confusion`, `segmen`, `gap`, `auc_sd`, `p_logit`) dan `simulasi()` untuk
+  endpoint `/api/recommend` (peluang RF asli). Diperbaiki: angka manual dan bahasa sebab-akibat di halaman lama,
+  peluang simulator palsu, serta `PERTANYAAN` tidak terdefinisi yang membuat galeri gagal tampil.
+- 2 tes baru di `tests/test_dashboard.py` (total 123 lolos). Diperiksa di browser headless (desktop dan 390 px).
+- Revisi kedua (permintaan pengguna, contoh desain dashboard SaaS): tata letak sidebar + kartu, aksen oranye; kolom
+  tersorot (importance), matriks titik (simulasi +1 poin), donat segmen, menu "Unduh" per kartu. Bagian baru "Rangkuman
+  aktivitas dan hasil learning": tabel tahap 1-7 dengan hasil utama, info model (data latih, fitur, parameter RF, validasi),
+  matriks kebingungan. `dashboard.py`: `info_model()`, `ringkasan_aktivitas()`. Simulator disembunyikan, kodenya disimpan.

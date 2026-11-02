@@ -53,3 +53,42 @@ def test_bangun_data_valid_json_tanpa_data_per_responden():
     teks = json.dumps(data, allow_nan=False)
     assert "id_responden" not in teks and "R001" not in teks
     assert data["tahap"] and data["hasil"]["angka"]["n_semua"] == 149
+
+
+@pytest.mark.skipif(not _FEAT.exists(), reason="data_features.csv belum dibuat")
+def test_bangun_data_memuat_hasil_random_forest():
+    h = db.bangun_data()["hasil"]
+    imp = h["rf_importance"]
+    assert len(imp) == 8 and {d["jenis"] for d in imp} == {"strategi", "profil"}
+    assert imp == sorted(imp, key=lambda d: -d["mean"])
+    assert set(h["rf_confusion"]) == {"tn", "fp", "fn", "tp"}
+    assert {s["segmen"] for s in h["segmen"]} >= {"1", "2", "Semua"}
+
+
+_MODEL = config.path("models")
+
+
+@pytest.mark.skipif(not (_MODEL / "v1" / "model.joblib").exists(), reason="artefak model belum ada")
+def test_simulasi_menambah_peluang_rf_tanpa_mengubah_kontrak():
+    profil = {
+        "omzet_bulanan": 15_000_000, "lama_usaha_pra_mp": 2.5, "lama_di_mp": 1.5,
+        "platform": ["gofood", "shopee"], "x1_unggah": 2.5, "x2_promosi": 2.5,
+        "x3_komunikasi": 3.0, "x4_konsistensi": 3.0,
+    }
+    out = db.simulasi(profil)
+    il = out.pop("ilustrasi_model")
+    assert 0 <= il["peluang_naik_persen"] <= 100
+    assert set(il["selisih_plus1_pp"]) == {"x1_unggah", "x2_promosi", "x3_komunikasi", "x4_konsistensi"}
+    from umkm.recommend import recommend
+
+    assert out == recommend(profil)
+
+
+@pytest.mark.skipif(not _FEAT.exists(), reason="data_features.csv belum dibuat")
+def test_bangun_data_memuat_rangkuman_aktivitas():
+    d = db.bangun_data()
+    akt = d["aktivitas"]
+    assert akt["n_tabel"] > 0 and akt["n_figur"] > 0
+    assert 0 < akt["n_keputusan_sepakat"] <= akt["n_keputusan"]
+    if d["model"] is not None:
+        assert d["model"]["nama"] == "random_forest" and d["model"]["n_latih"] > 0

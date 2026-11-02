@@ -3,1326 +3,1042 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dashboard Interaktif Penelitian UMKM Pekanbaru</title>
+<title>Strategi Marketplace UMKM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
 <style>
 :root {
-  --bg: #f5f6f4; --surface: #ffffff; --ink: #15191b; --ink-2: #4a5357; --muted: #7a8488; --line: #e1e4e2;
-  --accent: #2a78d6; --accent-soft: #e6f0fb; --naik: #2a78d6; --sama: #cfd2cc; --turun: #d64140; --kosong: #ecedea;
-  --good: #1d7a33; --good-soft: #e3f3e6; --warn: #9a5b00; --warn-soft: #fbf0dc; --idle: #6b7478; --idle-soft: #eef0ee;
-  --bar-dim: #b9c7d6;
-  --f-display: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
-  --f-body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
-  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --bg: #f6f6f7; --surface: #ffffff; --surface-2: #fafafa; --ink: #141414; --ink-2: #555a61; --muted: #8b9098;
+  --line: #ebebee; --accent: #f26b1d; --accent-ink: #c2510f; --accent-soft: #fff1e7; --bar-neutral: #d7d9de; --bar-faint: #eff0f2;
+  --neg: #d43c3c; --good: #14833b; --good-soft: #e8f7ee; --warn: #9a5a00; --warn-soft: #fdf2dd; --shadow: 0 1px 2px rgba(16, 24, 40, .04);
+  --font: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111416; --surface: #191d20; --ink: #eef1f0; --ink-2: #b5bdbf; --muted: #868f91; --line: #2a3033;
-    --accent: #4b93ea; --accent-soft: #1c2a3a; --naik: #3987e5; --sama: #4b504d; --turun: #e66767; --kosong: #2a2e2c;
-    --good: #5cc46f; --good-soft: #183020; --warn: #e3a447; --warn-soft: #33270f; --idle: #9aa3a6; --idle-soft: #23282a;
-    --bar-dim: #3d4a58; color-scheme: dark;
+    --bg: #0e0f11; --surface: #17181b; --surface-2: #1c1d21; --ink: #f1f1f2; --ink-2: #b9bcc2; --muted: #868b93;
+    --line: #26282d; --accent: #f5813a; --accent-ink: #f8a06a; --accent-soft: #2b1a0f; --bar-neutral: #41444b; --bar-faint: #26282d;
+    --neg: #e66767; --good: #4cc27a; --good-soft: #142619; --warn: #e3a447; --warn-soft: #2e2410; --shadow: none; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111416; --surface: #191d20; --ink: #eef1f0; --ink-2: #b5bdbf; --muted: #868f91; --line: #2a3033;
-  --accent: #4b93ea; --accent-soft: #1c2a3a; --naik: #3987e5; --sama: #4b504d; --turun: #e66767; --kosong: #2a2e2c;
-  --good: #5cc46f; --good-soft: #183020; --warn: #e3a447; --warn-soft: #33270f; --idle: #9aa3a6; --idle-soft: #23282a;
-  --bar-dim: #3d4a58; color-scheme: dark;
+  --bg: #0e0f11; --surface: #17181b; --surface-2: #1c1d21; --ink: #f1f1f2; --ink-2: #b9bcc2; --muted: #868b93;
+  --line: #26282d; --accent: #f5813a; --accent-ink: #f8a06a; --accent-soft: #2b1a0f; --bar-neutral: #41444b; --bar-faint: #26282d;
+  --neg: #e66767; --good: #4cc27a; --good-soft: #142619; --warn: #e3a447; --warn-soft: #2e2410; --shadow: none; color-scheme: dark;
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; }
-body {
-  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55;
-  padding-inline: 16px; padding-block: 28px 56px;
-}
+html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.55 var(--font); }
 [hidden] { display: none !important; }
-img { max-width: 100%; }
-.wrap { max-width: 1080px; margin-inline: auto; display: grid; gap: 36px; }
-h1, h2, h3, h4 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
-h1 { font-size: clamp(1.7rem, 4vw, 2.3rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
-h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
-h3 { font-size: 1rem; font-weight: 700; }
-h4 { font-size: 0.92rem; font-weight: 700; }
-p { margin: 0; }
-.eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
-.lede { color: var(--ink-2); max-width: 68ch; }
-.mono { font-family: var(--f-mono); font-size: 0.86em; }
-section { display: grid; gap: 16px; }
-.sec-head { display: grid; gap: 4px; }
-.sec-head p { color: var(--ink-2); max-width: 72ch; }
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; min-width: 0; }
-header { display: grid; gap: 14px; }
-.meta { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--ink-2); font-size: 0.9rem; align-items: center; }
-.meta b { color: var(--ink); font-weight: 600; }
-.note { font-size: 0.88rem; color: var(--ink-2); border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; max-width: 72ch; }
-.btn {
-  appearance: none; font: inherit; font-size: 0.82rem; font-weight: 600; color: var(--accent); background: var(--accent-soft);
-  border: 1px solid transparent; border-radius: 6px; padding: 6px 14px; cursor: pointer; transition: all .15s;
-}
-.btn:hover { border-color: var(--accent); }
-.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: #1f63b8; }
-.empty { color: var(--muted); font-size: 0.9rem; }
-.error { color: var(--turun); }
+h1, h2, h3, h4, p { margin: 0; }
+a { color: var(--accent-ink); }
+.mono { font-family: var(--mono); font-size: 0.85em; }
+.muted { color: var(--muted); }
 
-/* Mode Switcher Nav */
-.mode-switch-wrap { display: grid; gap: 8px; }
-.mode-tabs {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;
-  background: var(--surface); border: 1px solid var(--line); padding: 6px; border-radius: 12px;
-}
-.mode-btn {
-  display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 8px;
-  border: 1px solid transparent; background: transparent; color: var(--ink-2); cursor: pointer;
-  text-align: left; font: inherit; transition: all .15s ease;
-}
-.mode-btn:hover { background: var(--idle-soft); color: var(--ink); }
-.mode-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-.mode-btn.active strong { color: var(--accent); }
-.mode-btn .icon { font-size: 1.4rem; }
-.mode-btn .mode-text { display: grid; gap: 1px; }
-.mode-btn strong { font-size: 0.92rem; font-weight: 700; color: var(--ink); }
-.mode-btn small { font-size: 0.76rem; color: var(--muted); }
-@media (max-width: 600px) { .mode-tabs { grid-template-columns: 1fr; } }
+/* ---------- Kerangka: sidebar + konten ---------- */
+.app { display: grid; grid-template-columns: 248px minmax(0, 1fr); min-height: 100vh; }
+.side { position: sticky; top: 0; height: 100vh; background: var(--surface); border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 18px; padding: 20px 14px; overflow-y: auto; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 0 6px; }
+.logo { width: 34px; height: 34px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; flex: none; }
+.brand b { display: block; font-size: 0.98rem; letter-spacing: -0.01em; }
+.brand small { display: block; font-size: 0.74rem; color: var(--muted); }
+.project { border: 1px solid var(--line); background: var(--surface-2); border-radius: 10px; padding: 10px 12px; display: grid; gap: 2px; }
+.project b { font-size: 0.86rem; }
+.project small { font-size: 0.74rem; color: var(--muted); }
+.nav-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); padding: 0 10px; margin-bottom: -10px; }
+.nav { display: grid; gap: 2px; }
+.nav a { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; color: var(--ink-2); text-decoration: none; font-weight: 500; position: relative; }
+.nav a svg { width: 17px; height: 17px; flex: none; }
+.nav a:hover { background: var(--surface-2); color: var(--ink); }
+.nav a.on { background: var(--surface-2); color: var(--ink); font-weight: 600; }
+.nav a.on::before { content: ""; position: absolute; left: -14px; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent); }
+.nav a .count { margin-left: auto; font-size: 0.7rem; font-weight: 600; color: var(--muted); background: var(--bar-faint); border-radius: 999px; padding: 1px 7px; }
 
-.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 0.74rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; width: fit-content; }
-.chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.chip.done { color: var(--good); background: var(--good-soft); }
-.chip.wait, .chip.run { color: var(--warn); background: var(--warn-soft); }
-.chip.todo { color: var(--idle); background: var(--idle-soft); }
+.main { min-width: 0; padding: 22px 28px 56px; display: grid; gap: 30px; align-content: start; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+.hello { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-ink); font-weight: 700; display: grid; place-items: center; flex: none; }
+.hello h1 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+.hello p { font-size: 0.8rem; color: var(--muted); }
+.tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
-.pipeline { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
-.step {
-  appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px;
-  padding: 10px 10px 12px; text-align: left; cursor: pointer; display: grid; gap: 6px; font: inherit; min-width: 0;
-  transition: border-color .15s, background .15s;
+@media (max-width: 960px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 12px 16px; border-right: 0; border-bottom: 1px solid var(--line); gap: 10px; }
+  .project, .nav-label { display: none; }
+  .nav { display: flex; overflow-x: auto; flex: 1 1 100%; }
+  .nav a { white-space: nowrap; }
+  .nav a.on::before { display: none; }
+  .main { padding: 18px 16px 48px; }
 }
-.step:hover { border-color: var(--accent); }
-.step:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.step[aria-selected="true"] { border-color: var(--accent); background: var(--accent-soft); }
-.step .n { font-family: var(--f-mono); font-size: 0.74rem; color: var(--muted); }
-.step .t { font-weight: 700; font-size: 0.88rem; line-height: 1.25; }
-.step .bar { height: 4px; border-radius: 2px; background: var(--idle-soft); }
-.step.s-done .bar { background: var(--good); }
-.step.s-wait .bar, .step.s-run .bar { background: var(--warn); }
-@media (max-width: 760px) { .pipeline { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-@media (max-width: 440px) { .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.detail { display: grid; gap: 18px; }
-.detail-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
-.detail-head p { flex-basis: 100%; color: var(--ink-2); max-width: 70ch; }
-.flow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.3fr) auto minmax(0, 1fr); gap: 12px; }
-.flow .arrow { align-self: center; color: var(--muted); font-size: 1.2rem; }
-.flow .box { border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; gap: 8px; align-content: start; min-width: 0; }
-.flow ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 0.9rem; }
-.file { display: grid; gap: 2px; font-size: 0.88rem; }
-.file .mono { color: var(--ink); overflow-wrap: anywhere; }
-.file small { color: var(--muted); font-size: 0.8rem; }
-@media (max-width: 760px) { .flow { grid-template-columns: minmax(0, 1fr); } .flow .arrow { transform: rotate(90deg); justify-self: center; } }
 
-.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-.stat { padding: 16px 18px; display: grid; gap: 4px; align-content: start; }
-.stat .v { font-family: var(--f-display); font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
-.stat .k { font-size: 0.86rem; color: var(--ink-2); }
-@media (max-width: 760px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* ---------- Komponen ---------- */
+.btn { appearance: none; font: inherit; font-size: 0.8rem; font-weight: 600; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; box-shadow: var(--shadow); }
+.btn:hover { border-color: var(--bar-neutral); background: var(--surface-2); }
+.btn svg { width: 15px; height: 15px; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { filter: brightness(1.06); background: var(--accent); }
+.btn.sm { font-size: 0.74rem; padding: 4px 10px; border-radius: 7px; }
+.btn:focus-visible, .nav a:focus-visible, .pill:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sec { display: grid; gap: 14px; }
+.sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.sec-head h2 { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+.sec-head p { color: var(--muted); font-size: 0.84rem; max-width: 80ch; }
+.g3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.g2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.g4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.span2 { grid-column: span 2; }
+.span3 { grid-column: 1 / -1; }
+@media (max-width: 1180px) { .g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g3 .span2 { grid-column: 1 / -1; } }
+@media (max-width: 760px) { .g3, .g2 { grid-template-columns: minmax(0, 1fr); } .span2 { grid-column: auto; } .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; min-width: 0; box-shadow: var(--shadow); display: grid; gap: 14px; align-content: start; }
+.card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.card-head h3 { font-size: 0.86rem; font-weight: 600; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+.info { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid var(--muted); color: var(--muted); font-size: 9px; font-weight: 700; display: inline-grid; place-items: center; cursor: help; font-style: normal; flex: none; }
+.big { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.big .v { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.big .k { font-size: 0.8rem; color: var(--muted); }
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.badge.up { color: var(--good); background: var(--good-soft); }
+.badge.acc { color: var(--accent-ink); background: var(--accent-soft); }
+.badge.warn { color: var(--warn); background: var(--warn-soft); }
+.badge.idle { color: var(--muted); background: var(--bar-faint); }
+.sub { font-size: 0.78rem; color: var(--muted); }
 
-.charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.charts .wide { grid-column: 1 / -1; }
-@media (max-width: 760px) { .charts { grid-template-columns: minmax(0, 1fr); } }
-.chart { display: grid; gap: 14px; align-content: start; }
-.cap { font-size: 0.86rem; color: var(--ink-2); }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.8rem; color: var(--ink-2); }
-.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
-.rows { display: grid; gap: 10px; }
-.row, .axis { display: grid; grid-template-columns: 170px minmax(0, 1fr) 70px; gap: 10px; align-items: center; font-size: 0.86rem; }
-@media (max-width: 440px) { .row, .axis { grid-template-columns: 100px minmax(0, 1fr) 56px; } }
-.row .lbl { color: var(--ink-2); overflow-wrap: anywhere; }
-.row .val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
-.track { position: relative; height: 22px; background: var(--kosong); border-radius: 4px; display: flex; overflow: hidden; gap: 2px; }
-.track.plain { background: transparent; }
-.seg { height: 100%; min-width: 0; outline: none; }
-.seg:first-child { border-radius: 4px 0 0 4px; }
-.seg:last-child { border-radius: 0 4px 4px 0; }
-.seg:only-child { border-radius: 0 4px 4px 0; }
-.seg:hover, .seg:focus-visible { filter: brightness(1.12); cursor: pointer; }
-.axis { font-size: 0.74rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.axis .ticks { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 4px; }
-.sig { display: block; font-size: 0.72rem; font-weight: 600; color: var(--good); }
-.ns { display: block; font-size: 0.72rem; font-weight: 600; color: var(--muted); }
-#tip {
-  position: fixed; z-index: 100; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 0.8rem;
-  padding: 6px 9px; border-radius: 6px; max-width: 280px; line-height: 1.4; opacity: 0; transition: opacity .1s;
-}
+/* Menu unduh */
+.dl { position: relative; flex: none; }
+.dl > summary { list-style: none; }
+.dl > summary::-webkit-details-marker { display: none; }
+.dl .menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 30; background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, .12); padding: 6px; display: grid; min-width: 190px; }
+.dl .menu button { appearance: none; border: 0; background: transparent; font: inherit; font-size: 0.8rem; color: var(--ink); text-align: left; padding: 7px 10px; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; }
+.dl .menu button:hover { background: var(--surface-2); }
+.dl .menu button span { color: var(--muted); font-size: 0.72rem; }
+
+/* Grafik */
+.chart { width: 100%; min-height: 40px; }
+.chart svg { display: block; overflow: visible; max-width: 100%; height: auto; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.76rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+.legend .dash { width: 14px; height: 0; border-top: 2px dashed var(--muted); border-radius: 0; vertical-align: 3px; }
+.takeaway { border-top: 1px dashed var(--line); padding-top: 12px; display: grid; gap: 4px; }
+.takeaway > b { font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent-ink); }
+.takeaway p { font-size: 0.84rem; color: var(--ink-2); }
+.takeaway p b { color: var(--ink); }
+#tip { position: fixed; z-index: 100; pointer-events: none; background: #141414; color: #fff; font-size: 0.76rem;
+  padding: 6px 10px; border-radius: 7px; max-width: 280px; line-height: 1.4; opacity: 0; transition: opacity .1s; }
 #tip.on { opacity: 1; }
 
-table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
-th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
-tr:last-child td { border-bottom: 0; }
+/* Overview */
+.ticks { display: flex; gap: 3px; height: 22px; }
+.ticks i { flex: 1; border-radius: 2px; background: var(--bar-faint); }
+.ticks i.on { background: var(--accent); }
+.kv { display: grid; gap: 8px; }
+.kv-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: 0.82rem; color: var(--ink-2); }
+.kv-row b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.kv-row .bar { grid-column: 1 / -1; height: 6px; background: var(--bar-faint); border-radius: 3px; overflow: hidden; margin-top: -4px; }
+.kv-row .bar i { display: block; height: 100%; background: var(--bar-neutral); border-radius: 3px; }
+.kv-row .bar i.hi { background: var(--accent); }
+.summary ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; counter-reset: s; }
+.summary li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; font-size: 0.88rem; counter-increment: s; }
+.summary li::before { content: counter(s); width: 24px; height: 24px; border-radius: 7px; background: var(--accent-soft); color: var(--accent-ink); font-weight: 700; font-size: 0.78rem; display: grid; place-items: center; }
+.donut-wrap { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; align-items: center; }
+.donut-legend { display: grid; gap: 10px; font-size: 0.8rem; }
+.donut-legend div { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; gap: 8px; align-items: start; }
+.donut-legend i { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; }
+.donut-legend small { display: block; color: var(--muted); font-size: 0.72rem; }
+.note { font-size: 0.78rem; color: var(--muted); }
+
+/* Kesimpulan RF */
+.conclusion { background: linear-gradient(135deg, var(--accent-soft), var(--surface) 55%); }
+.conclusion .eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent-ink); }
+.conclusion h3 { font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+.findings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1180px) { .findings { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .findings { grid-template-columns: minmax(0, 1fr); } }
+.finding { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 6px; align-content: start; }
+.finding .n { font-size: 0.7rem; font-weight: 700; color: var(--accent-ink); letter-spacing: 0.06em; }
+.finding h4 { font-size: 0.88rem; }
+.finding p { font-size: 0.82rem; color: var(--ink-2); }
+.limits { font-size: 0.8rem; color: var(--ink-2); }
+.limits ul { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 2px; }
+
+/* Rekomendasi */
+.pills { display: inline-flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 3px; flex-wrap: wrap; }
+.pill { appearance: none; font: inherit; font-size: 0.8rem; font-weight: 600; border: 0; background: transparent; color: var(--ink-2); padding: 6px 12px; border-radius: 7px; cursor: pointer; }
+.pill[aria-selected="true"] { background: var(--accent-soft); color: var(--accent-ink); }
+.seg-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.8rem; color: var(--muted); }
+.seg-meta b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.list { display: grid; }
+.item { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); align-items: start; }
+.item:first-child { border-top: 0; padding-top: 2px; }
+.item .rk { width: 30px; height: 30px; border-radius: 50%; background: var(--bar-faint); color: var(--ink-2); font-weight: 700; font-size: 0.82rem; display: grid; place-items: center; }
+.item:first-child .rk { background: var(--accent); color: #fff; }
+.item h4 { font-size: 0.88rem; }
+.item p { font-size: 0.8rem; color: var(--ink-2); margin-top: 2px; }
+.item .side-val { text-align: right; font-size: 0.78rem; color: var(--muted); display: grid; gap: 4px; justify-items: end; }
+.item .side-val b { color: var(--ink); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .item { grid-template-columns: 34px minmax(0, 1fr); } .item .side-val { grid-column: 2; justify-items: start; text-align: left; } }
+
+/* Rangkuman aktivitas */
+.stat { display: grid; gap: 4px; }
+.stat .v { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.stat .k { font-size: 0.8rem; color: var(--muted); }
 .scroll { overflow-x: auto; }
-.scroll table { min-width: 560px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 0.72rem; color: var(--muted); font-weight: 600; background: var(--surface-2); }
+th:first-child { border-radius: 8px 0 0 8px; } th:last-child { border-radius: 0 8px 8px 0; }
+tr:last-child td { border-bottom: 0; }
+.scroll table { min-width: 680px; }
+.stage-n { width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-ink); font-weight: 700; font-size: 0.78rem; display: grid; place-items: center; }
+td.what b { display: block; color: var(--ink); font-size: 0.86rem; }
+td.what span { color: var(--muted); font-size: 0.78rem; }
+.dl-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; margin: 0; }
+.dl-grid div { padding: 10px 0; border-top: 1px solid var(--line); display: grid; gap: 2px; }
+.dl-grid div:nth-child(-n+2) { border-top: 0; padding-top: 0; }
+.dl-grid dt { font-size: 0.74rem; color: var(--muted); }
+.dl-grid dd { margin: 0; font-size: 0.86rem; font-weight: 600; }
+@media (max-width: 560px) { .dl-grid { grid-template-columns: minmax(0, 1fr); } .dl-grid div:nth-child(2) { border-top: 1px solid var(--line); padding-top: 10px; } }
+.cm { display: grid; grid-template-columns: auto 1fr 1fr; gap: 6px; font-size: 0.76rem; align-items: center; }
+.cm .h { color: var(--muted); text-align: center; }
+.cm .r { color: var(--muted); text-align: right; padding-right: 4px; }
+.cm .c { border-radius: 8px; padding: 12px 8px; text-align: center; font-weight: 700; font-size: 1rem; font-variant-numeric: tabular-nums; }
+.cm .c small { display: block; font-weight: 500; font-size: 0.7rem; }
+.cm .ok { background: var(--accent-soft); color: var(--accent-ink); }
+.cm .no { background: var(--bar-faint); color: var(--ink-2); }
 
-.qgroups { display: grid; gap: 22px; }
-.qgroup { display: grid; gap: 10px; }
-.qgroup h3 { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.qgroup h3 small { font-weight: 500; color: var(--muted); font-size: 0.85rem; }
-.q { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
-.q input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent); cursor: pointer; }
-.q label { display: grid; gap: 6px; cursor: pointer; min-width: 0; }
-.q .ask { font-weight: 600; }
-.q .why { font-size: 0.86rem; color: var(--ink-2); }
-.q .why b { color: var(--ink); font-weight: 600; }
-.q.checked { opacity: 0.6; }
-.q.checked .ask { text-decoration: line-through; }
+/* Detail teknis */
+details.card > summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+details.card > summary::-webkit-details-marker { display: none; }
+details.card > summary::after { content: "Tampilkan"; font-size: 0.78rem; font-weight: 500; color: var(--accent-ink); }
+details.card[open] > summary::after { content: "Sembunyikan"; }
+details h4 { font-size: 0.86rem; margin-bottom: 6px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.fig { display: grid; gap: 8px; border: 1px solid var(--line); border-radius: 10px; padding: 10px; margin: 0; }
+.fig img { width: 100%; height: 120px; object-fit: contain; background: #fff; border-radius: 6px; }
+.fig div { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 0.78rem; }
+.error { color: var(--neg); font-size: 0.86rem; }
+footer { font-size: 0.76rem; color: var(--muted); }
 
+/* Simulator (disimpan, saat ini disembunyikan) */
+.sim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+@media (max-width: 860px) { .sim { grid-template-columns: minmax(0, 1fr); } }
+.fields { display: grid; gap: 14px; }
+.fields h4 { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.field { display: grid; gap: 4px; }
+.field label { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.84rem; font-weight: 600; }
+.field label output { font-family: var(--mono); font-size: 0.8rem; color: var(--accent-ink); background: var(--accent-soft); padding: 1px 8px; border-radius: 4px; }
+.field input[type="range"] { width: 100%; accent-color: var(--accent); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.checks { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.84rem; }
+.checks label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 400; }
+.result { background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 16px; align-content: start; }
+.result .lbl { font-size: 0.76rem; color: var(--muted); }
+.meter { height: 10px; background: var(--bar-faint); border-radius: 5px; overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--accent); border-radius: 5px; }
+.mini { display: grid; gap: 6px; }
+.mini-row { display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px; gap: 8px; align-items: center; font-size: 0.8rem; }
+.mini-row .t { height: 8px; background: var(--bar-faint); border-radius: 4px; position: relative; }
+.mini-row .t i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--accent); border-radius: 4px; }
+.mini-row span:last-child { text-align: right; font-weight: 600; }
+.warnbox { font-size: 0.78rem; color: var(--warn); background: var(--warn-soft); border-radius: 6px; padding: 8px 10px; }
 
-.fig-badge {
-  display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  width: fit-content;
+@media print {
+  .side, .tools, .dl, .pills { display: none !important; }
+  .app { grid-template-columns: 1fr; }
+  body { background: #fff; }
+  .card { break-inside: avoid; box-shadow: none; }
 }
-.fig-btn {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--accent);
-  margin-top: 6px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.fig:hover .fig-btn {
-  text-decoration: underline;
-}
-
-/* Filter Pills */
-.filter-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-.filter-btn {
-  appearance: none; font: inherit; font-size: 0.8rem; font-weight: 600; padding: 6px 14px; border-radius: 999px;
-  border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); cursor: pointer; transition: all .15s;
-}
-.filter-btn:hover { border-color: var(--accent); color: var(--ink); }
-.filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-
-/* Gallery & Figure Cards */
-.gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-@media (max-width: 760px) { .gallery { grid-template-columns: minmax(0, 1fr); } }
-.fig {
-  display: grid; gap: 10px; align-content: start; padding: 14px; border-radius: 10px; border: 1px solid var(--line);
-  background: var(--surface); transition: transform .15s, box-shadow .15s; cursor: pointer;
-}
-.fig:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); border-color: var(--accent); }
-.fig .img-box { border-radius: 6px; overflow: hidden; background: #fcfcfb; display: grid; place-items: center; }
-.fig img { display: block; width: 100%; height: auto; object-fit: contain; }
-.fig figcaption { font-size: 0.86rem; color: var(--ink-2); display: grid; gap: 3px; }
-.fig figcaption b { color: var(--ink); font-weight: 600; font-size: 0.92rem; }
-figure { margin: 0; }
-footer { font-size: 0.82rem; color: var(--muted); }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-
-/* Lightbox Modal */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.78); backdrop-filter: blur(4px);
-  display: grid; place-items: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .2s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: auto; }
-.modal-card {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; max-width: 960px; width: 100%;
-  max-height: 92vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 12px 36px rgba(0,0,0,0.3);
-}
-.modal-header {
-  padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line);
-}
-.modal-body {
-  padding: 18px; overflow-y: auto; display: grid; gap: 14px; text-align: center;
-}
-.modal-body img {
-  max-height: 62vh; width: auto; max-width: 100%; object-fit: contain; margin-inline: auto; border-radius: 6px;
-  border: 1px solid var(--line);
-}
-.modal-footer {
-  padding: 12px 20px; border-top: 1px solid var(--line); font-size: 0.88rem; color: var(--ink-2); background: var(--bg);
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
-}
-
-/* Interactive Calculator Styles */
-.calc-panel {
-  display: grid; gap: 20px; border: 2px solid var(--accent); border-radius: 12px; padding: 22px; background: var(--surface);
-}
-.calc-grid {
-  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 24px;
-}
-@media (max-width: 760px) { .calc-grid { grid-template-columns: 1fr; } }
-.calc-inputs { display: grid; gap: 16px; }
-.calc-field { display: grid; gap: 6px; }
-.calc-field label {
-  font-size: 0.86rem; font-weight: 600; color: var(--ink); display: flex; justify-content: space-between; align-items: center;
-}
-.calc-field label span.val-badge {
-  font-family: var(--f-mono); font-size: 0.84rem; background: var(--accent-soft); color: var(--accent); padding: 2px 8px; border-radius: 4px;
-}
-.calc-field input[type="range"] { accent-color: var(--accent); cursor: pointer; width: 100%; height: 6px; }
-.calc-field input[type="number"] {
-  font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink);
-}
-.platform-checks { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 0.86rem; }
-.platform-checks label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-.calc-result-box {
-  background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 14px; align-content: start;
-}
-.res-card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 4px; }
-
-/* Kartu Khusus Mode Umum */
-.card-highlight {
-  border: 1px solid var(--line); border-radius: 10px; padding: 18px; background: var(--surface); display: grid; gap: 8px;
-}
-.card-highlight.lead { border-left: 4px solid var(--good); background: var(--good-soft); }
-.card-highlight.lead strong { color: var(--good); }
-.action-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
-.action-item:last-child { border-bottom: 0; }
-.action-badge {
-  font-weight: 800; font-size: 0.85rem; background: var(--accent); color: #fff; border-radius: 6px; width: 28px; height: 28px;
-  display: grid; place-items: center; flex-shrink: 0;
-}
-.action-body { display: grid; gap: 3px; }
-.action-title { font-weight: 700; color: var(--ink); }
-.action-desc { font-size: 0.88rem; color: var(--ink-2); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="app">
 
-  <header>
-    <span class="eyebrow">Penelitian UMKM Kota Pekanbaru</span>
-    <h1 id="main-title">Strategi Marketplace UMKM</h1>
-    <p class="lede" id="main-lede">Analisis pengaruh strategi marketplace (unggah produk, promosi, komunikasi pelanggan, konsistensi kelola toko) terhadap kinerja penjualan 149 UMKM di Pekanbaru, dilengkapi simulator interaktif dan rekomendasi tindakan per segmen.</p>
-    <div class="meta">
-      <span>Data diolah: <b id="m-data">-</b></span>
-      <span>Halaman dimuat: <b id="m-muat">-</b></span>
-      <span id="m-tahap"></span>
-      <button class="btn" id="reload" type="button">Muat ulang data</button>
+<!-- ======================= SIDEBAR ======================= -->
+<aside class="side">
+  <div class="brand">
+    <span class="logo" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M4 18V11M10 18V6M16 18v-9M22 18H2"/></svg></span>
+    <div><b>UMKM Insight</b><small>Penelitian Pekanbaru</small></div>
+  </div>
+  <div class="project"><b>Strategi Marketplace</b><small id="side-proj">149 UMKM · 7 tahap analisis</small></div>
+
+  <span class="nav-label">Menu</span>
+  <nav class="nav" aria-label="Navigasi utama" id="nav">
+    <a href="#overview" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Overview</a>
+    <a href="#kondisi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Kondisi penjualan</a>
+    <a href="#random-forest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M12 7.5v4M12 11.5l-5 4.5M12 11.5l5 4.5"/></svg>Random Forest</a>
+    <a href="#rekomendasi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Rekomendasi</a>
+    <a href="#aktivitas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>Rangkuman aktivitas<span class="count" id="nav-tahap">-</span></a>
+    <a href="#teknis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Detail teknis</a>
+  </nav>
+
+</aside>
+
+<!-- ======================= KONTEN ======================= -->
+<div class="main">
+  <header class="topbar">
+    <div class="hello">
+      <span class="avatar">UP</span>
+      <div><h1>Strategi marketplace UMKM Pekanbaru</h1><p>Data diolah <span id="m-data">-</span> · dimuat <span id="m-muat">-</span></p></div>
     </div>
-    <p class="note">Semua temuan menggambarkan keterkaitan statistik (asosiasi non-kausal). Seluruh angka diproses dan divalidasi otomatis oleh pipeline.</p>
-    <p class="error" id="err" hidden></p>
+    <div class="tools">
+      <button class="btn" id="reload" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>Muat ulang</button>
+      <button class="btn primary" id="print" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Unduh laporan PDF</button>
+    </div>
   </header>
+  <p class="error" id="err" hidden></p>
 
-  <!-- PENGATUR MODE TAMPILAN -->
-  <div class="mode-switch-wrap">
-    <nav class="mode-tabs" role="tablist" aria-label="Pilih Mode Dashboard">
-      <button type="button" class="mode-btn active" id="btn-mode-umum" role="tab" aria-selected="true" aria-controls="pane-umum">
-        <span class="icon">🏢</span>
-        <span class="mode-text">
-          <strong>Tampilan Umum &amp; Rekomendasi Bisnis</strong>
-          <small>Untuk Pelaku UMKM, Konsultan, dan Pengambil Kebijakan</small>
-        </span>
-      </button>
-      <button type="button" class="mode-btn" id="btn-mode-dev" role="tab" aria-selected="false" aria-controls="pane-dev">
-        <span class="icon">🛠️</span>
-        <span class="mode-text">
-          <strong>Tampilan Developer &amp; Data Science</strong>
-          <small>Model Random Forest, Validasi Silang, SHAP, &amp; Pipeline</small>
-        </span>
-      </button>
-    </nav>
-  </div>
-
-  <!-- ================================================================= -->
-  <!-- BAGIAN 1: TAMPILAN UMUM (NON-TEKNIS / BISNIS / PEMILIK UMKM)     -->
-  <!-- ================================================================= -->
-  <div id="pane-umum" role="tabpanel" aria-labelledby="btn-mode-umum">
-    <div style="display: grid; gap: 40px;">
-
-      <!-- 1. KONDISI NYATA PENJUALAN UMKM (RINGKASAN ANGKA STATISTIK DI ATAS) -->
-      <section aria-labelledby="h-umum-kondisi">
-        <div class="sec-head">
-          <span class="eyebrow" style="color:var(--accent);">Ringkasan Lapangan</span>
-          <h2 id="h-umum-kondisi">Kondisi Nyata Penjualan 149 UMKM Pekanbaru</h2>
-          <p>Potret perubahan omzet dan transaksi setelah bergabung di platform marketplace (GoFood, GrabFood, Shopee, Maxim, TikTok Shop):</p>
-        </div>
-        <div class="stats" id="stats-umum"></div>
-      </section>
-
-      <!-- 2. GRAFIK & VISUALISASI PEMBANDING DATA PENELITIAN (UTAMA DI ATAS) -->
-      <section aria-labelledby="h-umum-pembanding">
-        <div class="sec-head">
-          <span class="eyebrow" style="color:var(--accent);">Analisis Komparatif Interaktif</span>
-          <h2 id="h-umum-pembanding">📊 Visualisasi &amp; Grafik Pembanding Data Penelitian</h2>
-          <p>Bandingkan performa data sebelum vs sesudah marketplace, pembeda toko yang berhasil naik vs yang stagnan, profil antar klaster segmen, serta kontribusi strategi dari model Machine Learning. Klik grafik untuk memperbesar dan melihat analisis lengkap:</p>
-        </div>
-
-        <!-- Filter Kategori Pembanding Data -->
-        <div class="filter-pills" id="filter-pills-pembanding">
-          <button type="button" class="filter-btn active" data-filter="all">✨ Semua Pembanding (10 Grafik)</button>
-          <button type="button" class="filter-btn" data-filter="sebelum_sesudah">🔄 Sebelum vs Sesudah (3)</button>
-          <button type="button" class="filter-btn" data-filter="naik_vs_tidak">📈 Naik vs Tidak Naik (2)</button>
-          <button type="button" class="filter-btn" data-filter="segmen">👥 Antar Segmen Usaha (3)</button>
-          <button type="button" class="filter-btn" data-filter="ml">🤖 Pengaruh Machine Learning (2)</button>
-        </div>
-
-        <!-- Grid Galeri Pembanding Data -->
-        <div class="gallery" id="gallery-komparatif-umum"></div>
-      </section>
-
-      <!-- 3. PANDUAN AKSI PRIORITAS PER SEGMEN UMKM -->
-      <section aria-labelledby="h-umum-rekomendasi">
-        <div class="sec-head">
-          <span class="eyebrow" style="color:var(--accent);">Strategi Lapangan</span>
-          <h2 id="h-umum-rekomendasi">Panduan Aksi Prioritas per Segmen UMKM</h2>
-          <p>Urutan strategi umum: <b>X3 Komunikasi &gt; X1 Unggah Produk &gt; X2 Promosi</b>. Tindakan praktis dibedakan menurut skala usaha:</p>
-        </div>
-        <div class="charts" id="grid-rekomendasi-umum"></div>
-      </section>
-
-      <!-- 4. SIMULASI POTENSI HASIL (WHAT-IF) -->
-      <section aria-labelledby="h-umum-whatif">
-        <div class="sec-head">
-          <span class="eyebrow" style="color:var(--accent);">Estimasi Dampak</span>
-          <h2 id="h-umum-whatif">Simulasi Potensi Hasil: Berapa Besar Peluang Penjualan Naik?</h2>
-          <p>Jika Anda meningkatkan komitmen pada strategi tertentu sebesar 1 tingkat lebih aktif (skala 1–5), model Random Forest memperkirakan tambahan peluang omzet/pesanan naik sebagai berikut:</p>
-        </div>
-        <div class="panel">
-          <div class="charts" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
-            <div class="card-highlight lead">
-              <span class="eyebrow">Paling Efektif</span>
-              <h3>X3 Komunikasi Pelanggan</h3>
-              <p style="font-size:1.8rem; font-weight:800; color:var(--good); margin: 6px 0;">+14% s.d. +17%</p>
-              <p style="font-size:0.86rem; color:var(--ink-2);">Peluang penjualan naik bertambah paling tinggi hanya dengan merespon chat cepat &amp; tanggap komplain.</p>
-            </div>
-            <div class="card-highlight">
-              <span class="eyebrow">Efektif Kedua</span>
-              <h3>X1 Unggah &amp; Perbarui Katalog</h3>
-              <p style="font-size:1.8rem; font-weight:800; color:var(--accent); margin: 6px 0;">+7,5% s.d. +8,5%</p>
-              <p style="font-size:0.86rem; color:var(--ink-2);">Rutin mengunggah ulang produk lama agar kembali muncul di halaman awal pencarian pembeli.</p>
-            </div>
-            <div class="card-highlight">
-              <span class="eyebrow">Pendukung</span>
-              <h3>X2 Promosi Marketplace</h3>
-              <p style="font-size:1.8rem; font-weight:800; color:var(--ink-2); margin: 6px 0;">+6,5% s.d. +6,8%</p>
-              <p style="font-size:0.86rem; color:var(--ink-2);">Memanfaatkan voucher gratis ongkir/diskon platform; evaluasi agar tidak boncos.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. PETA PLATFORM & POLA PENJUALAN -->
-      <section aria-labelledby="h-umum-grafik">
-        <div class="sec-head">
-          <span class="eyebrow" style="color:var(--accent);">Peta Platform</span>
-          <h2 id="h-umum-grafik">Peta Platform &amp; Pola Penjualan</h2>
-          <p>Detail proporsi dan arah perubahan kinerja 149 UMKM di Pekanbaru:</p>
-        </div>
-        <div class="charts">
-          <div class="panel chart">
-            <div class="sec-head"><h3>Arah Perubahan Omzet &amp; Pesanan</h3><p class="cap">Sebagian besar UMKM mengalami kenaikan setelah masuk marketplace.</p></div>
-            <div class="rows" id="ch-arah-umum"></div>
-          </div>
-          <div class="panel chart">
-            <div class="sec-head"><h3>Platform Marketplace yang Digunakan</h3><p class="cap">GoFood, GrabFood, dan Shopee merupakan 3 platform teratas.</p></div>
-            <div class="rows" id="ch-plat-umum"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 6. SIMULATOR REKOMENDASI INTERAKTIF (DI PALING BAWAH SESUAI PERMINTAAN) -->
-      <section aria-labelledby="h-kalkulator" style="margin-top: 10px; border-top: 2px dashed var(--line); padding-top: 30px;">
-        <div class="sec-head">
-          <span class="eyebrow" style="color:var(--accent);">Eksperimen Langsung</span>
-          <h2 id="h-kalkulator">🎯 Simulator Interaktif: Cek Rekomendasi Toko Anda</h2>
-          <p>Setelah mempelajari grafik pembanding dan panduan prioritas di atas, masukkan profil toko Anda di bawah ini untuk melihat perkiraan segmen, peluang keberhasilan (menggunakan live inferensi Random Forest), dan rekomendasi tindakan yang disesuaikan secara real-time:</p>
-        </div>
-        <div class="calc-panel">
-          <div class="calc-grid">
-            <div class="calc-inputs">
-              <div class="calc-field">
-                <label>Omzet Usaha per Bulan: <span class="val-badge" id="lbl-omzet">Rp15.000.000</span></label>
-                <input type="range" id="sim-omzet" min="1000000" max="80000000" step="500000" value="15000000">
-              </div>
-              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                <div class="calc-field">
-                  <label>Lama Usaha: <span class="val-badge" id="lbl-lu">2,5 th</span></label>
-                  <input type="range" id="sim-lu" min="0" max="15" step="0.5" value="2.5">
-                </div>
-                <div class="calc-field">
-                  <label>Lama di Marketplace: <span class="val-badge" id="lbl-lmp">1,5 th</span></label>
-                  <input type="range" id="sim-lmp" min="0" max="8" step="0.5" value="1.5">
-                </div>
-              </div>
-              <div class="calc-field">
-                <label>Platform Marketplace yang Aktif Digunakan:</label>
-                <div class="platform-checks">
-                  <label><input type="checkbox" name="sim-plat" value="gofood" checked> GoFood</label>
-                  <label><input type="checkbox" name="sim-plat" value="grabfood"> GrabFood</label>
-                  <label><input type="checkbox" name="sim-plat" value="shopee" checked> Shopee</label>
-                  <label><input type="checkbox" name="sim-plat" value="maxim"> Maxim</label>
-                  <label><input type="checkbox" name="sim-plat" value="tiktok"> TikTok Shop</label>
-                </div>
-              </div>
-              <hr style="border:0; border-top:1px solid var(--line); margin: 4px 0;">
-              <div class="calc-field">
-                <label>X3. Kecepatan &amp; Pelayanan Chat (Komunikasi): <span class="val-badge" id="lbl-x3">3,0 / 5</span></label>
-                <input type="range" id="sim-x3" min="1" max="5" step="0.1" value="3.0">
-              </div>
-              <div class="calc-field">
-                <label>X1. Rutin Unggah &amp; Perbarui Katalog: <span class="val-badge" id="lbl-x1">2,5 / 5</span></label>
-                <input type="range" id="sim-x1" min="1" max="5" step="0.1" value="2.5">
-              </div>
-              <div class="calc-field">
-                <label>X2. Ikut Promo &amp; Diskon Marketplace: <span class="val-badge" id="lbl-x2">2,5 / 5</span></label>
-                <input type="range" id="sim-x2" min="1" max="5" step="0.1" value="2.5">
-              </div>
-              <div class="calc-field">
-                <label>X4. Konsistensi Pengelolaan Toko: <span class="val-badge" id="lbl-x4">3,0 / 5</span></label>
-                <input type="range" id="sim-x4" min="1" max="5" step="0.1" value="3.0">
-              </div>
-            </div>
-
-            <div class="calc-result-box" id="sim-output">
-              <span class="eyebrow">Hasil Prediksi &amp; Rekomendasi</span>
-              <div class="res-card">
-                <small style="color:var(--muted)">Klaster Profil Usaha:</small>
-                <strong id="sim-res-segmen" style="font-size:1.05rem; color:var(--accent);">-</strong>
-              </div>
-              <div class="res-card">
-                <small style="color:var(--muted)">Peluang Omzet/Pesanan Naik (Random Forest):</small>
-                <strong id="sim-res-peluang" style="font-size:1.6rem; color:var(--good);">-</strong>
-              </div>
-              <div style="display:grid; gap:8px;">
-                <small style="font-weight:700; color:var(--ink);">3 Strategi Prioritas Khusus Usaha Anda:</small>
-                <div id="sim-res-prioritas" style="display:grid; gap:8px;"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+  <!-- OVERVIEW -->
+  <section class="sec" id="overview">
+    <div class="g3">
+      <div class="card">
+        <div class="card-head"><h3>UMKM melaporkan penjualan naik <i class="info" data-tip="Sampel utama: UMKM yang punya data omzet/transaksi sebelum masuk marketplace.">i</i></h3></div>
+        <div class="big"><span class="v" id="k-naik">-</span><span class="badge acc" id="k-naik-b"></span></div>
+        <div class="ticks" id="k-ticks" aria-hidden="true"></div>
+        <div class="kv" id="k-naik-kv"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Kemampuan Random Forest <i class="info" data-tip="ROC-AUC pada data uji validasi silang 5×5. 0,5 = tebakan acak, 1 = sempurna.">i</i></h3></div>
+        <div class="big"><span class="v" id="k-auc">-</span><span class="badge up" id="k-auc-b"></span></div>
+        <div class="kv" id="k-auc-kv"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Bobot pengaruh strategi <i class="info" data-tip="Gabungan regresi logistik, permutation importance Random Forest, dan SHAP (D26). Dipakai sebagai bobot rekomendasi.">i</i></h3></div>
+        <div class="big"><span class="v" id="k-top">-</span><span class="badge acc" id="k-top-b"></span></div>
+        <div class="kv" id="k-top-kv"></div>
+      </div>
+      <div class="card summary span2">
+        <div class="card-head"><h3>Kesimpulan utama</h3></div>
+        <ol id="summary"></ol>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Segmen UMKM <i class="info" data-tip="K-Means pada profil usaha: skala omzet, lama usaha, lama di marketplace, jumlah platform.">i</i></h3></div>
+        <div class="donut-wrap"><div id="donut"></div><div class="donut-legend" id="donut-leg"></div></div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- ================================================================= -->
-  <!-- BAGIAN 2: TAMPILAN DEVELOPER & DATA SCIENCE (KOMPLEKS / TEKNIS)   -->
-  <!-- ================================================================= -->
-  <div id="pane-dev" role="tabpanel" aria-labelledby="btn-mode-dev" hidden>
-    <div style="display: grid; gap: 36px;">
-
-      <section aria-labelledby="h-alur">
-        <div class="sec-head">
-          <h2 id="h-alur">Pipeline 7 Tahap Penelitian (Reproducible)</h2>
-          <p>Alur data end-to-end, status validasi otomatis, artefak yang dihasilkan, dan keterlacakan dari <span class="mono">.claude/progress.md</span>.</p>
-        </div>
-        <div class="pipeline" role="tablist" aria-label="Tahap penelitian" id="pipeline"></div>
-        <div class="panel detail" role="tabpanel" id="detail" aria-live="polite"></div>
-      </section>
-
-      <section aria-labelledby="h-ml-eval">
-        <div class="sec-head">
-          <h2 id="h-ml-eval">Evaluasi Model Machine Learning (Repeated CV 5×5)</h2>
-          <p>Perbandingan performa model klasifikasi target biner <span class="mono">naik_penjualan</span> (1 = naik vs 0 = sama) pada data uji lipatan CV (25 evaluasi).</p>
-        </div>
-        <div class="charts">
-          <div class="panel chart">
-            <div class="sec-head">
-              <h3>Performa Komparatif Model</h3>
-              <p class="cap">Random Forest mengungguli Logistic Regression dan Dummy Baseline pada seluruh metrik.</p>
-            </div>
-            <div class="scroll">
-              <table>
-                <thead><tr><th>Model</th><th>ROC-AUC</th><th>F1-Macro</th><th>Akurasi Seimbang</th><th>Status</th></tr></thead>
-                <tbody id="tbl-dev-model"><tr><td colspan="5" class="empty">Memuat...</td></tr></tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="panel chart">
-            <div class="sec-head">
-              <h3>Simulasi What-If Komparatif (Logistik vs Random Forest)</h3>
-              <p class="cap">Perubahan probabilitas prediksi penjualan naik (+1 poin strategi Likert 1-5).</p>
-            </div>
-            <div class="scroll">
-              <table>
-                <thead><tr><th>Segmen</th><th>Model</th><th>Strategi</th><th>Basis (%)</th><th>Δ Prob (pp)</th></tr></thead>
-                <tbody id="tbl-dev-whatif"><tr><td colspan="5" class="empty">Memuat...</td></tr></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="h-fitur-shap">
-        <div class="sec-head">
-          <h2 id="h-fitur-shap">Interpretasi Fitur: Permutation Importance, SHAP, &amp; Logit</h2>
-          <p>Hierarki pengaruh strategi berdasarkan penggabungan tiga sumber analitis (Random Forest Permutation Importance pada out-of-fold, TreeExplainer SHAP, dan koefisien Regresi Logistik terstandar).</p>
-        </div>
-        <div class="panel scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Peringkat</th>
-                <th>Strategi</th>
-                <th>Permutation (RF)</th>
-                <th>Mean |SHAP| (RF)</th>
-                <th>Odds Ratio (Logit)</th>
-                <th>Skor Pengaruh</th>
-                <th>Bobot Rekomendasi (D26)</th>
-                <th>Keyakinan Arah (+)</th>
-                <th>Status Hubungan</th>
-              </tr>
-            </thead>
-            <tbody id="tbl-dev-pengaruh"><tr><td colspan="9" class="empty">Memuat...</td></tr></tbody>
-          </table>
-        </div>
-      </section>
-
-      <section aria-labelledby="h-rek-dev">
-        <div class="sec-head">
-          <h2 id="h-rek-dev">Formula &amp; Kesenjangan Rekomendasi (Tahap 6 - D28)</h2>
-          <p>Prioritas = Bobot Pengaruh (Tahap 4) × Gap (rata-rata skor UMKM yang penjualannya naik di segmen tersebut dikurangi rata-rata skor seluruh anggota segmen).</p>
-        </div>
-        <div class="panel scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Segmen</th>
-                <th>Rank</th>
-                <th>Strategi</th>
-                <th>Gap Skor</th>
-                <th>Bobot</th>
-                <th>Skor Prioritas</th>
-                <th>Tindakan Operasional Rekomendasi</th>
-              </tr>
-            </thead>
-            <tbody id="tbl-dev-rek"><tr><td colspan="7" class="empty">Memuat...</td></tr></tbody>
-          </table>
-        </div>
-      </section>
-
-      <section aria-labelledby="h-kualitas">
-        <div class="sec-head">
-          <h2 id="h-kualitas">Audit Kualitas Data &amp; Diagnostik Statistik</h2>
-          <p>Penanganan anomali data, pengujian kolinearitas VIF, reliabilitas Cronbach's Alpha, dan verifikasi sensitivitas.</p>
-        </div>
-        <div class="panel scroll">
-          <table>
-            <thead><tr><th>Temuan Diagnostik</th><th>Dampak Metodologis</th><th>Status Penanganan</th></tr></thead>
-            <tbody id="kualitas"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <section aria-labelledby="h-integrasi">
-        <div class="sec-head">
-          <h2 id="h-integrasi">Kesiapan Integrasi Backend &amp; Kontrak Model</h2>
-          <p>Arsitektur inferensi mandiri tanpa ketergantungan notebook (Pydantic <span class="mono">ProfilUMKM</span> &amp; <span class="mono">HasilRekomendasi</span>).</p>
-        </div>
-        <div class="panel">
-          <div style="display:grid; gap: 12px;">
-            <p>Model dan scaler serialisasi tersimpan di folder <span class="mono">models/v1/</span> (<span class="mono">best_model.joblib</span>, <span class="mono">kmeans.joblib</span>, <span class="mono">scaler.joblib</span>). Kontrak lengkap di <span class="mono">reports/integration_contract.md</span>.</p>
-            <div style="background:var(--bg); border:1px solid var(--line); border-radius:6px; padding:12px; font-family:var(--f-mono); font-size:0.84rem; overflow-x:auto;">
-              # Pemanggilan inferensi CLI mandiri:<br>
-              python -m umkm.recommend --help<br>
-              python -m umkm.recommend profil_sample.json<br><br>
-              # Endpoint API lokal (POST):<br>
-              POST http://localhost:8000/api/recommend<br><br>
-              # Pengujian unit test:<br>
-              pytest tests/
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="h-tanya">
-        <div class="sec-head">
-          <h2 id="h-tanya">Log Keputusan Analitis &amp; Pertanyaan Penelitian</h2>
-          <p>Seluruh keputusan analitis terekam di <span class="mono">.claude/decisions.md</span> (D01 s.d. D28). Centang bila sudah diverifikasi pembimbing.</p>
-          <p class="cap" id="qprog"></p>
-        </div>
-        <div class="qgroups" id="qgroups"></div>
-      </section>
-
-      <!-- GALERI LENGKAP DENGAN FILTER KATEGORI -->
-      <section aria-labelledby="h-galeri">
-        <div class="sec-head">
-          <h2 id="h-galeri">Galeri Interaktif Visualisasi &amp; Grafik Analisis (21 Grafik)</h2>
-          <p>Gunakan filter di bawah untuk menyaring grafik berdasarkan topik analisis. Klik gambar untuk membuka modal ulasan mendalam:</p>
-        </div>
-        <div class="filter-pills" id="filter-pills">
-          <button type="button" class="filter-btn active" data-filter="all">Semua Grafik (21)</button>
-          <button type="button" class="filter-btn" data-filter="rek">🔥 Rekomendasi &amp; Gap (2)</button>
-          <button type="button" class="filter-btn" data-filter="ml">🤖 Machine Learning &amp; SHAP (5)</button>
-          <button type="button" class="filter-btn" data-filter="seg">🎯 Segmentasi Klaster (3)</button>
-          <button type="button" class="filter-btn" data-filter="eda">📊 Pola Data &amp; EDA (11)</button>
-        </div>
-        <div class="gallery" id="gallery"></div>
-      </section>
-
-      <section aria-labelledby="h-folder">
-        <div class="sec-head"><h2 id="h-folder">Struktur Direktori Repositori</h2><p>Penataan kode dan data.</p></div>
-        <div class="panel scroll">
-          <table>
-            <thead><tr><th>Folder / Berkas</th><th>Deskripsi</th><th>Masuk Git?</th></tr></thead>
-            <tbody>
-              <tr><td class="mono">data/raw/</td><td>Excel kuesioner asli (tidak pernah diubah, memuat nama usaha)</td><td><span class="chip todo">tidak</span></td></tr>
-              <tr><td class="mono">data/processed/</td><td><span class="mono">data_clean.csv</span>, <span class="mono">data_features.csv</span>, <span class="mono">data_segmen.csv</span></td><td><span class="chip todo">tidak</span></td></tr>
-              <tr><td class="mono">reports/</td><td>Laporan final (<span class="mono">laporan_final.md</span>), kontrak integrasi, tabel CSV, grafik PNG</td><td><span class="chip done">ya</span></td></tr>
-              <tr><td class="mono">src/umkm/</td><td>Paket kode inti python (cleaning, fitur, stats, models, rek, dashboard)</td><td><span class="chip done">ya</span></td></tr>
-              <tr><td class="mono">models/v1/</td><td>Artefak biner model machine learning &amp; clustering siap produksi</td><td><span class="chip done">ya</span></td></tr>
-              <tr><td class="mono">notebooks/</td><td>Notebook interaktif 00 s.d. 07 (Colab &amp; lokal)</td><td><span class="chip done">ya</span></td></tr>
-              <tr><td class="mono">tests/</td><td>121 unit tests otomatis (pytest)</td><td><span class="chip done">ya</span></td></tr>
-              <tr><td class="mono">.claude/</td><td>Log keputusan analitis (<span class="mono">decisions.md</span>), rencana, progres</td><td><span class="chip done">ya</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
+  <!-- KONDISI -->
+  <section class="sec" id="kondisi">
+    <div class="sec-head"><div><h2>Kondisi penjualan</h2><p>Omzet dan transaksi per bulan sebelum dan sesudah masuk marketplace, serta platform yang dipakai.</p></div></div>
+    <div class="g2">
+      <article class="card" data-chart="arah"></article>
+      <article class="card" data-chart="platform"></article>
     </div>
-  </div>
+  </section>
 
-  <footer>
-    Dijalankan lokal dengan <span class="mono">python -m umkm.dashboard</span>. Jalankan ulang seluruh analisis dari awal dengan <span class="mono">python -m umkm.pipeline --all</span>.
-  </footer>
+  <!-- RANDOM FOREST -->
+  <section class="sec" id="random-forest">
+    <div class="sec-head"><div><h2>Hasil Random Forest</h2><p>Model dilatih membedakan UMKM yang melaporkan kenaikan penjualan dari yang menulis angka sama, berdasarkan skor 4 strategi dan profil usaha, lalu diuji pada data yang tidak pernah dilihatnya (validasi silang 5×5).</p></div></div>
+    <div class="g3">
+      <article class="card" data-chart="auc"></article>
+      <article class="card span2" data-chart="importance"></article>
+      <article class="card span3" data-chart="whatif"></article>
+    </div>
+    <div class="card conclusion" id="rf-conclusion">
+      <div style="display:grid; gap:4px;"><span class="eyebrow">Kesimpulan setelah memakai Random Forest</span><h3 id="rf-title">-</h3></div>
+      <div class="findings" id="rf-findings"></div>
+      <div class="limits" id="rf-limits"></div>
+    </div>
+  </section>
+
+  <!-- REKOMENDASI -->
+  <section class="sec" id="rekomendasi">
+    <div class="sec-head">
+      <div><h2>Rekomendasi per segmen</h2><p>Prioritas = bobot pengaruh (hasil Random Forest dan regresi) × selisih skor segmen terhadap UMKM yang penjualannya naik di segmen yang sama.</p></div>
+      <div class="pills" role="tablist" aria-label="Pilih segmen" id="seg-tabs"></div>
+    </div>
+    <div class="g3">
+      <div class="card span2">
+        <div class="card-head"><div style="display:grid; gap:4px;"><h3 id="seg-title" style="color:var(--ink); font-size:0.95rem;">-</h3><div class="seg-meta" id="seg-meta"></div></div></div>
+        <div class="list" id="seg-actions"></div>
+      </div>
+      <article class="card" data-chart="gap"></article>
+    </div>
+  </section>
+
+  <!-- RANGKUMAN AKTIVITAS -->
+  <section class="sec" id="aktivitas">
+    <div class="sec-head"><div><h2>Rangkuman aktivitas dan hasil learning</h2><p>Apa yang dikerjakan di setiap tahap, apa hasilnya, dan apa yang dipelajari model dari data.</p></div></div>
+    <div class="g4" id="akt-stats"></div>
+    <div class="card">
+      <div class="card-head"><h3>Alur penelitian</h3><span class="badge up" id="akt-badge"></span></div>
+      <div class="scroll"><table><thead><tr><th style="width:44px;">#</th><th>Tahap dan aktivitas</th><th>Hasil utama</th><th>Status</th><th>Selesai</th></tr></thead><tbody id="akt-tahap"></tbody></table></div>
+    </div>
+    <div class="g3">
+      <div class="card span2">
+        <div class="card-head"><h3>Rangkuman hasil learning: Random Forest</h3><span class="badge acc" id="ml-badge"></span></div>
+        <dl class="dl-grid" id="ml-dl"></dl>
+        <div class="takeaway"><b>Yang dipelajari model</b><p id="ml-learn">-</p></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Ketepatan tebakan di data uji <i class="info" data-tip="Akumulasi 5 ulangan validasi silang: setiap UMKM sampel utama ditebak 5 kali oleh model yang tidak melihatnya saat dilatih.">i</i></h3></div>
+        <div class="big"><span class="v" id="cm-acc">-</span><span class="k">tebakan benar</span></div>
+        <div class="cm" id="cm"></div>
+        <p class="note" id="cm-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIMULATOR: kode disimpan; tampil bila TAMPILKAN_SIMULATOR = true -->
+  <section class="sec" id="simulator" hidden>
+    <div class="sec-head"><div><h2>Simulator rekomendasi</h2><p>Masukkan profil toko dan perkiraan skor tiap strategi (1 = tidak pernah, 5 = selalu).</p></div></div>
+    <div class="card sim">
+      <div class="fields">
+        <h4>Profil usaha</h4>
+        <div class="field"><label for="sim-omzet">Omzet per bulan sebelum marketplace <output id="o-omzet"></output></label>
+          <input type="range" id="sim-omzet" min="1000000" max="100000000" step="500000" value="15000000"></div>
+        <div class="two">
+          <div class="field"><label for="sim-lu">Lama usaha pra-MP <output id="o-lu"></output></label><input type="range" id="sim-lu" min="0" max="20" step="0.5" value="2.5"></div>
+          <div class="field"><label for="sim-lmp">Lama di MP <output id="o-lmp"></output></label><input type="range" id="sim-lmp" min="0" max="10" step="0.5" value="1.5"></div>
+        </div>
+        <div class="field"><label>Platform yang dipakai</label>
+          <div class="checks">
+            <label><input type="checkbox" name="plat" value="gofood" checked> GoFood</label>
+            <label><input type="checkbox" name="plat" value="grabfood"> GrabFood</label>
+            <label><input type="checkbox" name="plat" value="shopee" checked> Shopee</label>
+            <label><input type="checkbox" name="plat" value="maxim"> Maxim</label>
+            <label><input type="checkbox" name="plat" value="tiktok"> TikTok Shop</label>
+          </div></div>
+        <h4>Skor strategi (1-5)</h4>
+        <div class="field"><label for="sim-x3">X3 Komunikasi pelanggan <output id="o-x3"></output></label><input type="range" id="sim-x3" min="1" max="5" step="0.1" value="3"></div>
+        <div class="field"><label for="sim-x1">X1 Unggah produk <output id="o-x1"></output></label><input type="range" id="sim-x1" min="1" max="5" step="0.1" value="2.5"></div>
+        <div class="field"><label for="sim-x2">X2 Promosi <output id="o-x2"></output></label><input type="range" id="sim-x2" min="1" max="5" step="0.1" value="2.5"></div>
+        <div class="field"><label for="sim-x4">X4 Konsistensi toko <output id="o-x4"></output></label><input type="range" id="sim-x4" min="1" max="5" step="0.1" value="3"></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div><div class="lbl">Segmen usaha</div><div id="r-seg" style="font-weight:650;">-</div></div>
+        <div style="display:grid; gap:6px;"><div class="lbl">Peluang "penjualan naik" menurut Random Forest</div>
+          <div class="big"><span class="v" id="r-peluang">-</span></div><div class="meter"><i id="r-meter" style="width:0"></i></div>
+          <small class="muted">Rata-rata sampel utama: <span id="r-dasar">-</span>. Perkiraan model, bukan jaminan.</small></div>
+        <div style="display:grid; gap:8px;"><div class="lbl">Jika satu strategi dinaikkan 1 poin</div><div class="mini" id="r-mini"></div></div>
+        <div style="display:grid; gap:8px;"><div class="lbl">Prioritas untuk toko ini</div><div class="list" id="r-prio"></div></div>
+        <div id="r-warn"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DETAIL TEKNIS -->
+  <section class="sec" id="teknis">
+    <div class="sec-head"><div><h2>Detail teknis</h2><p>Untuk pembimbing dan peninjau: angka lengkap model, bobot rekomendasi, keputusan terbuka, dan semua grafik laporan.</p></div></div>
+    <details class="card">
+      <summary>Evaluasi model dan bobot pengaruh</summary>
+      <div style="display:grid; gap:18px;">
+        <div><h4>Validasi silang 5×5, target naik_penjualan</h4>
+          <div class="scroll"><table><thead><tr><th>Model</th><th>ROC-AUC</th><th>F1-macro</th><th>Akurasi seimbang</th></tr></thead><tbody id="t-model"></tbody></table></div></div>
+        <div><h4>Skor pengaruh gabungan dan bobot rekomendasi (D26)</h4>
+          <div class="scroll"><table><thead><tr><th>#</th><th>Strategi</th><th>OR logit</th><th>p</th><th>Permutation</th><th>Mean |SHAP|</th><th>Pengaruh</th><th>P(peringkat 1)</th><th>Bobot</th><th>Status</th></tr></thead><tbody id="t-gab"></tbody></table></div>
+          <p class="note" style="margin-top:6px;">"Meyakinkan" = batas bawah CI 95% bootstrap koefisien logit &gt; 0.</p></div>
+        <div id="open-dec"></div>
+      </div>
+    </details>
+    <details class="card">
+      <summary>Semua grafik laporan (PNG)</summary>
+      <div class="gallery" id="gallery"></div>
+    </details>
+  </section>
+
+  <footer>Dijalankan lokal dengan <span class="mono">python -m umkm.dashboard</span> · analisis ulang: <span class="mono">python -m umkm.pipeline --all</span> · hasil bersifat asosiasi, bukan kausalitas.</footer>
 </div>
-
-<!-- MODAL LIGHTBOX DIALOG -->
-<div class="modal-overlay" id="modal-lightbox" role="dialog" aria-modal="true" aria-hidden="true">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h3 id="modal-title">Pratinjau Grafik</h3>
-      <button type="button" class="btn" id="modal-close" style="padding:4px 10px;">✕ Tutup</button>
-    </div>
-    <div class="modal-body">
-      <img id="modal-img" src="" alt="Pratinjau grafik">
-    </div>
-    <div class="modal-footer">
-      <span id="modal-desc" style="max-width:70ch;">-</span>
-      <a id="modal-link" href="#" target="_blank" class="btn">Buka Berkas Asli ↗</a>
-    </div>
-  </div>
 </div>
 
 <div id="tip" role="tooltip"></div>
 
 <script>
-const URAIAN = {
-  1: { sum: "Merapikan data mentah kuesioner agar valid dan terstandar.",
-       inp: [["data/raw/Kuesioner_Penelitian__Responses_.xlsx", "data mentah asli"]],
-       proc: ["Nama kolom dirapikan; Likert dikonversi ke angka 1-5", "Pembersihan nominal omzet dan parsing lama usaha",
-              "Winsorizing P99 pada nilai ekstrem omzet/transaksi", "Koreksi galat entri hasil konfirmasi responden (D25)",
-              "Anonimisasi identitas responden ke ID R001-R149"] },
-  2: { sum: "Konstruksi skor strategi rata-rata dan ukuran kinerja objektif.",
-       inp: [["data/processed/data_clean.csv", "hasil Tahap 1"]],
-       proc: ["Skor strategi X1-X4 dihitung dari rata-rata butir", "Uji reliabilitas instrumen (Cronbach's alpha 0,93-0,95)",
-              "Penetapan target kinerja: naik_penjualan (biner) & Y_obj (kontinu)", "Penandaan sampel utama (n=116) vs tanpa baseline (n=33)",
-              "Deteksi pola jawaban seragam (straightlining)"] },
-  3: { sum: "Analisis data eksploratif (EDA), korelasi, dan uji Wilcoxon/Mann-Whitney.",
-       inp: [["data/processed/data_features.csv", "hasil Tahap 2"]],
-       proc: ["Uji Wilcoxon omzet & transaksi sebelum vs sesudah marketplace", "Korelasi Spearman strategi dengan kinerja (koreksi Holm)",
-              "Uji beda Mann-Whitney kelompok naik vs tidak naik", "Evaluasi multikolinearitas (VIF maksimum 1,57)"] },
-  4: { sum: "Pemodelan machine learning (Random Forest) dan regresi logistik terkontrol.",
-       inp: [["data/processed/data_features.csv", "sampel utama n=116"]],
-       proc: ["Regresi Logistik OLS HC3 terkontrol profil usaha", "Random Forest dengan Repeated Stratified K-Fold 5×5 (AUC 0,735)",
-              "Permutation Importance pada out-of-fold data uji", "Interpretasi SHAP TreeExplainer",
-              "Perumusan bobot pengaruh gabungan (D26): X3=1,00, X1=0,59, X2=0,29, X4=0,10"] },
-  5: { sum: "Segmentasi UMKM berbasis profil usaha menggunakan K-Means.",
-       inp: [["data/processed/data_features.csv", "profil usaha 149 UMKM"]],
-       proc: ["Clustering K-Means (k=2) pada skala omzet, lama usaha, lama di MP, jumlah platform",
-              "Evaluasi stabilitas klaster via bootstrap (median ARI 0,92; Jaccard 0,95)",
-              "Profil Segmen 1 (usaha muda/kecil/baru) vs Segmen 2 (usaha mapan/besar/lama)",
-              "Uji beda non-parametrik strategi antar-segmen (tidak berbeda signifikan)"] },
-  6: { sum: "Penyusunan rekomendasi strategi per segmen dan simulasi what-if.",
-       inp: [["Hasil Tahap 4 & Tahap 5", "bobot pengaruh & klaster"]],
-       proc: ["Penghitungan gap skor terhadap UMKM yang penjualannya naik di segmen masing-masing",
-              "Skor prioritas = Bobot Pengaruh × Gap (D28)", "Simulasi What-If Random Forest (+1 poin strategi)",
-              "Penyimpanan artefak inferensi ke models/v1/ dan implementasi fungsi recommend()"] },
-  7: { sum: "Pelaporan akhir komprehensif dan validasi reproduksibilitas.",
-       inp: [["Semua keluaran Tahap 1-6", "tabel CSV dan artefak model"]],
-       proc: ["Penyusunan laporan lengkap reports/laporan_final.md", "Validasi keterlacakan angka laporan ke reports/tables/",
-              "Pengujian reproduksibilitas pipeline secara menyeluruh", "Verifikasi kesiapan kontrak integrasi API/CLI"] },
-};
-
-const KET = { done: "Selesai", wait: "Menunggu persetujuan", run: "Berjalan", todo: "Belum" };
-const KET_PENDEK = { done: "Selesai", wait: "Menunggu", run: "Berjalan", todo: "Belum" };
-
-const FIGUR_INFO = {
-  "rekomendasi_prioritas.png": { kat: "rek", judul: "Skor Prioritas Rekomendasi per Segmen", desc: "Urutan prioritas sama di semua segmen: X3 Komunikasi > X1 Unggah Produk > X2 Promosi. Bobot pengaruh X3 paling dominan (1,00)." },
-  "rekomendasi_gap.png": { kat: "rek", judul: "Kesenjangan (Gap) Skor terhadap Kelompok Naik", desc: "Jarak rata-rata skor anggota segmen terhadap rata-rata skor UMKM yang omzet/transaksinya naik." },
-  "shap_ringkas.png": { kat: "ml", judul: "Nilai SHAP Random Forest (Kontribusi Tiap Strategi)", desc: "TreeExplainer SHAP membuktikan bahwa skor tinggi pada X3 dan X1 paling kuat mendorong prediksi keberhasilan penjualan naik." },
-  "shap_arah.png": { kat: "ml", judul: "Arah Pengaruh Fitur SHAP", desc: "Visualisasi korelasi nilai fitur asli dengan magnitudo SHAP value." },
-  "pengaruh_peringkat.png": { kat: "ml", judul: "Peringkat Pengaruh Gabungan & Bootstrap (1000×)", desc: "X3 menempati posisi #1 pada 84,9% sampel ulangan bootstrap, membuktikan stabilitas hierarki pengaruh." },
-  "pengaruh_odds_ratio.png": { kat: "ml", judul: "Odds Ratio Regresi Logistik Terkontrol", desc: "Kenaikan 1 SD pada X3 menggandakan odds penjualan naik sebesar 2,49 kali lipat (p = 0,001)." },
-  "pengaruh_sensitivitas_logit.png": { kat: "ml", judul: "Uji Sensitivitas Model Logistik", desc: "Konsistensi signifikansi strategi di berbagai skenario penghapusan data janggal dan sampel tanpa baseline." },
-  "pengaruh_sensitivitas_ols.png": { kat: "ml", judul: "Uji Sensitivitas Regresi OLS Robust HC3", desc: "Sensitivitas estimasi koefisien pada target kontinu Y_obj." },
-  "segmen_profil.png": { kat: "seg", judul: "Profil Karakteristik Klaster UMKM", desc: "Pembeda Segmen 1 (usaha muda, omzet kecil, baru di MP) dan Segmen 2 (usaha mapan, omzet besar, lama di MP)." },
-  "segmen_pemilihan_k.png": { kat: "seg", judul: "Evaluasi Pemilihan Jumlah Klaster (k)", desc: "Skor silhouette dan stabilitas bootstrap ARI membuktikan k=2 adalah solusi klaster paling stabil (ARI 0,92)." },
-  "segmen_peta_pca.png": { kat: "seg", judul: "Peta Sebaran Klaster UMKM (PCA 2D)", desc: "Proyeksi komponen utama profil responden yang memisahkan Segmen 1 dan Segmen 2." },
-  "eda_spearman_heatmap.png": { kat: "eda", judul: "Heatmap Korelasi Spearman Strategi vs Kinerja", desc: "Korelasi non-parametrik antara skor strategi dan indikator objektif omzet/transaksi." },
-  "eda_boxplot_naik_penjualan.png": { kat: "eda", judul: "Sebaran Skor Strategi: Naik vs Tidak Naik", desc: "Kelompok yang penjualannya naik memiliki median skor strategi X1, X2, dan X3 yang lebih tinggi secara signifikan." },
-  "eda_arah_perubahan.png": { kat: "eda", judul: "Arah Perubahan Omzet & Transaksi", desc: "53,4% UMKM mengalami kenaikan omzet/transaksi; median omzet bertambah Rp250.000/bulan (Wilcoxon p < 0,001)." },
-  "eda_sebelum_sesudah.png": { kat: "eda", judul: "Nilai Sebelum vs Sesudah per UMKM", desc: "Plot berpasangan omzet dan transaksi sebelum dan sesudah mengadopsi marketplace." },
-  "eda_distribusi_konstruk.png": { kat: "eda", judul: "Sebaran Skor Konstruk Strategi", desc: "Distribusi rata-rata skor instrumen Likert pada sampel 149 UMKM." },
-  "eda_butir_likert.png": { kat: "eda", judul: "Sebaran Frekuensi Jawaban per Butir Likert", desc: "Deteksi dominasi jawaban skor 3 (netral) pada 18 dari 26 butir instrumen kuesioner." },
-  "eda_boxplot_tanpa_baseline.png": { kat: "eda", judul: "Responden Tanpa Baseline vs Punya Baseline", desc: "Perbandingan UMKM yang baru berdiri bersamaan dengan marketplace vs yang sudah berdiri sebelum marketplace." },
-  "eda_profil_platform.png": { kat: "eda", judul: "Sebaran Platform Marketplace", desc: "GoFood (75%), Shopee (67%), dan GrabFood (54%) merupakan platform utama yang diadopsi pelaku UMKM." },
-  "eda_profil_lama_usaha.png": { kat: "eda", judul: "Distribusi Lama Usaha UMKM", desc: "Sebaran usia usaha responden dalam tahun kalender." },
-  "eda_profil_skala_omzet.png": { kat: "eda", judul: "Distribusi Skala Omzet Awal UMKM", desc: "Kuartil pengelompokan omzet awal responden sebelum adopsi marketplace." },
-};
+const TAMPILKAN_SIMULATOR = false; // simulator disimpan; ubah ke true untuk menampilkannya lagi
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const fmt = (x, d = 2) => (x == null ? "-" : Number(x).toFixed(d).replace(".", ","));
-const pct = (x) => Math.round(x * 100) + "%";
+const num = (x, d = 2) => (x == null || !isFinite(x) ? "-" : Number(x).toLocaleString("id-ID", { minimumFractionDigits: d, maximumFractionDigits: d }));
+const pct = (x, d = 0) => num(x * 100, d) + "%";
+const sgn = (x, d = 1) => (x == null || !isFinite(x) ? "-" : (x >= 0 ? "+" : "−") + num(Math.abs(x), d));
 const rupiah = (x) => Math.abs(x) < 1e6 ? "Rp" + Math.round(x / 1e3).toLocaleString("id-ID") + " rb" : "Rp" + (x / 1e6).toLocaleString("id-ID", { maximumFractionDigits: 1 }) + " jt";
+const SINGKAT = {
+  "X1 Unggah produk": "X1 Unggah produk", "X2 Promosi": "X2 Promosi", "X3 Komunikasi pelanggan": "X3 Komunikasi",
+  "X4 Konsistensi toko": "X4 Konsistensi", "Lama usaha sebelum MP": "Lama usaha pra-MP", "Lama di marketplace": "Lama di MP",
+  "Jumlah platform": "Jumlah platform", "Omzet sebelum (log)": "Omzet sebelum",
+};
+const pendek = (s) => SINGKAT[s] || s;
+const kode = (s) => String(s).split(" ")[0];
+const segLabel = (s) => (s === "Semua" ? "Semua UMKM" : `Segmen ${s}`);
+const nUtama = (h) => h.angka?.n_utama ?? "-";
 
-/* Tooltip */
+let D = null, SEG = "Semua";
+const CH = {};
+
+function warna() {
+  const cs = getComputedStyle(document.documentElement), g = (n) => cs.getPropertyValue(n).trim();
+  return { surface: g("--surface"), ink: g("--ink"), ink2: g("--ink-2"), muted: g("--muted"), line: g("--line"),
+    accent: g("--accent"), neutral: g("--bar-neutral"), faint: g("--bar-faint"), neg: g("--neg") };
+}
+const FONT = 'font-family="Segoe UI, Arial, sans-serif"';
+
+/* ---------------- Tooltip ---------------- */
 const tip = $("tip");
-function bindTip(el, text) {
-  el.tabIndex = 0;
-  el.setAttribute("aria-label", text);
-  const place = (x, y) => {
-    tip.style.left = Math.min(window.innerWidth - tip.offsetWidth - 8, Math.max(8, x + 12)) + "px";
-    tip.style.top = Math.max(8, y - tip.offsetHeight - 10) + "px";
-  };
-  const show = (x, y) => { tip.textContent = text; tip.classList.add("on"); place(x, y); };
-  el.addEventListener("mouseenter", (e) => show(e.clientX, e.clientY));
-  el.addEventListener("mousemove", (e) => place(e.clientX, e.clientY));
-  el.addEventListener("mouseleave", () => tip.classList.remove("on"));
-  el.addEventListener("focus", () => { const r = el.getBoundingClientRect(); show(r.left + r.width / 2, r.top); });
-  el.addEventListener("blur", () => tip.classList.remove("on"));
-}
-
-/* Modal Lightbox */
-function openModal(imgSrc, title, desc, rawLink) {
-  const modal = $("modal-lightbox");
-  $("modal-img").src = imgSrc;
-  $("modal-title").textContent = title;
-  $("modal-desc").textContent = desc;
-  $("modal-link").href = rawLink;
-  modal.classList.add("open");
-  modal.setAttribute("aria-hidden", "false");
-}
-function closeModal() {
-  const modal = $("modal-lightbox");
-  modal.classList.remove("open");
-  modal.setAttribute("aria-hidden", "true");
-}
-$("modal-close").addEventListener("click", closeModal);
-$("modal-lightbox").addEventListener("click", (e) => {
-  if (e.target === $("modal-lightbox")) closeModal();
-});
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && $("modal-lightbox").classList.contains("open")) closeModal();
+document.addEventListener("mousemove", (e) => {
+  const t = e.target.closest && e.target.closest("[data-tip]");
+  if (!t || !t.getAttribute("data-tip")) { tip.classList.remove("on"); return; }
+  tip.textContent = t.getAttribute("data-tip");
+  tip.classList.add("on");
+  tip.style.left = Math.min(window.innerWidth - tip.offsetWidth - 8, Math.max(8, e.clientX + 12)) + "px";
+  tip.style.top = Math.max(8, e.clientY - tip.offsetHeight - 12) + "px";
 });
 
-/* Mode Switcher */
-function setupModeSwitcher() {
-  const btnUmum = $("btn-mode-umum");
-  const btnDev = $("btn-mode-dev");
-  const paneUmum = $("pane-umum");
-  const paneDev = $("pane-dev");
-
-  function setMode(mode) {
-    if (mode === "dev") {
-      btnDev.classList.add("active");
-      btnDev.setAttribute("aria-selected", "true");
-      btnUmum.classList.remove("active");
-      btnUmum.setAttribute("aria-selected", "false");
-      paneDev.hidden = false;
-      paneUmum.hidden = true;
-      localStorage.setItem("umkm-dashboard-mode", "dev");
-    } else {
-      btnUmum.classList.add("active");
-      btnUmum.setAttribute("aria-selected", "true");
-      btnDev.classList.remove("active");
-      btnDev.setAttribute("aria-selected", "false");
-      paneUmum.hidden = false;
-      paneDev.hidden = true;
-      localStorage.setItem("umkm-dashboard-mode", "umum");
-    }
-  }
-
-  btnUmum.addEventListener("click", () => setMode("umum"));
-  btnDev.addEventListener("click", () => setMode("dev"));
-  setMode(localStorage.getItem("umkm-dashboard-mode") || "umum");
+/* ---------------- Skala sumbu ---------------- */
+function skala(d0, d1, n = 5) {
+  const step0 = (d1 - d0) / n, mag = 10 ** Math.floor(Math.log10(step0));
+  const st = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => s >= step0 - 1e-12);
+  const a = Math.floor(d0 / st + 1e-9) * st, b = Math.ceil(d1 / st - 1e-9) * st, ticks = [];
+  for (let t = a; t <= b + st / 2; t += st) ticks.push(+t.toFixed(10));
+  return { d0: a, d1: b, ticks };
 }
 
-/* Simulator Interaktif Rekomendasi UMKM */
-function setupSimulator() {
-  const sOmzet = $("sim-omzet");
-  const sLu = $("sim-lu");
-  const sLmp = $("sim-lmp");
-  const sX1 = $("sim-x1");
-  const sX2 = $("sim-x2");
-  const sX3 = $("sim-x3");
-  const sX4 = $("sim-x4");
-
-  function updateLabels() {
-    $("lbl-omzet").textContent = rupiah(Number(sOmzet.value));
-    $("lbl-lu").textContent = Number(sLu.value).toFixed(1).replace(".", ",") + " th";
-    $("lbl-lmp").textContent = Number(sLmp.value).toFixed(1).replace(".", ",") + " th";
-    $("lbl-x1").textContent = Number(sX1.value).toFixed(1).replace(".", ",") + " / 5";
-    $("lbl-x2").textContent = Number(sX2.value).toFixed(1).replace(".", ",") + " / 5";
-    $("lbl-x3").textContent = Number(sX3.value).toFixed(1).replace(".", ",") + " / 5";
-    $("lbl-x4").textContent = Number(sX4.value).toFixed(1).replace(".", ",") + " / 5";
-  }
-
-  async function calculate() {
-    updateLabels();
-    const platChecks = [...document.querySelectorAll('input[name="sim-plat"]:checked')].map(c => c.value);
-    const payload = {
-      omzet_bulanan: Number(sOmzet.value),
-      lama_usaha_pra_mp: Number(sLu.value),
-      lama_di_mp: Number(sLmp.value),
-      platform: platChecks.length ? platChecks : ["shopee"],
-      x1_unggah: Number(sX1.value),
-      x2_promosi: Number(sX2.value),
-      x3_komunikasi: Number(sX3.value),
-      x4_konsistensi: Number(sX4.value),
-    };
-
-    try {
-      const res = await fetch("/api/recommend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error("Gagal memproses rekomendasi");
-      const d = await res.json();
-
-      $("sim-res-segmen").textContent = d.segmen ? `Segmen ${d.segmen.id}: ${d.segmen.nama}` : "Teridentifikasi";
-      const pr = d.prioritas && d.prioritas.length ? d.prioritas[0] : null;
-      const baseProb = 53.0;
-      const boost = pr ? (pr.selisih_prediksi_plus1 || 12.0) : 10.0;
-      $("sim-res-peluang").textContent = `${Math.min(95, Math.round(baseProb + boost))}% (Tinggi)`;
-
-      if (d.prioritas && d.prioritas.length) {
-        $("sim-res-prioritas").innerHTML = d.prioritas.map((p, idx) => `
-          <div style="border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: var(--surface);">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <strong style="color:var(--ink);">#${p.peringkat || idx + 1} ${esc(p.nama)}</strong>
-              <span class="chip done">Gap +${fmt(p.gap, 2)}</span>
-            </div>
-            <p style="font-size:0.84rem; color:var(--ink-2); line-height:1.4;">${esc(p.tindakan)}</p>
-          </div>
-        `).join("");
-      }
-    } catch (e) {
-      console.warn("Simulator lokal memakai estimasi offline:", e);
-      // Fallback offline estimation
-      const segId = payload.omzet_bulanan > 18000000 ? 2 : 1;
-      $("sim-res-segmen").textContent = segId === 1 ? "Segmen 1: Usaha baru, omzet mikro (< 18 jt)" : "Segmen 2: Usaha mapan, omzet menengah (> 18 jt)";
-      const prob = Math.round(52 + (payload.x3_komunikasi - 3) * 15 + (payload.x1_unggah - 2.5) * 8);
-      $("sim-res-peluang").textContent = `${Math.max(25, Math.min(95, prob))}%`;
-      $("sim-res-prioritas").innerHTML = `
-        <div style="border: 1px solid var(--line); border-radius: 6px; padding: 8px; background: var(--surface);">
-          <b>#1 Komunikasi Pelanggan</b>: Percepat respon chat &amp; aktifkan pesan otomatis.
-        </div>
-        <div style="border: 1px solid var(--line); border-radius: 6px; padding: 8px; background: var(--surface);">
-          <b>#2 Unggah Produk</b>: Segarkan kembali katalog foto &amp; varian terlaris.
-        </div>
-        <div style="border: 1px solid var(--line); border-radius: 6px; padding: 8px; background: var(--surface);">
-          <b>#3 Promosi Marketplace</b>: Ikuti flash sale atau voucher diskon toko berkala.
-        </div>
-      `;
-    }
-  }
-
-  [sOmzet, sLu, sLmp, sX1, sX2, sX3, sX4].forEach(el => el.addEventListener("input", calculate));
-  document.querySelectorAll('input[name="sim-plat"]').forEach(el => el.addEventListener("change", calculate));
-  calculate();
-}
-
-/* Pipeline Rendering */
-let TAHAP = [];
-function renderDetail(st) {
-  const u = URAIAN[st.n] || { sum: "", inp: [], proc: [] };
-  const files = (arr) => arr.length ? arr.map(([f, d]) => `<div class="file"><span class="mono">${esc(f)}</span>${d ? `<small>${esc(d)}</small>` : ""}</div>`).join("") : '<span class="empty">-</span>';
-  $("detail").innerHTML = `
-    <div class="detail-head"><h3>Tahap ${st.n} · ${esc(st.nama)}</h3><span class="chip ${st.status}">${KET[st.status]}</span>
-      ${st.selesai ? `<span class="cap">selesai ${esc(st.selesai)}</span>` : ""}<p>${esc(u.sum)}</p></div>
-    <div class="flow">
-      <div class="box"><span class="eyebrow">Data masuk</span>${files(u.inp)}</div>
-      <span class="arrow" aria-hidden="true">→</span>
-      <div class="box"><span class="eyebrow">${st.status === "todo" ? "Rencana" : "Yang dikerjakan"}</span><ul>${u.proc.map((p) => `<li>${esc(p)}</li>`).join("")}</ul></div>
-      <span class="arrow" aria-hidden="true">→</span>
-      <div class="box"><span class="eyebrow">${st.status === "todo" ? "Akan dihasilkan" : "Data dihasilkan"}</span>${files(st.keluaran.map((k) => [k, ""]))}</div>
-    </div>`;
-}
-function select(i, focus) {
-  [...$("pipeline").children].forEach((b, j) => { b.setAttribute("aria-selected", String(i === j)); b.tabIndex = i === j ? 0 : -1; });
-  if (focus) $("pipeline").children[i].focus();
-  renderDetail(TAHAP[i]);
-}
-function renderTahap(tahap) {
-  TAHAP = tahap;
-  const pipe = $("pipeline");
-  pipe.innerHTML = "";
-  tahap.forEach((st, i) => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.className = `step s-${st.status}`;
-    b.setAttribute("role", "tab");
-    b.setAttribute("aria-controls", "detail");
-    b.innerHTML = `<span class="n">Tahap ${st.n}</span><span class="t">${esc(st.nama)}</span><span class="bar"></span><span class="chip ${st.status}">${KET_PENDEK[st.status]}</span>`;
-    b.addEventListener("click", () => select(i));
-    b.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowRight") select((i + 1) % tahap.length, true);
-      if (e.key === "ArrowLeft") select((i - 1 + tahap.length) % tahap.length, true);
-    });
-    pipe.appendChild(b);
+/* ---------------- Batang horizontal ---------------- */
+function hbars(o, w) {
+  const C = warna();
+  const labelW = Math.min(o.labelW ?? 130, w * 0.36), rightW = o.stacked ? 70 : 54;
+  const plotW = Math.max(60, w - labelW - rightW - 10);
+  const grouped = !o.stacked && o.series.length > 1;
+  const barH = grouped ? 11 : 16, inner = 3;
+  const groupH = grouped ? o.series.length * barH + (o.series.length - 1) * inner : barH;
+  const rowH = groupH + 16, top = o.ref ? 18 : 4, axisH = 22;
+  const h = top + o.rows.length * rowH + axisH;
+  const sk = skala(o.domain[0], o.domain[1], o.nTick || 5);
+  const x = (v) => labelW + ((v - sk.d0) / (sk.d1 - sk.d0)) * plotW;
+  const ft = o.fmtTick || ((t) => num(t, 0));
+  let s = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" ${FONT} role="img" aria-label="${esc(o.aria || "")}">`;
+  sk.ticks.forEach((t) => {
+    s += `<line x1="${x(t)}" x2="${x(t)}" y1="${top}" y2="${h - axisH}" stroke="${t === 0 ? C.muted : C.line}" stroke-width="1" ${t === 0 ? "" : 'stroke-dasharray="3 3"'}/>`;
+    s += `<text x="${x(t)}" y="${h - 6}" font-size="10.5" fill="${C.muted}" text-anchor="middle">${esc(ft(t))}</text>`;
   });
-  let aktif = tahap.findIndex((t) => t.status !== "done");
-  if (aktif < 0) aktif = tahap.length - 1;
-  if (tahap.length) select(aktif);
-  const selesai = tahap.filter((t) => t.status === "done").length;
-  $("m-tahap").innerHTML = `Tahap selesai <b>${selesai} dari ${tahap.length}</b>`;
-}
-
-function barRow(host, label, width, color, val, tipText, extra = "") {
-  const row = document.createElement("div");
-  row.className = "row";
-  row.innerHTML = `<span class="lbl">${esc(label)}${extra}</span><div class="track plain"><div class="seg" style="width:${Math.max(0, Math.min(100, width))}%;background:${color}"></div></div><span class="val">${val}</span>`;
-  host.appendChild(row);
-  bindTip(row.querySelector(".seg"), tipText);
-}
-
-function renderHasil(h) {
-  const a = h.angka;
-  const arah = h.arah || [];
-  const omzet = arah.find((r) => r.k === "Omzet");
-
-  /* Stats Umum */
-  if (a) {
-    const statsHtml = [
-      [a.n_semua, "Total UMKM Responden"],
-      [pct(a.n_naik / a.n_utama), `Penjualan Naik (${a.n_naik} dari ${a.n_utama} UMKM)`],
-      [omzet ? rupiah(omzet.median_selisih) : "-", "Rata-rata Kenaikan Omzet Bersih/Bulan"],
-      ["GoFood & Shopee", "Platform Paling Banyak Digunakan"],
-    ].map(([v, k]) => `<div class="panel stat"><span class="v">${v}</span><span class="k">${esc(k)}</span></div>`).join("");
-    $("stats-umum").innerHTML = statsHtml;
-  }
-
-  /* Rekomendasi Mode Umum */
-  if (h.rekomendasi_segmen) {
-    const segs = {};
-    h.rekomendasi_segmen.forEach((r) => {
-      if (!segs[r.segmen]) segs[r.segmen] = { nama: r.nama_segmen, items: [] };
-      segs[r.segmen].items.push(r);
-    });
-
-    const hostUmum = $("grid-rekomendasi-umum");
-    hostUmum.innerHTML = Object.keys(segs).filter(k => k !== "Semua").map((sKey) => {
-      const seg = segs[sKey];
-      const badgeSeg = sKey === "1" ? "🌱 Usaha Baru / Omzet Kecil (< Rp15 jt)" : "🏢 Usaha Mapan / Omzet Menengah-Besar (> Rp15 jt)";
-      return `<div class="panel chart">
-        <div class="sec-head">
-          <span class="eyebrow">${esc(badgeSeg)}</span>
-          <h3>${esc(seg.nama)}</h3>
-          <p class="cap">Fokus pada 3 tindakan operasional di bawah untuk hasil terbaik:</p>
-        </div>
-        <div class="rows">
-          ${seg.items.map((it) => `
-            <div class="action-item">
-              <div class="action-badge">#${it.peringkat}</div>
-              <div class="action-body">
-                <div class="action-title">${esc(it.strategi)}</div>
-                <div class="action-desc"><b>Aksi Nyata:</b> ${esc(it.tindakan)}</div>
-              </div>
-            </div>
-          `).join("")}
-        </div>
-      </div>`;
-    }).join("");
-  }
-
-  /* Grafik Arah & Platform Mode Umum */
-  if (arah.length && a) {
-    const hostArahUmum = $("ch-arah-umum"); hostArahUmum.innerHTML = "";
-    arah.forEach((d) => {
-      const n = a.n_utama;
-      const row = document.createElement("div");
-      row.className = "row";
-      row.innerHTML = `<span class="lbl">${esc(d.k)}</span>`;
-      const tr = document.createElement("div");
-      tr.className = "track";
-      ["naik", "sama", "turun"].forEach((kat) => {
-        if (!d[kat]) return;
-        const s = document.createElement("div");
-        s.className = "seg";
-        s.style.width = (d[kat] / n) * 100 + "%";
-        s.style.background = `var(--${kat})`;
-        tr.appendChild(s);
-        bindTip(s, `${d.k} ${kat}: ${d[kat]} UMKM (${pct(d[kat] / n)})`);
+  o.rows.forEach((r, i) => {
+    const y0 = top + i * rowH + 8;
+    s += `<text x="${labelW - 10}" y="${y0 + groupH / 2 + 4}" font-size="12" fill="${C.ink2}" text-anchor="end"${r.bold ? ' font-weight="600"' : ""}>${esc(r.label)}</text>`;
+    if (o.stacked) {
+      let acc = 0;
+      const vis = o.series.filter((se) => r.v[se.key] > 0);
+      vis.forEach((se, j) => {
+        const v = r.v[se.key], xa = x(acc), wd = Math.max(1, x(acc + v) - xa - (j < vis.length - 1 ? 2 : 0));
+        s += `<rect x="${xa}" y="${y0}" width="${wd}" height="${barH}" rx="4" fill="${se.color}" data-tip="${esc(r.tip?.[se.key] || "")}"/>`;
+        acc += v;
       });
-      row.appendChild(tr);
-      row.insertAdjacentHTML("beforeend", `<span class="val">${pct(d.naik / n)} naik</span>`);
-      hostArahUmum.appendChild(row);
+      if (r.right) s += `<text x="${w - 2}" y="${y0 + barH / 2 + 4}" font-size="11.5" font-weight="600" fill="${C.ink}" text-anchor="end">${esc(r.right)}</text>`;
+    } else {
+      o.series.forEach((se, j) => {
+        const v = r.v[se.key];
+        if (v == null) return;
+        const y = y0 + j * (barH + inner), xa = x(Math.min(0, v)), xb = x(Math.max(0, v));
+        s += `<rect x="${xa}" y="${y}" width="${Math.max(1.5, xb - xa)}" height="${barH}" rx="4" fill="${r.warna?.[se.key] || se.color}" data-tip="${esc(r.tip?.[se.key] || "")}"/>`;
+        s += `<text x="${Math.max(xb, x(0)) + 6}" y="${y + barH / 2 + 4}" font-size="11" fill="${C.ink}" font-weight="${grouped ? 500 : 600}">${esc(o.fmtNilai(v))}</text>`;
+      });
+    }
+  });
+  if (o.ref) {
+    const xr = x(o.ref.v);
+    s += `<line x1="${xr}" x2="${xr}" y1="${top - 4}" y2="${h - axisH}" stroke="${C.ink2}" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+    s += `<text x="${xr + 4}" y="${top - 6}" font-size="10.5" fill="${C.ink2}">${esc(o.ref.label)}</text>`;
+  }
+  return s + "</svg>";
+}
+
+/* ---------------- Kolom vertikal tersorot ---------------- */
+function vcols(o, w) {
+  const C = warna(), axisW = 38, top = 22, bottom = 40, h = o.h || 250, plotH = h - top - bottom;
+  const vals = o.rows.map((r) => r.v);
+  const sk = skala(Math.min(0, ...vals), Math.max(...vals) * 1.12, 4);
+  const y = (v) => top + (1 - (v - sk.d0) / (sk.d1 - sk.d0)) * plotH;
+  const colW = (w - axisW) / o.rows.length, barW = Math.min(46, colW * 0.62);
+  let s = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" ${FONT} role="img" aria-label="${esc(o.aria || "")}">`;
+  sk.ticks.forEach((t) => {
+    s += `<line x1="${axisW}" x2="${w}" y1="${y(t)}" y2="${y(t)}" stroke="${t === 0 ? C.muted : C.line}" ${t === 0 ? "" : 'stroke-dasharray="3 3"'}/>`;
+    s += `<text x="${axisW - 6}" y="${y(t) + 3.5}" font-size="10.5" fill="${C.muted}" text-anchor="end">${esc(o.fmtTick(t))}</text>`;
+  });
+  o.rows.forEach((r, i) => {
+    const cx = axisW + colW * i + colW / 2, ya = y(Math.max(0, r.v)), yb = y(Math.min(0, r.v));
+    s += `<rect x="${cx - barW / 2}" y="${ya}" width="${barW}" height="${Math.max(1.5, yb - ya)}" rx="5" fill="${r.hi ? C.accent : C.neutral}" data-tip="${esc(r.tip || "")}"/>`;
+    s += `<text x="${cx}" y="${Math.min(ya, y(0)) - 6}" font-size="11" font-weight="600" fill="${C.ink}" text-anchor="middle">${esc(o.fmtNilai(r.v))}</text>`;
+    const [l1, ...rest] = r.label.split(" ");
+    s += `<text x="${cx}" y="${h - bottom + 16}" font-size="11" fill="${r.hi ? C.ink : C.ink2}" text-anchor="middle"${r.hi ? ' font-weight="600"' : ""}>${esc(l1)}</text>`;
+    if (rest.length) s += `<text x="${cx}" y="${h - bottom + 30}" font-size="11" fill="${C.ink2}" text-anchor="middle">${esc(rest.join(" "))}</text>`;
+  });
+  return s + "</svg>";
+}
+
+/* ---------------- Matriks titik (1 titik = 1 satuan) ---------------- */
+function dotrows(o, w) {
+  const C = warna(), labelW = Math.min(130, w * 0.32), rightW = 70, rowH = 30, top = 4, foot = 22;
+  const n = Math.max(1, Math.ceil(Math.max(...o.rows.map((r) => r.v))));
+  const step = Math.min(40, (w - labelW - rightW) / n), rad = Math.max(2.2, Math.min(8, step * 0.3));
+  const h = top + o.rows.length * rowH + foot;
+  let s = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" ${FONT} role="img" aria-label="${esc(o.aria || "")}">`;
+  o.rows.forEach((r, i) => {
+    const cy = top + i * rowH + rowH / 2, isi = Math.max(0, Math.round(r.v));
+    s += `<text x="${labelW - 12}" y="${cy + 4}" font-size="12" fill="${C.ink2}" text-anchor="end"${r.hi ? ' font-weight="600"' : ""}>${esc(r.label)}</text>`;
+    s += `<g data-tip="${esc(r.tip || "")}"><rect x="${labelW - 4}" y="${cy - rowH / 2 + 2}" width="${n * step + 8}" height="${rowH - 4}" fill="transparent"/>`;
+    for (let k = 0; k < n; k++) s += `<circle cx="${labelW + k * step + step / 2}" cy="${cy}" r="${rad}" fill="${k < isi ? C.accent : C.faint}"/>`;
+    s += `</g><text x="${labelW + n * step + 10}" y="${cy + 4}" font-size="11.5" font-weight="600" fill="${C.ink}">${esc(o.fmtNilai(r.v))}</text>`;
+  });
+  s += `<text x="${labelW}" y="${h - 4}" font-size="10.5" fill="${C.muted}">${esc(o.catatan || "")}</text>`;
+  return s + "</svg>";
+}
+
+/* ---------------- Kartu grafik + ekspor ---------------- */
+function kartu(id, spec) {
+  CH[id] = spec;
+  const el = document.querySelector(`[data-chart="${id}"]`);
+  el.innerHTML = `
+    <div class="card-head">
+      <h3>${esc(spec.judul)}${spec.info ? ` <i class="info" data-tip="${esc(spec.info)}">i</i>` : ""}</h3>
+      <details class="dl"><summary class="btn sm">Unduh ▾</summary><div class="menu">
+        <button type="button" data-exp="png">Gambar PNG <span>presentasi</span></button>
+        <button type="button" data-exp="svg">Gambar SVG <span>skripsi/cetak</span></button>
+        <button type="button" data-exp="csv">Data CSV <span>Excel</span></button>
+      </div></details>
+    </div>
+    ${spec.big ? `<div class="big"><span class="v">${esc(spec.big.v)}</span>${spec.big.badge ? `<span class="badge ${spec.big.cls || "acc"}">${esc(spec.big.badge)}</span>` : ""}<span class="k">${esc(spec.big.k || "")}</span></div>` : ""}
+    <p class="sub">${esc(spec.sub)}</p>
+    <div class="chart" id="c-${id}"></div>
+    ${spec.legend ? `<div class="legend">${spec.legend.map((l) => `<span><i class="${l.dash ? "dash" : ""}" style="${l.dash ? "" : `background:${l.color}`}"></i>${esc(l.name)}</span>`).join("")}</div>` : ""}
+    <div class="takeaway"><b>Kesimpulan</b><p>${spec.kesimpulan}</p></div>`;
+  el.querySelectorAll("[data-exp]").forEach((b) => b.addEventListener("click", () => { b.closest("details").open = false; ekspor(id, b.dataset.exp); }));
+  gambar(id);
+}
+document.addEventListener("click", (e) => document.querySelectorAll("details.dl[open]").forEach((d) => { if (!d.contains(e.target)) d.open = false; }));
+function gambar(id) {
+  const host = $("c-" + id);
+  if (host && CH[id]) host.innerHTML = CH[id].draw(Math.max(260, host.clientWidth));
+}
+function svgEkspor(id) {
+  const spec = CH[id], C = warna(), svg = $("c-" + id).querySelector("svg");
+  const w = +svg.getAttribute("width"), h = +svg.getAttribute("height");
+  const pad = 24, headH = 62, legH = spec.legend ? 26 : 0, footH = 46, W = w + pad * 2, H = headH + h + legH + footH;
+  let leg = "", lx = pad;
+  (spec.legend || []).forEach((l) => {
+    leg += l.dash
+      ? `<line x1="${lx}" x2="${lx + 14}" y1="${headH + h + 15}" y2="${headH + h + 15}" stroke="${C.muted}" stroke-width="2" stroke-dasharray="4 3"/>`
+      : `<circle cx="${lx + 5}" cy="${headH + h + 15}" r="4.5" fill="${l.color}"/>`;
+    leg += `<text x="${lx + 18}" y="${headH + h + 19}" font-size="11.5" fill="${C.ink2}">${esc(l.name)}</text>`;
+    lx += 30 + l.name.length * 6.4;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" ${FONT}>
+    <rect width="${W}" height="${H}" fill="${C.surface}"/>
+    <text x="${pad}" y="30" font-size="16" font-weight="700" fill="${C.ink}">${esc(spec.judul)}</text>
+    <text x="${pad}" y="49" font-size="12" fill="${C.ink2}">${esc(spec.sub)}</text>
+    <g transform="translate(${pad},${headH})">${svg.innerHTML}</g>${leg}
+    <text x="${pad}" y="${H - 26}" font-size="10.5" fill="${C.muted}">Sumber: Penelitian strategi marketplace UMKM Pekanbaru (n = 149).</text>
+    <text x="${pad}" y="${H - 12}" font-size="10.5" fill="${C.muted}">Hasil asosiasi, bukan kausalitas. Diunduh ${new Date().toLocaleDateString("id-ID")}.</text>
+  </svg>`;
+}
+function unduh(blob, nama) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = nama;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+function ekspor(id, jenis) {
+  const nama = "umkm_" + id;
+  if (jenis === "csv") {
+    const sel = (v) => (typeof v === "number" ? String(+v.toFixed(6)).replace(".", ",") : `"${String(v).replace(/"/g, '""')}"`);
+    const teks = CH[id].csv().map((r) => r.map(sel).join(";")).join("\r\n");
+    unduh(new Blob(["﻿" + teks], { type: "text/csv;charset=utf-8" }), nama + ".csv");
+    return;
+  }
+  const str = svgEkspor(id);
+  if (jenis === "svg") { unduh(new Blob([str], { type: "image/svg+xml" }), nama + ".svg"); return; }
+  const img = new Image();
+  img.onload = () => {
+    const k = 2, cv = document.createElement("canvas");
+    cv.width = img.width * k; cv.height = img.height * k;
+    const ctx = cv.getContext("2d");
+    ctx.scale(k, k);
+    ctx.drawImage(img, 0, 0);
+    cv.toBlob((b) => unduh(b, nama + ".png"), "image/png");
+  };
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str);
+}
+
+/* ---------------- Overview ---------------- */
+function kvRows(host, rows) {
+  $(host).innerHTML = rows.map((r) => `<div class="kv-row" data-tip="${esc(r.tip || "")}"><span>${esc(r.k)}</span><b>${esc(r.t)}</b>
+    <div class="bar"><i class="${r.hi ? "hi" : ""}" style="width:${Math.max(2, r.v * 100)}%"></i></div></div>`).join("");
+}
+function renderOverview(d) {
+  const h = d.hasil || {}, a = h.angka || {}, arah = h.arah || [];
+  const mp = h.model_performa || [], rf = mp.find((m) => m.model === "Random Forest");
+  const gab = (h.rf_pengaruh || []).slice().sort((p, q) => p.peringkat - q.peringkat), top = gab[0];
+
+  if (a.n_utama) {
+    const r = a.n_naik / a.n_utama, n = 40;
+    $("k-naik").textContent = pct(r);
+    $("k-naik-b").textContent = `${a.n_naik} dari ${a.n_utama} UMKM`;
+    $("k-ticks").innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < Math.round(r * n) ? "on" : ""}"></i>`).join("");
+    kvRows("k-naik-kv", arah.map((x) => ({ k: `${x.k} naik`, t: pct(x.naik / a.n_utama), v: x.naik / a.n_utama, hi: true })));
+  }
+  if (rf) {
+    $("k-auc").textContent = num(rf.auc);
+    $("k-auc-b").textContent = `▲ ${num(rf.auc - 0.5)} vs tebakan acak`;
+    kvRows("k-auc-kv", mp.map((m) => ({ k: m.model.replace("Baseline Mayoritas", "Tebakan mayoritas"), t: num(m.auc), v: m.auc, hi: m === rf, tip: `AUC ${num(m.auc, 3)} ± ${num(m.auc_sd, 3)}` })));
+  }
+  if (top) {
+    $("k-top").textContent = pendek(top.nama);
+    $("k-top-b").textContent = `peringkat 1 pada ${pct(top.p_p1)} bootstrap`;
+    kvRows("k-top-kv", gab.map((g) => ({ k: g.nama, t: num(g.bobot), v: g.bobot, hi: g === top, tip: g.meyakinkan ? "Hubungan meyakinkan" : "Hubungan belum meyakinkan" })));
+  }
+
+  const rek = (h.rekomendasi_segmen || []).filter((r) => r.segmen !== "Semua");
+  const urut = (s) => rek.filter((r) => r.segmen === s).sort((p, q) => p.peringkat - q.peringkat).map((r) => kode(r.strategi)).join(" → ");
+  const segs = [...new Set(rek.map((r) => r.segmen))];
+  const sama = segs.length > 1 && segs.every((s) => urut(s) === urut(segs[0]));
+  const items = [];
+  if (top) items.push(`<b>${esc(top.nama)}</b> paling konsisten berhubungan dengan laporan kenaikan penjualan: peringkat 1 di regresi logistik, Random Forest, dan SHAP.`);
+  if (segs.length) items.push(sama ? `Urutan prioritas <b>sama untuk kedua segmen: ${esc(urut(segs[0]))}</b>. Yang berbeda adalah cara pelaksanaannya menurut skala usaha.`
+    : `Urutan prioritas per segmen: ${segs.map((s) => `${segLabel(s)} ${esc(urut(s))}`).join("; ")}.`);
+  if (rf) items.push(`Random Forest cukup mampu membedakan UMKM yang melaporkan kenaikan (AUC ${num(rf.auc)}, acak = 0,50), tetapi belum sempurna. Hasilnya dipakai sebagai petunjuk arah, bukan ramalan per toko.`);
+  if (a.n_utama) items.push(`Sekitar separuh UMKM (${pct(a.n_naik / a.n_utama)}) melaporkan penjualan naik setelah masuk marketplace; hampir tidak ada yang turun.`);
+  $("summary").innerHTML = items.map((t) => `<li><span>${t}</span></li>`).join("");
+
+  const seg = (h.segmen || []).filter((s) => s.segmen !== "Semua");
+  if (seg.length) {
+    const C = warna(), total = seg.reduce((t, s) => t + s.n, 0), cols = [C.accent, C.neutral];
+    const R = 54, r0 = 38, cx = 60, cy = 60, gapA = 0.035;
+    const p = (rr, t) => `${(cx + rr * Math.cos(t)).toFixed(2)} ${(cy + rr * Math.sin(t)).toFixed(2)}`;
+    let ang = -Math.PI / 2, paths = "";
+    seg.forEach((s, i) => {
+      const a0 = ang + gapA, a1 = ang + (s.n / total) * Math.PI * 2 - gapA, big = a1 - a0 > Math.PI ? 1 : 0;
+      paths += `<path d="M ${p(R, a0)} A ${R} ${R} 0 ${big} 1 ${p(R, a1)} L ${p(r0, a1)} A ${r0} ${r0} 0 ${big} 0 ${p(r0, a0)} Z" fill="${cols[i % 2]}" data-tip="${esc(`Segmen ${s.segmen}: ${s.n} UMKM`)}"/>`;
+      ang += (s.n / total) * Math.PI * 2;
+    });
+    $("donut").innerHTML = `<svg width="120" height="120" viewBox="0 0 120 120" ${FONT}>${paths}<text x="60" y="60" text-anchor="middle" font-size="19" font-weight="700" fill="${C.ink}">${total}</text><text x="60" y="75" text-anchor="middle" font-size="10" fill="${C.muted}">UMKM</text></svg>`;
+    $("donut-leg").innerHTML = seg.map((s, i) => `<div><i style="background:${cols[i % 2]}"></i><span><b>Segmen ${esc(s.segmen)}</b><small>${esc(s.nama)}</small></span><b>${s.n}</b></div>`).join("");
+  }
+}
+
+/* ---------------- Kondisi ---------------- */
+function renderKondisi(h) {
+  const a = h.angka || {}, arah = h.arah || [];
+  if (arah.length && a.n_utama) {
+    const n = a.n_utama, om = arah.find((r) => r.k === "Omzet") || arah[0];
+    const ser = () => { const C = warna(); return [{ key: "naik", name: "Naik", color: C.accent }, { key: "sama", name: "Sama", color: C.neutral }, { key: "turun", name: "Turun", color: C.neg }]; };
+    const rows = arah.map((d) => ({ label: d.k, right: pct(d.naik / n) + " naik",
+      v: { naik: (d.naik / n) * 100, sama: (d.sama / n) * 100, turun: (d.turun / n) * 100 },
+      tip: { naik: `${d.k} naik: ${d.naik} UMKM (${pct(d.naik / n)})`, sama: `${d.k} sama: ${d.sama} UMKM (${pct(d.sama / n)})`, turun: `${d.k} turun: ${d.turun} UMKM (${pct(d.turun / n)})` } }));
+    kartu("arah", {
+      judul: "Arah perubahan omzet dan transaksi", info: "Uji Wilcoxon bertanda untuk pasangan sebelum-sesudah.",
+      big: { v: pct(om.naik / n), badge: `median +${rupiah(om.median_selisih)}/bln`, cls: "up", k: "omzet naik" },
+      sub: `Sampel utama: ${n} UMKM yang punya data sebelum marketplace`,
+      legend: ser(),
+      draw: (w) => hbars({ rows, series: ser(), stacked: true, domain: [0, 100], fmtTick: (t) => t + "%", labelW: 80, aria: "Arah perubahan" }, w),
+      csv: () => [["indikator", "naik", "sama", "turun", "n", "median_selisih", "p_wilcoxon"], ...arah.map((d) => [d.k, d.naik, d.sama, d.turun, n, d.median_selisih, d.p])],
+      kesimpulan: `<b>${pct(om.naik / n)} UMKM melaporkan omzet naik</b>, ${pct(om.sama / n)} menulis angka sama, dan hanya ${om.turun} yang turun (uji Wilcoxon p &lt; 0,001). Karena hampir tidak ada yang turun, analisis berikutnya membandingkan kelompok "naik" dengan "tetap".`,
     });
   }
   if (h.platform) {
-    const hostPlatUmum = $("ch-plat-umum"); hostPlatUmum.innerHTML = "";
-    const n = a ? a.n_semua : 0;
-    h.platform.forEach((d) => barRow(hostPlatUmum, d.k, d.pct * 100, "var(--accent)", pct(d.pct), `${d.k}: ${d.n} dari ${n} UMKM (${pct(d.pct)})`));
+    const n = a.n_semua, p = h.platform, semua = (h.segmen || []).find((s) => s.segmen === "Semua");
+    const rows = p.map((d, i) => ({ label: d.k, v: { v: d.pct * 100 }, i, tip: { v: `${d.k}: ${d.n} dari ${n} UMKM (${pct(d.pct)})` } }));
+    kartu("platform", {
+      judul: "Platform marketplace yang dipakai",
+      big: { v: p[0].k, badge: pct(p[0].pct), k: "platform terbanyak" },
+      sub: `Persentase dari ${n} UMKM; satu UMKM bisa memakai beberapa platform`,
+      draw: (w) => { const C = warna(); rows.forEach((r) => (r.warna = { v: r.i < 3 ? C.accent : C.neutral })); return hbars({ rows, series: [{ key: "v", color: C.accent }], domain: [0, 100], fmtNilai: (v) => num(v, 0) + "%", fmtTick: (t) => t + "%", labelW: 90, aria: "Platform" }, w); },
+      csv: () => [["platform", "n_umkm", "persen"], ...p.map((d) => [d.k, d.n, d.pct * 100])],
+      kesimpulan: `<b>${esc(p[0].k)}, ${esc(p[1].k)}, dan ${esc(p[2].k)}</b> adalah kanal utama (${pct(p[2].pct)}–${pct(p[0].pct)} UMKM). ${esc(p[p.length - 2].k)} dan ${esc(p[p.length - 1].k)} masih jarang (di bawah 6%).${semua ? ` Rata-rata satu UMKM memakai ${num(semua.jumlah_platform_rata, 1)} platform.` : ""}`,
+    });
   }
-
-  /* ------------------- DEVELOPER MODE RENDERING ------------------- */
-  if (h.model_performa) {
-    $("tbl-dev-model").innerHTML = h.model_performa.map((m) => {
-      const isBest = m.model.includes("Random Forest");
-      return `<tr>
-        <td><b>${esc(m.model)}</b></td>
-        <td>${fmt(m.auc, 3)}</td>
-        <td>${fmt(m.f1, 3)}</td>
-        <td>${fmt(m.akurasi, 3)}</td>
-        <td>${isBest ? '<span class="chip done">Model Terbaik (Terpilih)</span>' : '<span class="chip todo">Pembanding</span>'}</td>
-      </tr>`;
-    }).join("");
-  }
-
-  if (h.simulasi_whatif) {
-    $("tbl-dev-whatif").innerHTML = h.simulasi_whatif.map((w) => {
-      const segNama = w.segmen === "1" ? "Segmen 1" : w.segmen === "2" ? "Segmen 2" : "Semua";
-      const sel = w.selisih_pp >= 0 ? `+${fmt(w.selisih_pp, 1)} pp` : `${fmt(w.selisih_pp, 1)} pp`;
-      const warna = w.selisih_pp > 10 ? 'var(--good)' : w.selisih_pp > 0 ? 'var(--accent)' : 'var(--turun)';
-      return `<tr>
-        <td>${esc(segNama)}</td>
-        <td><span class="mono">${esc(w.model)}</span></td>
-        <td>${esc(w.strategi)}</td>
-        <td>${fmt(w.peluang_dasar, 1)}%</td>
-        <td><b style="color:${warna}">${sel}</b></td>
-      </tr>`;
-    }).join("");
-  }
-
-  if (h.rf_pengaruh) {
-    $("tbl-dev-pengaruh").innerHTML = h.rf_pengaruh.map((p) => {
-      return `<tr>
-        <td><b>#${p.peringkat}</b></td>
-        <td><b>${esc(p.nama)}</b></td>
-        <td>${fmt(p.perm_importance, 3)}</td>
-        <td>${fmt(p.shap, 3)}</td>
-        <td>${fmt(p.or_logit, 2)}x</td>
-        <td><b>${fmt(p.pengaruh, 2)}</b></td>
-        <td><b>${fmt(p.bobot, 2)}</b></td>
-        <td>${fmt(p.p_p1 * 100, 1)}%</td>
-        <td><span class="chip ${p.meyakinkan ? 'done' : 'wait'}">${p.meyakinkan ? 'Meyakinkan' : 'Belum Meyakinkan'}</span></td>
-      </tr>`;
-    }).join("");
-  }
-
-  if (h.rekomendasi_segmen) {
-    $("tbl-dev-rek").innerHTML = h.rekomendasi_segmen.map((r) => {
-      const segNama = r.segmen === "1" ? "Segmen 1 (Kecil/Muda)" : r.segmen === "2" ? "Segmen 2 (Mapan/Lama)" : "Semua UMKM";
-      return `<tr>
-        <td>${esc(segNama)}</td>
-        <td>#${r.peringkat}</td>
-        <td><b>${esc(r.strategi)}</b></td>
-        <td>+${fmt(r.gap, 2)}</td>
-        <td>${fmt(r.bobot, 2)}</td>
-        <td><b>${fmt(r.prioritas, 3)}</b></td>
-        <td>${esc(r.tindakan)}</td>
-      </tr>`;
-    }).join("");
-  }
-
-  const rows = [];
-  if (h.butir_netral) rows.push([`Jawaban netral (skor 3) mendominasi ${h.butir_netral.n} dari ${h.butir_netral.total} butir instrumen`, "Variasi Likert sempit, perbedaan respon halus", "wait", "keterbatasan instrumen"]);
-  if (a && h.korelasi) {
-    const x1 = h.korelasi.find((d) => d.k.startsWith("X1"));
-    rows.push([`${a.n_seragam_utama} responden sampel utama mengisi skor seragam (straightlining)`, "Telah diuji robust pada analisis sensitivitas Tahap 4", "done", "terkontrol"]);
-  }
-  if (a) rows.push([`Winsorizing P99 pada nilai ekstrem omzet/transaksi (D03, D16)`, "Tidak ada baris data yang dibuang; outlier atas terkendali", "done", "selesai"]);
-  if (a) rows.push([`Konfirmasi ulang ke responden R002, R006, R015, R021, R065, R130 (D25)`, "Galat ketik telah dikoreksi di data_umkm.xlsx", "done", "selesai"]);
-  if (h.alpha) rows.push([`Reliabilitas Cronbach's Alpha instrumen: ${fmt(h.alpha.min)} - ${fmt(h.alpha.max)}`, "Konsistensi internal butir kuesioner sangat tinggi (> 0,90)", "done", "sangat baik"]);
-  if (h.vif_maks != null) rows.push([`Multikolinearitas prediktor rendah (VIF Maksimum = ${fmt(h.vif_maks)})`, "Aman dimasukkan bersama dalam model regresi & ML", "done", "aman (< 2,5)"]);
-  $("kualitas").innerHTML = rows.map(([t, d, s, l]) => `<tr><td>${esc(t)}</td><td>${esc(d)}</td><td><span class="chip ${s}">${esc(l)}</span></td></tr>`).join("");
 }
 
-/* Pertanyaan: keputusan terbuka + daftar */
-let centang = {};
-try { centang = JSON.parse(localStorage.getItem("umkm-q") || "{}") || {}; } catch (e) { centang = {}; }
-function renderPertanyaan(tahap, keputusan) {
-  const tunggu = tahap.filter((t) => t.status === "wait");
-  const sekarang = [
-    ...tunggu.map((t) => ({ id: `tahap-${t.n}`, a: `Apakah hasil Tahap ${t.n} (${t.nama}) disetujui?`, w: "Tahap berikutnya baru dimulai setelah ini.", d: "belum lanjut ke tahap berikutnya." })),
-    ...keputusan.map((k) => ({ id: `dec-${k.id}`, a: `${k.id} · ${k.topik} (${k.status.toLowerCase()})`, w: k.isi, d: k.status === "DIUSULKAN" ? "dipakai sesuai usulan." : "ditanyakan sebelum dipakai." })),
-  ];
-  const grup = [{ g: "Keputusan Terbuka Saat Ini", sub: "dari progress.md dan decisions.md", items: sekarang }, ...PERTANYAAN];
-  const host = $("qgroups"); host.innerHTML = "";
-  let total = 0;
-  grup.forEach((g) => {
-    if (!g.items.length) return;
-    const box = document.createElement("div");
-    box.className = "qgroup";
-    box.innerHTML = `<h3>${esc(g.g)}<small>${esc(g.sub)}</small></h3>`;
-    g.items.forEach((q) => {
-      total += 1;
-      const el = document.createElement("div");
-      el.className = "q" + (centang[q.id] ? " checked" : "");
-      el.innerHTML = `<input type="checkbox" id="${esc(q.id)}" ${centang[q.id] ? "checked" : ""}><label for="${esc(q.id)}"><span class="ask">${esc(q.a)}</span><span class="why">${esc(q.w)}</span><span class="why"><b>Jika belum ada jawaban:</b> ${esc(q.d)}</span></label>`;
-      el.querySelector("input").addEventListener("change", (e) => {
-        centang[q.id] = e.target.checked;
-        el.classList.toggle("checked", e.target.checked);
-        try { localStorage.setItem("umkm-q", JSON.stringify(centang)); } catch (err) {}
-        hitung();
-      });
-      box.appendChild(el);
+/* ---------------- Random Forest ---------------- */
+function renderRF(h) {
+  const mp = h.model_performa || [], rf = mp.find((m) => m.model === "Random Forest"), lg = mp.find((m) => m.model === "Regresi Logistik");
+  if (mp.length && rf) {
+    const rows = mp.map((m) => ({ label: m.model.replace("Baseline Mayoritas", "Tebakan mayoritas"), bold: m === rf, v: { v: m.auc }, tip: { v: `${m.model}: AUC ${num(m.auc, 3)} ± ${num(m.auc_sd, 3)} (25 lipatan uji)` } }));
+    kartu("auc", {
+      judul: "Kemampuan model", info: "ROC-AUC rata-rata pada 25 lipatan data uji. 0,5 = tebakan acak, 1 = sempurna.",
+      big: { v: num(rf.auc), badge: `▲ ${num(rf.auc - 0.5)} vs acak`, cls: "up", k: "AUC Random Forest" },
+      sub: "ROC-AUC pada data uji, validasi silang 5×5",
+      legend: [{ name: "Random Forest", color: warna().accent }, { name: "Pembanding", color: warna().neutral }, { name: "Acak", dash: true }],
+      draw: (w) => { const C = warna(); rows.forEach((r) => (r.warna = { v: r.bold ? C.accent : C.neutral })); return hbars({ rows, series: [{ key: "v", color: C.neutral }], domain: [0, 1], fmtNilai: (v) => num(v, 2), fmtTick: (t) => num(t, 1), ref: { v: 0.5, label: "acak" }, labelW: 112, nTick: 5, aria: "AUC" }, w); },
+      csv: () => [["model", "auc", "auc_sd", "f1_macro", "akurasi_seimbang"], ...mp.map((m) => [m.model, m.auc, m.auc_sd, m.f1, m.akurasi])],
+      kesimpulan: `Random Forest (<b>AUC ${num(rf.auc)}</b>) sedikit di atas regresi logistik (${num(lg?.auc)}) dan jauh di atas tebakan (0,50). Pola yang ditangkap nyata, tetapi model masih sering keliru (akurasi seimbang ${pct(rf.akurasi)}).`,
     });
-    host.appendChild(box);
+  }
+
+  const imp = h.rf_importance || [];
+  if (imp.length) {
+    const st = imp.filter((d) => d.jenis === "strategi"), [s1, s2] = st, lemah = st[st.length - 1], prof = imp.find((d) => d.jenis === "profil");
+    const rows = imp.map((d) => ({ label: pendek(d.nama), v: d.mean, hi: d.jenis === "strategi", tip: `${d.nama}: ${num(d.mean, 3)} (sd ${num(d.sd, 3)}, ${d.n_lipatan} lipatan)` }));
+    kartu("importance", {
+      judul: "Variabel yang paling diandalkan model", info: "Permutation importance: turunnya AUC saat nilai satu variabel diacak di data uji. Makin tinggi, makin diandalkan model.",
+      big: { v: num(s1.mean, 3), badge: pendek(s1.nama), k: `≈ ${num(s1.mean / s2.mean, 1)}× strategi berikutnya` },
+      sub: "Permutation importance (penurunan AUC), rata-rata 25 lipatan uji",
+      legend: [{ name: "Strategi marketplace", color: warna().accent }, { name: "Profil usaha (kontrol)", color: warna().neutral }],
+      draw: (w) => vcols({ rows, fmtNilai: (v) => num(v, 3), fmtTick: (t) => num(t, 2), aria: "Permutation importance" }, w),
+      csv: () => [["variabel", "nama", "jenis", "importance_rata", "sd", "n_lipatan"], ...imp.map((d) => [d.var, d.nama, d.jenis, d.mean, d.sd, d.n_lipatan])],
+      kesimpulan: `Saat data <b>${esc(s1.nama)}</b> diacak, kemampuan model turun paling besar. Berikutnya ${esc(pendek(s2.nama))} dan ${esc(pendek(st[2].nama))}; dari profil usaha, ${esc(pendek(prof.nama).toLowerCase())} paling berperan. ${esc(pendek(lemah.nama))} hampir tidak dipakai model (${num(lemah.mean, 3)}).`,
+    });
+  }
+
+  const wf = (h.simulasi_whatif || []).filter((w) => w.model === "random_forest");
+  if (wf.length) {
+    const semua = wf.filter((w) => w.segmen === "Semua").sort((p, q) => q.selisih_pp - p.selisih_pp);
+    const per = (s, seg) => wf.find((w) => w.strategi === s && w.segmen === seg)?.selisih_pp;
+    const top = semua[0], bawah = semua[semua.length - 1];
+    const rows = semua.map((w, i) => ({ label: pendek(w.strategi), v: w.selisih_pp, hi: i === 0,
+      tip: `${w.strategi}: ${sgn(w.selisih_pp)} pp (Segmen 1 ${sgn(per(w.strategi, "1"))}, Segmen 2 ${sgn(per(w.strategi, "2"))})` }));
+    kartu("whatif", {
+      judul: "Simulasi model: satu strategi dinaikkan 1 poin", info: "Rata-rata perubahan peluang prediksi Random Forest bila skor satu strategi +1 (maks. 5), profil dan strategi lain tetap. Ilustrasi model, bukan dampak.",
+      big: { v: sgn(top.selisih_pp) + " pp", badge: pendek(top.strategi), k: `dari peluang dasar ${num(top.peluang_dasar, 0)}%` },
+      sub: `Perubahan rata-rata peluang prediksi "naik" pada ${nUtama(h)} UMKM sampel utama`,
+      draw: (w) => dotrows({ rows, fmtNilai: (v) => sgn(v) + " pp", catatan: "1 titik = 1 poin persen", aria: "Simulasi +1 poin" }, w),
+      csv: () => [["segmen", "strategi", "peluang_dasar_persen", "selisih_pp"], ...wf.map((w) => [w.segmen, w.strategi, w.peluang_dasar, w.selisih_pp])],
+      kesimpulan: `Menurut model, menaikkan <b>${esc(top.strategi)}</b> 1 poin berhubungan dengan peluang prediksi "naik" <b>${sgn(top.selisih_pp)} poin persen</b> (Segmen 1 ${sgn(per(top.strategi, "1"))}, Segmen 2 ${sgn(per(top.strategi, "2"))}). ${esc(pendek(semua[1].strategi))} dan ${esc(pendek(semua[2].strategi))} sekitar ${sgn(semua[2].selisih_pp, 0)} sampai ${sgn(semua[1].selisih_pp, 0)} pp; ${esc(pendek(bawah.strategi))} hampir nol. Ini ilustrasi perilaku model, bukan jaminan hasil di lapangan.`,
+    });
+  }
+  renderKesimpulanRF(h);
+}
+
+function renderKesimpulanRF(h) {
+  const rf = (h.model_performa || []).find((m) => m.model === "Random Forest");
+  const imp = (h.rf_importance || []).filter((d) => d.jenis === "strategi");
+  const gab = (h.rf_pengaruh || []).slice().sort((p, q) => p.peringkat - q.peringkat);
+  const wf = (h.simulasi_whatif || []).filter((w) => w.model === "random_forest" && w.segmen === "Semua").sort((p, q) => q.selisih_pp - p.selisih_pp);
+  const cf = h.rf_confusion;
+  if (!rf || !imp.length) { $("rf-conclusion").hidden = true; return; }
+  const yakin = gab.filter((g) => g.meyakinkan), tidak = gab.filter((g) => !g.meyakinkan);
+  const tot = cf ? cf.tp + cf.tn + cf.fp + cf.fn : 0, top = imp[0], wtop = wf[0];
+  $("rf-title").textContent = `${top.nama} menjadi pembeda utama antara UMKM yang penjualannya naik dan yang tetap`;
+  const f = [
+    ["Model cukup andal membaca pola", `AUC ${num(rf.auc)} di data uji (acak 0,50).${cf ? ` ${pct((cf.tp + cf.tn) / tot)} dari ${tot} tebakan benar.` : ""} Cukup untuk menilai strategi mana yang penting, belum untuk meramal satu toko.`],
+    [`${top.nama} paling diandalkan`, `Importance tertinggi (${num(top.mean, 3)}), jauh di atas strategi lain. UMKM dengan skor komunikasi lebih tinggi cenderung lebih sering melaporkan kenaikan.`],
+    ["Urutan strategi: " + imp.map((d) => kode(d.nama)).join(" > "), `${imp.slice(1, -1).map((d) => esc(d.nama)).join(" dan ")} berperan sedang; ${esc(imp[imp.length - 1].nama)} hampir tidak membantu model.`],
+    wtop ? ["Simulasi +1 poin", `${esc(pendek(wtop.strategi))} ${sgn(wtop.selisih_pp)} pp; ${wf.slice(1).map((w) => `${esc(pendek(w.strategi))} ${sgn(w.selisih_pp)} pp`).join(", ")} pada peluang prediksi "naik".`] : null,
+    yakin.length ? ["Dikonfirmasi regresi logistik", `${yakin.map((g) => esc(kode(g.nama))).join(" dan ")} meyakinkan (CI 95% bootstrap di atas nol).${tidak.length ? ` ${tidak.map((g) => esc(kode(g.nama))).join(" dan ")} belum meyakinkan, sehingga bobotnya diturunkan.` : ""}`] : null,
+    ["Menjadi bobot rekomendasi", `${gab.map((g) => `${kode(g.nama)} ${num(g.bobot)}`).join(" · ")}. Sama untuk semua segmen karena hubungannya tidak berbeda bermakna antar-segmen.`],
+  ].filter(Boolean);
+  $("rf-findings").innerHTML = f.map(([t, p], i) => `<div class="finding"><span class="n">TEMUAN ${i + 1}</span><h4>${esc(t)}</h4><p>${p}</p></div>`).join("");
+  $("rf-limits").innerHTML = `<b>Batasan</b><ul>
+    <li>Survei satu waktu, ${nUtama(h)} UMKM sampel utama: hasilnya hubungan, bukan sebab-akibat.</li>
+    <li>Pembanding adalah "melaporkan kenaikan" vs "menulis angka sama"; besar kenaikan omzet hampir tidak dapat diperkirakan model.</li></ul>`;
+}
+
+/* ---------------- Rekomendasi ---------------- */
+function renderRekomendasi(h) {
+  const rek = h.rekomendasi_segmen || [];
+  const segs = [...new Set(rek.map((r) => r.segmen))].sort((p, q) => (q === "Semua") - (p === "Semua") || p.localeCompare(q));
+  if (!segs.includes(SEG)) SEG = segs[0] || "Semua";
+  $("seg-tabs").innerHTML = segs.map((s) => `<button class="pill" role="tab" type="button" data-seg="${esc(s)}" aria-selected="${s === SEG}">${esc(segLabel(s))}</button>`).join("");
+  $("seg-tabs").querySelectorAll(".pill").forEach((b) => b.addEventListener("click", () => { SEG = b.dataset.seg; renderRekomendasi(D.hasil); }));
+
+  const prof = (h.segmen || []).find((s) => s.segmen === SEG);
+  const items = rek.filter((r) => r.segmen === SEG).sort((p, q) => p.peringkat - q.peringkat);
+  $("seg-title").textContent = `${segLabel(SEG)}${prof && SEG !== "Semua" ? " · " + prof.nama : ""}`;
+  $("seg-meta").innerHTML = prof ? [["UMKM", prof.n], ["Median omzet awal", rupiah(prof.omzet_median)], ["Lama usaha", `${num(prof.lama_usaha_median, 0)} th`],
+    ["Lama di MP", `${num(prof.lama_mp_median, 0)} th`], ["Naik", `${prof.n_naik_utama}/${prof.n_utama}`]].map(([k, v]) => `<span>${esc(k)} <b>${esc(v)}</b></span>`).join("") : "";
+  $("seg-actions").innerHTML = items.map((r) => `
+    <div class="item"><span class="rk">${r.peringkat}</span>
+      <div><h4>${esc(r.strategi)}</h4><p>${esc(r.tindakan)}</p></div>
+      <div class="side-val"><span class="badge ${r.bobot >= 0.5 ? "up" : "warn"}">${r.bobot >= 0.5 ? "meyakinkan" : "belum meyakinkan"}</span>
+        <span>gap <b>${num(r.gap)}</b></span><span>bobot ${num(r.bobot)}</span></div>
+    </div>`).join("");
+
+  const rank = Object.fromEntries((h.rf_pengaruh || []).map((p) => [p.nama, p.peringkat]));
+  const g = (h.gap || []).filter((r) => r.segmen === SEG).sort((p, q) => (rank[p.strategi] ?? 9) - (rank[q.strategi] ?? 9));
+  if (!g.length) return;
+  const maxg = g.reduce((p, q) => (q.gap > p.gap ? q : p)), rendah = g.filter((r) => r.skor < 3), atas = items[0];
+  const ser = () => [{ key: "skor", name: `Rata-rata ${segLabel(SEG)}`, color: warna().neutral }, { key: "benchmark", name: "UMKM yang naik", color: warna().accent }];
+  const rows = g.map((r) => ({ label: pendek(r.strategi), v: { skor: r.skor, benchmark: r.benchmark },
+    tip: { skor: `${r.strategi}, rata-rata segmen: ${num(r.skor)}`, benchmark: `${r.strategi}, UMKM yang naik: ${num(r.benchmark)} (gap ${num(r.gap)})` } }));
+  kartu("gap", {
+    judul: "Skor segmen vs UMKM yang naik", info: "Gap = rata-rata skor UMKM yang penjualannya naik di segmen ini dikurangi rata-rata skor seluruh anggota segmen.",
+    big: { v: num(maxg.gap), badge: pendek(maxg.strategi), k: "gap terbesar (poin)" },
+    sub: `${segLabel(SEG)}, skala 1-5`,
+    legend: ser(),
+    draw: (w) => hbars({ rows, series: ser(), domain: [0, 5], fmtNilai: (v) => num(v), fmtTick: (t) => num(t, 0), labelW: 104, aria: "Skor vs benchmark" }, w),
+    csv: () => [["segmen", "strategi", "skor_segmen", "skor_umkm_naik", "gap"], ...g.map((r) => [SEG, r.strategi, r.skor, r.benchmark, r.gap])],
+    kesimpulan: `Semua strategi sedikit di bawah UMKM yang naik; selisih terbesar di <b>${esc(maxg.strategi)}</b>.${atas ? ` Setelah digabung dengan bobot, <b>${esc(kode(atas.strategi))}</b> menjadi prioritas pertama.` : ""}${rendah.length ? ` ${rendah.map((r) => `${esc(kode(r.strategi))} (${num(r.skor, 1)})`).join(" dan ")} masih di bawah 3 dari 5.` : ""}`,
   });
-  const ids = grup.flatMap((g) => g.items.map((q) => q.id));
-  const hitung = () => { $("qprog").textContent = `${ids.filter((i) => centang[i]).length} dari ${total} catatan telah diverifikasi.`; };
+}
+
+/* ---------------- Rangkuman aktivitas dan learning ---------------- */
+function renderAktivitas(d) {
+  const h = d.hasil || {}, a = h.angka || {}, akt = d.aktivitas || {}, m = d.model, tahap = d.tahap || [];
+  const rf = (h.model_performa || []).find((x) => x.model === "Random Forest"), lg = (h.model_performa || []).find((x) => x.model === "Regresi Logistik");
+  const gab = (h.rf_pengaruh || []).slice().sort((p, q) => p.peringkat - q.peringkat), top = gab[0];
+  const om = (h.arah || []).find((r) => r.k === "Omzet"), sg = akt.segmentasi || {};
+  const urut = (h.rekomendasi_segmen || []).filter((r) => r.segmen === "Semua").sort((p, q) => p.peringkat - q.peringkat).map((r) => kode(r.strategi)).join(" → ");
+  const wtop = (h.simulasi_whatif || []).filter((w) => w.model === "random_forest" && w.segmen === "Semua").sort((p, q) => q.selisih_pp - p.selisih_pp)[0];
+  const selesai = tahap.filter((t) => t.status === "done").length;
+
+  $("nav-tahap").textContent = `${selesai}/${tahap.length}`;
+  $("side-proj").textContent = `${a.n_semua ?? "-"} UMKM · ${tahap.length} tahap analisis`;
+  $("akt-stats").innerHTML = [
+    [`${selesai}/${tahap.length}`, "Tahap selesai"], [akt.n_tabel ?? "-", "Tabel hasil (CSV)"], [akt.n_figur ?? "-", "Grafik laporan"],
+    [akt.n_keputusan != null ? `${akt.n_keputusan_sepakat}/${akt.n_keputusan}` : "-", "Keputusan analitis disepakati"],
+  ].map(([v, k]) => `<div class="card stat"><span class="v">${esc(v)}</span><span class="k">${esc(k)}</span></div>`).join("");
+  $("akt-badge").textContent = selesai === tahap.length ? "Semua tahap selesai" : `${selesai} dari ${tahap.length} selesai`;
+
+  const RINGKAS = {
+    1: ["Merapikan data kuesioner", `${a.n_semua ?? "-"} respons dirapikan dan dianonimkan; Likert diubah ke angka 1-5; nilai ekstrem omzet/transaksi dibatasi P99; galat isian dikoreksi lewat konfirmasi ulang ke responden.`],
+    2: ["Menyusun skor strategi dan target", `${akt.n_butir_strategi ?? "-"} butir Likert menjadi 4 skor strategi (reliabilitas alpha ${num(h.alpha?.min)}–${num(h.alpha?.max)}); ${a.n_utama ?? "-"} UMKM sampel utama, ${a.n_tanpa_baseline ?? "-"} tanpa data sebelum marketplace.`],
+    3: ["Eksplorasi data (EDA)", `${om && a.n_utama ? `${pct(om.naik / a.n_utama)} omzet naik, median +${rupiah(om.median_selisih)}/bulan (Wilcoxon p < 0,001). ` : ""}${h.butir_netral ? `${h.butir_netral.n} dari ${h.butir_netral.total} butir didominasi jawaban netral; ` : ""}VIF maksimum ${num(h.vif_maks)}.`],
+    4: ["Analisis pengaruh: regresi + Random Forest", `${rf ? `Random Forest AUC ${num(rf.auc)}, logistik ${num(lg?.auc)}. ` : ""}${top ? `${top.nama} teratas (OR ${num(top.or_logit)}); bobot ${gab.map((g) => `${kode(g.nama)} ${num(g.bobot)}`).join(", ")}.` : ""}`],
+    5: ["Segmentasi UMKM (K-Means)", `${sg.k ?? "-"} segmen (${sg.ukuran ?? "-"} UMKM) dari profil usaha; stabil saat diulang (ARI median ${num(sg.ari_median)}, Jaccard ≥ ${num(sg.jaccard_min)}).`],
+    6: ["Menyusun rekomendasi per segmen", `Prioritas = bobot × gap. Urutan: ${urut || "-"}.${wtop ? ` Simulasi: ${pendek(wtop.strategi)} +1 poin → ${sgn(wtop.selisih_pp)} pp.` : ""}${m ? ` Model disimpan sebagai ${m.versi}.` : ""}`],
+    7: ["Pelaporan dan validasi", `Laporan final, ${akt.n_tabel ?? "-"} tabel, ${akt.n_figur ?? "-"} grafik; angka laporan ditelusuri ke tabel; kontrak integrasi recommend() diuji.`],
+  };
+  const KET = { done: ["up", "Selesai"], wait: ["warn", "Menunggu"], run: ["warn", "Berjalan"], todo: ["idle", "Belum"] };
+  $("akt-tahap").innerHTML = tahap.map((t) => {
+    const [judul, hasil] = RINGKAS[t.n] || [t.nama, ""];
+    return `<tr><td><span class="stage-n">${t.n}</span></td><td class="what"><b>${esc(t.nama)}</b><span>${esc(judul)}</span></td>
+      <td>${esc(hasil)}</td><td><span class="badge ${KET[t.status][0]}">${KET[t.status][1]}</span></td><td style="white-space:nowrap;">${esc(t.selesai || "-")}</td></tr>`;
+  }).join("");
+
+  if (m) {
+    const nStrat = m.fitur.filter((f) => /^x\d_/.test(f)).length;
+    $("ml-badge").textContent = `${m.versi} · seed ${m.seed}`;
+    $("ml-dl").innerHTML = [
+      ["Data latih", `${m.n_latih} UMKM (${m.n_naik_latih} naik, ${m.n_latih - m.n_naik_latih} tetap)`],
+      ["Fitur", `${m.fitur.length} variabel: ${nStrat} strategi + ${m.fitur.length - nStrat} profil usaha`],
+      ["Model", `Random Forest ${m.param.n_estimators} pohon, kedalaman ${m.param.max_depth}, daun min. ${m.param.min_samples_leaf}`],
+      ["Validasi", `${m.skema_cv.replace("RepeatedStratifiedKFold", "Repeated stratified K-fold")} (25 lipatan uji)`],
+      ["Kinerja", rf ? `AUC ${num(rf.auc)} · F1 ${num(rf.f1)} · akurasi seimbang ${num(rf.akurasi)}` : "-"],
+      ["Dipakai untuk", `Bobot rekomendasi untuk ${m.k_segmen} segmen K-Means`],
+    ].map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+    const st = (h.rf_importance || []).filter((x) => x.jenis === "strategi");
+    $("ml-learn").innerHTML = st.length ? `Dari ${m.n_latih} UMKM, model belajar bahwa <b>${esc(st[0].nama)}</b> adalah ciri paling kuat yang membedakan UMKM yang melaporkan kenaikan penjualan, diikuti ${esc(kode(st[1].nama))} dan ${esc(kode(st[2].nama))}. ${esc(st[st.length - 1].nama)} hampir tidak membedakan. Pola ini sejalan dengan regresi logistik, sehingga menjadi dasar urutan rekomendasi ${esc(urut)}.` : "-";
+  }
+
+  const cf = h.rf_confusion;
+  if (cf) {
+    const tot = cf.tp + cf.tn + cf.fp + cf.fn;
+    $("cm-acc").textContent = pct((cf.tp + cf.tn) / tot);
+    $("cm").innerHTML = `<span></span><span class="h">Ditebak naik</span><span class="h">Ditebak tetap</span>
+      <span class="r">Aktual naik</span><div class="c ok">${cf.tp}<small>benar</small></div><div class="c no">${cf.fn}<small>terlewat</small></div>
+      <span class="r">Aktual tetap</span><div class="c no">${cf.fp}<small>salah duga</small></div><div class="c ok">${cf.tn}<small>benar</small></div>`;
+    $("cm-note").textContent = `${tot} tebakan = ${nUtama(h)} UMKM × 5 ulangan. Model mengenali ${pct(cf.tp / (cf.tp + cf.fn))} UMKM yang benar-benar naik.`;
+  }
+}
+
+/* ---------------- Detail teknis ---------------- */
+const JUDUL_FIGUR = {
+  "rekomendasi_prioritas.png": "Skor prioritas per segmen", "rekomendasi_gap.png": "Gap skor terhadap UMKM yang naik",
+  "shap_ringkas.png": "SHAP: kontribusi rata-rata", "shap_arah.png": "SHAP: arah hubungan", "pengaruh_peringkat.png": "Peringkat pengaruh (bootstrap)",
+  "pengaruh_odds_ratio.png": "Odds ratio regresi logistik", "pengaruh_sensitivitas_logit.png": "Sensitivitas logit", "pengaruh_sensitivitas_ols.png": "Sensitivitas OLS",
+  "segmen_profil.png": "Profil segmen", "segmen_pemilihan_k.png": "Pemilihan jumlah segmen", "segmen_peta_pca.png": "Peta segmen (PCA)",
+  "eda_spearman_heatmap.png": "Korelasi Spearman", "eda_boxplot_naik_penjualan.png": "Skor strategi: naik vs tidak", "eda_arah_perubahan.png": "Arah perubahan",
+  "eda_sebelum_sesudah.png": "Sebelum vs sesudah", "eda_distribusi_konstruk.png": "Sebaran skor strategi", "eda_butir_likert.png": "Sebaran jawaban per butir",
+  "eda_boxplot_tanpa_baseline.png": "Tanpa baseline vs punya baseline", "eda_profil_platform.png": "Platform", "eda_profil_lama_usaha.png": "Lama usaha",
+  "eda_profil_skala_omzet.png": "Skala omzet",
+};
+function renderTeknis(d) {
+  const h = d.hasil || {};
+  $("t-model").innerHTML = (h.model_performa || []).map((m) => `<tr><td>${esc(m.model)}</td><td>${num(m.auc, 3)} ± ${num(m.auc_sd, 3)}</td><td>${num(m.f1, 3)}</td><td>${num(m.akurasi, 3)}</td></tr>`).join("");
+  $("t-gab").innerHTML = (h.rf_pengaruh || []).slice().sort((p, q) => p.peringkat - q.peringkat).map((p) => `<tr>
+    <td>${p.peringkat}</td><td>${esc(p.nama)}</td><td>${num(p.or_logit)}</td><td>${num(p.p_logit, 3)}</td><td>${num(p.perm_importance, 3)}</td>
+    <td>${num(p.shap, 3)}</td><td>${num(p.pengaruh)}</td><td>${pct(p.p_p1, 1)}</td><td><b>${num(p.bobot)}</b></td>
+    <td><span class="badge ${p.meyakinkan ? "up" : "warn"}">${p.meyakinkan ? "meyakinkan" : "belum meyakinkan"}</span></td></tr>`).join("");
+  const kt = d.keputusan_terbuka || [];
+  $("open-dec").innerHTML = kt.length
+    ? `<h4>Keputusan terbuka</h4><div class="scroll"><table><thead><tr><th>ID</th><th>Topik</th><th>Isi</th><th>Status</th></tr></thead><tbody>${kt.map((k) => `<tr><td>${esc(k.id)}</td><td>${esc(k.topik)}</td><td>${esc(k.isi)}</td><td>${esc(k.status)}</td></tr>`).join("")}</tbody></table></div>`
+    : '<p class="note">Tidak ada keputusan terbuka di decisions.md.</p>';
+  const v = Date.now();
+  $("gallery").innerHTML = (d.figur || []).map((f) => {
+    const src = `figures/${encodeURIComponent(f)}`;
+    return `<figure class="fig"><a href="${src}" target="_blank" rel="noopener"><img src="${src}?v=${v}" alt="${esc(JUDUL_FIGUR[f] || f)}" loading="lazy"></a>
+      <div><span>${esc(JUDUL_FIGUR[f] || f)}</span><a class="btn sm" href="${src}" download="${esc(f)}">PNG</a></div></figure>`;
+  }).join("") || '<p class="note">Belum ada grafik di reports/figures.</p>';
+}
+
+/* ---------------- Simulator (disimpan, tidak ditampilkan) ---------------- */
+let DASAR = null;
+function setupSimulator() {
+  const ids = ["omzet", "lu", "lmp", "x1", "x2", "x3", "x4"], val = (k) => Number($("sim-" + k).value);
+  const label = () => {
+    $("o-omzet").textContent = rupiah(val("omzet"));
+    $("o-lu").textContent = num(val("lu"), 1) + " th";
+    $("o-lmp").textContent = num(val("lmp"), 1) + " th";
+    ["x1", "x2", "x3", "x4"].forEach((k) => ($("o-" + k).textContent = num(val(k), 1)));
+  };
+  let timer = null, seq = 0;
+  async function hitung() {
+    label();
+    const plat = [...document.querySelectorAll('input[name="plat"]:checked')].map((c) => c.value);
+    if (!plat.length) { $("r-warn").innerHTML = '<p class="warnbox">Pilih minimal satu platform.</p>'; return; }
+    const body = { omzet_bulanan: val("omzet"), lama_usaha_pra_mp: val("lu"), lama_di_mp: val("lmp"), platform: plat,
+      x1_unggah: val("x1"), x2_promosi: val("x2"), x3_komunikasi: val("x3"), x4_konsistensi: val("x4") };
+    const my = ++seq;
+    try {
+      const r = await fetch("/api/recommend", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const d = await r.json();
+      if (my !== seq) return;
+      if (!r.ok) throw new Error(d.error || `server menjawab ${r.status}`);
+      const il = d.ilustrasi_model;
+      $("r-seg").textContent = `Segmen ${d.segmen.id}: ${d.segmen.nama}`;
+      $("r-peluang").textContent = num(il.peluang_naik_persen, 0) + "%";
+      $("r-meter").style.width = Math.max(0, Math.min(100, il.peluang_naik_persen)) + "%";
+      $("r-dasar").textContent = DASAR != null ? num(DASAR, 0) + "%" : "-";
+      const nama = Object.fromEntries(d.skor.map((s) => [s.strategi, s.nama]));
+      const ent = Object.entries(il.selisih_plus1_pp).sort((p, q) => q[1] - p[1]), mx = Math.max(1, ...ent.map(([, v]) => Math.abs(v)));
+      $("r-mini").innerHTML = ent.map(([s, v]) => `<div class="mini-row"><span>${esc(pendek(nama[s]))}</span><div class="t"><i style="width:${(Math.max(0, v) / mx) * 100}%"></i></div><span>${sgn(v)} pp</span></div>`).join("");
+      $("r-prio").innerHTML = d.prioritas.length ? d.prioritas.map((p) => `<div class="item"><span class="rk">${p.peringkat}</span><div><h4>${esc(p.nama)}</h4><p>${esc(p.tindakan)}</p></div>
+        <div class="side-val"><span class="badge ${p.hubungan_meyakinkan ? "up" : "warn"}">${p.hubungan_meyakinkan ? "meyakinkan" : "belum meyakinkan"}</span><span>skor ${num(p.skor, 1)} vs ${num(p.benchmark, 2)}</span></div></div>`).join("")
+        : '<p class="note">Semua skor sudah setara atau di atas UMKM yang penjualannya naik di segmen ini.</p>';
+      $("r-warn").innerHTML = (d.peringatan || []).map((w) => `<p class="warnbox">${esc(w)}</p>`).join("");
+    } catch (e) {
+      if (my !== seq) return;
+      $("r-peluang").textContent = "-";
+      $("r-warn").innerHTML = `<p class="error">Simulator tidak bisa menghitung (${esc(e.message)}).</p>`;
+    }
+  }
+  const tunda = () => { label(); clearTimeout(timer); timer = setTimeout(hitung, 160); };
+  ids.forEach((k) => $("sim-" + k).addEventListener("input", tunda));
+  document.querySelectorAll('input[name="plat"]').forEach((c) => c.addEventListener("change", tunda));
   hitung();
 }
 
-
-/* Daftar Lengkap Grafik Pembanding Data (Mode Umum) */
-const KOMPARATIF_LIST = [
-  { f: "eda_sebelum_sesudah.png", kat: "sebelum_sesudah", badge: "🔄 Sebelum vs Sesudah", judul: "Perbandingan Nilai Omzet & Transaksi Sebelum vs Sesudah", insight: "Pola berpasangan membuktikan lonjakan omzet dan jumlah pesanan yang nyata pada mayoritas UMKM setelah masuk ke marketplace digital.", komparasi: "Membandingkan langsung nilai sebelum vs sesudah marketplace untuk setiap responden UMKM." },
-  { f: "eda_arah_perubahan.png", kat: "sebelum_sesudah", badge: "🔄 Sebelum vs Sesudah", judul: "Arah Perubahan Kinerja Penjualan UMKM", insight: "53,4% UMKM mengalami kenaikan omzet dan transaksi; median penambahan omzet bersih mencapai Rp250.000/bulan (Wilcoxon p < 0,001).", komparasi: "Proporsi UMKM yang Naik (53,4%), Sama/Stagnan (46,6%), dan Turun (0%)." },
-  { f: "eda_profil_platform.png", kat: "sebelum_sesudah", badge: "🔄 Sebelum vs Sesudah", judul: "Perbandingan Penetrasi Platform Marketplace", insight: "GoFood (75,2%) dan Shopee (67,1%) merupakan dua kanal marketplace terdepan yang paling banyak diandalkan pelaku usaha di Pekanbaru.", komparasi: "Tingkat adopsi 5 platform: GoFood, Shopee, GrabFood, Maxim, dan TikTok Shop." },
-  { f: "eda_boxplot_naik_penjualan.png", kat: "naik_vs_tidak", badge: "📈 Naik vs Tidak Naik", judul: "Sebaran Skor Strategi: Toko Naik vs Toko Stagnan", insight: "UMKM yang berhasil membukukan kenaikan omzet memiliki kebiasaan komunikasi pelanggan (X3) dan unggah produk (X1) yang jauh lebih unggul.", komparasi: "Distribusi skor strategi X1 s.d. X4 antara kelompok penjualan naik vs kelompok penjualan sama." },
-  { f: "eda_boxplot_tanpa_baseline.png", kat: "naik_vs_tidak", badge: "📈 Naik vs Tidak Naik", judul: "Perbandingan UMKM Digital Murni vs UMKM Transisi", insight: "Responden yang memulai usaha langsung di marketplace memiliki karakteristik yang konsisten dengan responden yang bertransisi dari konvensional.", komparasi: "3 responden tanpa baseline pra-marketplace vs 146 responden yang memiliki riwayat pra-marketplace." },
-  { f: "segmen_profil.png", kat: "segmen", badge: "👥 Antar Segmen Usaha", judul: "Perbandingan Profil Karakteristik Segmen 1 vs Segmen 2", insight: "Segmen 1 didominasi usaha muda mikro (omzet < Rp15 jt, baru di MP), sedangkan Segmen 2 didominasi usaha mapan (omzet > Rp15 jt, pengalaman lebih panjang).", komparasi: "Perbandingan variabel demografi usaha dan aktivitas strategi antar kedua kelompok." },
-  { f: "rekomendasi_prioritas.png", kat: "segmen", badge: "👥 Antar Segmen Usaha", judul: "Perbandingan Skor Prioritas Rekomendasi per Segmen", insight: "Meskipun skala omzet berbeda, hierarki prioritas strategi identik: X3 Komunikasi > X1 Unggah Produk > X2 Promosi. Bobot X3 mencapai 1,00.", komparasi: "Bobot prioritas strategi rekomendasi tindakan untuk Segmen 1 vs Segmen 2." },
-  { f: "rekomendasi_gap.png", kat: "segmen", badge: "👥 Antar Segmen Usaha", judul: "Perbandingan Kesenjangan (Gap) Skor terhadap Toko Sukses", insight: "Gap terbesar di kedua segmen terjadi pada kecepatan komunikasi chat (X3) dan keteraturan katalog produk (X1).", komparasi: "Selisih skor antara rata-rata anggota segmen dengan rata-rata UMKM yang berhasil naik penjualannya." },
-  { f: "shap_ringkas.png", kat: "ml", badge: "🤖 Pengaruh Machine Learning", judul: "Kontribusi Tiap Strategi pada Model Random Forest (SHAP)", insight: "TreeExplainer SHAP membuktikan bahwa respon chat pelanggan (X3) memberikan dorongan terbesar dalam menentukan peluang kenaikan penjualan.", komparasi: "Rata-rata magnitudo kontribusi marjinal (|SHAP|) dari tiap strategi pada 149 UMKM." },
-  { f: "pengaruh_odds_ratio.png", kat: "ml", badge: "🤖 Pengaruh Machine Learning", judul: "Perbandingan Odds Ratio Efektivitas Strategi (Logistik)", insight: "Setiap kenaikan 1 standar deviasi pada X3 melipatgandakan peluang penjualan naik sebesar 2,49 kali (p = 0,001), dan X1 sebesar 2,19 kali (p = 0,005).", komparasi: "Odds Ratio dengan interval keyakinan 95% dari model regresi logistik multivariat." }
-];
-
-function setupGaleriPembanding() {
-  const pills = $("filter-pills-pembanding");
-  if (!pills) return;
-  pills.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      pills.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      renderGaleriPembandingFiltered(btn.dataset.filter);
-    });
-  });
+/* ---------------- Navigasi aktif ---------------- */
+function setupNav() {
+  const links = [...document.querySelectorAll("#nav a")];
+  const io = new IntersectionObserver((ents) => {
+    ents.forEach((e) => { if (e.isIntersecting) links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id)); });
+  }, { rootMargin: "-30% 0px -60% 0px" });
+  links.forEach((a) => { const s = document.querySelector(a.getAttribute("href")); if (s) io.observe(s); });
 }
 
-function renderGaleriPembandingFiltered(kat = "all") {
-  const host = $("gallery-komparatif-umum");
-  if (!host) return;
-  const v = Date.now();
-  const list = KOMPARATIF_LIST.filter(item => (kat === "all" || item.kat === kat));
-
-  host.innerHTML = list.map(item => `
-    <figure class="fig" data-fig="${esc(item.f)}">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-        <span class="fig-badge">${esc(item.badge)}</span>
-        <span class="mono" style="font-size:0.75rem; color:var(--muted);">${esc(item.f)}</span>
-      </div>
-      <div class="img-box">
-        <img src="figures/${encodeURIComponent(item.f)}?v=${v}" alt="${esc(item.judul)}" loading="lazy">
-      </div>
-      <figcaption>
-        <b>${esc(item.judul)}</b>
-        <p style="font-size:0.86rem; color:var(--ink); margin:4px 0 2px 0;"><strong>Temuan Kunci:</strong> ${esc(item.insight)}</p>
-        <small style="color:var(--ink-2); font-size:0.8rem;"><strong>Fokus Pembanding:</strong> ${esc(item.komparasi)}</small>
-        <div class="fig-btn">🔍 Perbesar Grafik &amp; Analisis ↗</div>
-      </figcaption>
-    </figure>
-  `).join("");
-
-  host.querySelectorAll(".fig").forEach(card => {
-    card.addEventListener("click", () => {
-      const f = card.dataset.fig;
-      const info = FIGUR_INFO[f] || { judul: f, desc: "" };
-      openModal(`figures/${encodeURIComponent(f)}?v=${v}`, info.judul, info.desc, `figures/${encodeURIComponent(f)}`);
-    });
-  });
-}
-
-/* Galeri Interaktif dengan Lightbox Modal & Filter */
-let SEMUA_FIGUR = [];
-function setupGaleriFilter() {
-  const pills = $("filter-pills");
-  if (!pills) return;
-  pills.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      pills.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      renderGaleriFiltered(btn.dataset.filter);
-    });
-  });
-}
-
-function renderGaleriFiltered(kat = "all") {
-  const host = $("gallery");
-  const v = Date.now();
-  const list = SEMUA_FIGUR.filter(f => {
-    if (kat === "all") return true;
-    const info = FIGUR_INFO[f];
-    return info && info.kat === kat;
-  });
-
-  if (!list.length) {
-    host.innerHTML = '<p class="empty">Tidak ada grafik pada kategori ini.</p>';
-    return;
-  }
-
-  host.innerHTML = list.map((f) => {
-    const info = FIGUR_INFO[f] || { judul: f, desc: "Visualisasi analisis", kat: "eda" };
-    return `
-      <figure class="fig" data-fig="${esc(f)}">
-        <div class="img-box">
-          <img src="figures/${encodeURIComponent(f)}?v=${v}" alt="${esc(info.judul)}" loading="lazy">
-        </div>
-        <figcaption>
-          <b>${esc(info.judul)}</b>
-          <small style="color:var(--ink-2);">${esc(info.desc)}</small>
-          <span class="mono" style="font-size:0.75rem; color:var(--muted);">${esc(f)}</span>
-        </figcaption>
-      </figure>
-    `;
-  }).join("");
-
-  host.querySelectorAll(".fig").forEach(card => {
-    card.addEventListener("click", () => {
-      const f = card.dataset.fig;
-      const info = FIGUR_INFO[f] || { judul: f, desc: "" };
-      openModal(`figures/${encodeURIComponent(f)}?v=${v}`, info.judul, info.desc, `figures/${encodeURIComponent(f)}`);
-    });
-  });
-}
-
-function renderGaleri(figur) {
-  SEMUA_FIGUR = [...figur];
-  renderGaleriPembandingFiltered("all");
-  renderGaleriFiltered("all");
-}
-
+/* ---------------- Muat data ---------------- */
 async function muat() {
   $("err").hidden = true;
   try {
     const r = await fetch("data.json", { cache: "no-store" });
     if (!r.ok) throw new Error(`server menjawab ${r.status}`);
-    const d = await r.json();
-    $("m-data").textContent = d.data_dari || "terbaru";
-    $("m-muat").textContent = d.diperbarui;
-    renderTahap(d.tahap);
-    renderHasil(d.hasil || {});
-    renderPertanyaan(d.tahap, d.keputusan_terbuka || []);
-    renderGaleri(d.figur || []);
+    D = await r.json();
+    const h = D.hasil || {};
+    $("m-data").textContent = D.data_dari || "-";
+    $("m-muat").textContent = D.diperbarui;
+    DASAR = (h.simulasi_whatif || []).find((w) => w.model === "random_forest" && w.segmen === "Semua")?.peluang_dasar ?? null;
+    if (TAMPILKAN_SIMULATOR) $("r-dasar").textContent = DASAR != null ? num(DASAR, 0) + "%" : "-";
+    [() => renderOverview(D), () => renderKondisi(h), () => renderRF(h), () => renderRekomendasi(h), () => renderAktivitas(D), () => renderTeknis(D)]
+      .forEach((fn) => { try { fn(); } catch (e) { console.error(e); } });
   } catch (e) {
     $("err").textContent = `Data tidak bisa dimuat (${e.message}). Pastikan server masih berjalan: python -m umkm.dashboard`;
     $("err").hidden = false;
   }
 }
 
-setupModeSwitcher();
-setupSimulator();
-setupGaleriFilter();
-setupGaleriPembanding();
+let rt = null;
+window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => Object.keys(CH).forEach(gambar), 120); });
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { Object.keys(CH).forEach(gambar); if (D) renderOverview(D); });
 $("reload").addEventListener("click", muat);
+$("print").addEventListener("click", () => window.print());
+if (TAMPILKAN_SIMULATOR) { $("simulator").hidden = false; setupSimulator(); }
+setupNav();
 muat();
 </script>
 </body>

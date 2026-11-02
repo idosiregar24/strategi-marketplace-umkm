@@ -32,8 +32,14 @@ STATUS_KODE = {
 STRATEGI = {
     "x1_unggah": "X1 Unggah produk",
     "x2_promosi": "X2 Promosi",
-    "x3_komunikasi": "X3 Komunikasi",
+    "x3_komunikasi": "X3 Komunikasi pelanggan",
     "x4_konsistensi": "X4 Konsistensi toko",
+}
+PROFIL = {
+    "lama_usaha_pra_mp": "Lama usaha sebelum MP",
+    "lama_di_mp": "Lama di marketplace",
+    "jumlah_platform": "Jumlah platform",
+    "log_omzet_sebelum": "Omzet sebelum (log)",
 }
 NAMA_FIGUR = re.compile(r"^[A-Za-z0-9_\-]+\.png$")
 
@@ -197,10 +203,64 @@ def ringkasan_hasil() -> dict[str, Any]:
                     {
                         "model": m_nama,
                         "auc": float(cv_naik.loc[(m_key, "auc"), "rata_rata"]),
+                        "auc_sd": float(cv_naik.loc[(m_key, "auc"), "sd"]),
                         "f1": float(cv_naik.loc[(m_key, "f1_macro"), "rata_rata"]),
                         "akurasi": float(cv_naik.loc[(m_key, "akurasi_seimbang"), "rata_rata"]),
                     }
                 )
+
+    perm = _csv("pengaruh_permutation")
+    if perm is not None:
+        g = perm.groupby("variabel")["importance"].agg(["mean", "std", "count"])
+        out["rf_importance"] = sorted(
+            [
+                {
+                    "var": v,
+                    "nama": STRATEGI.get(v) or PROFIL.get(v, v),
+                    "jenis": "strategi" if v in STRATEGI else "profil",
+                    "mean": float(r["mean"]),
+                    "sd": float(r["std"]),
+                    "n_lipatan": int(r["count"]),
+                }
+                for v, r in g.iterrows()
+            ],
+            key=lambda d: -d["mean"],
+        )
+
+    conf = _csv("pengaruh_confusion")
+    if conf is not None and (conf["model"] == "random_forest").any():
+        c = conf.set_index("model").loc["random_forest"]
+        out["rf_confusion"] = {k: int(c[k]) for k in ("tn", "fp", "fn", "tp")}
+
+    seg = _csv("profil_segmen")
+    if seg is not None:
+        out["segmen"] = [
+            {
+                "segmen": str(r["segmen"]),
+                "nama": str(r["nama_segmen"]),
+                "n": int(r["n"]),
+                "omzet_median": float(r["omzet_sebelum_median"]),
+                "lama_usaha_median": float(r["lama_usaha_pra_mp_median"]),
+                "lama_mp_median": float(r["lama_di_mp_median"]),
+                "jumlah_platform_rata": float(r["jumlah_platform_rata"]),
+                "n_utama": int(r["n_sampel_utama"]),
+                "n_naik_utama": int(r["n_naik_utama"]),
+            }
+            for _, r in seg.iterrows()
+        ]
+
+    gap = _csv("rekomendasi_gap")
+    if gap is not None:
+        out["gap"] = [
+            {
+                "segmen": str(r["segmen"]),
+                "strategi": STRATEGI.get(r["strategi"], r["strategi"]),
+                "skor": float(r["skor"]),
+                "benchmark": float(r["benchmark"]),
+                "gap": float(r["gap"]),
+            }
+            for _, r in gap.iterrows()
+        ]
 
     gab = _csv("pengaruh_gabungan")
     if gab is not None:
@@ -209,6 +269,7 @@ def ringkasan_hasil() -> dict[str, Any]:
                 "strategi": r["strategi"],
                 "nama": STRATEGI.get(r["strategi"], r["nama"]),
                 "perm_importance": float(r["perm_importance"]),
+                "p_logit": float(r["p_logit"]),
                 "shap": float(r["mean_abs_shap"]),
                 "pengaruh": float(r["pengaruh"]),
                 "bobot": float(r["bobot_rekomendasi"]),
@@ -252,6 +313,62 @@ def ringkasan_hasil() -> dict[str, Any]:
     return out
 
 
+def info_model() -> dict[str, Any] | None:
+    """Ringkasan model tersimpan (models/<versi>): data latih, fitur, skema CV, parameter. None bila belum ada."""
+    from umkm import recommend as rk
+
+    try:
+        art = rk.muat_artefak(str(rk.dir_model_default()))
+    except FileNotFoundError:
+        return None
+    meta, m = art["meta"], art["model"]
+    par = m["model"].get_params()
+    return {
+        "versi": meta["versi_model"],
+        "dibuat": meta["dibuat"],
+        "nama": m["nama"],
+        "target": meta["target_model"],
+        "n_latih": meta["n_latih_model"],
+        "n_naik_latih": meta["n_naik_latih"],
+        "fitur": meta["fitur_model"],
+        "skema_cv": meta["skema_cv"],
+        "seed": meta["seed"],
+        "k_segmen": meta["k_segmen"],
+        "param": {k: par.get(k) for k in ("n_estimators", "max_depth", "min_samples_leaf")},
+    }
+
+
+def ringkasan_aktivitas() -> dict[str, Any]:
+    """Angka pendukung rangkuman tahap 1-7: segmentasi, reliabilitas, jumlah keluaran, keputusan."""
+    out: dict[str, Any] = {}
+    k = _csv("segmen_pemilihan_k")
+    if k is not None:
+        r = k[k["set_fitur"] == "profil"].sort_values("ari_boot_median").iloc[-1]
+        out["segmentasi"] = {
+            "k": int(r["k"]),
+            "silhouette": float(r["silhouette"]),
+            "ari_median": float(r["ari_boot_median"]),
+            "ukuran": str(r["ukuran"]),
+        }
+    stab = _csv("segmen_stabilitas")
+    if stab is not None:
+        out.setdefault("segmentasi", {})["jaccard_min"] = float(stab["jaccard_rata"].min())
+    rel = _csv("reliabilitas")
+    if rel is not None:
+        out["n_butir_strategi"] = int(rel.loc[rel["peran"] == "strategi", "n_butir"].sum())
+    rep = config.path("reports")
+    out["n_tabel"] = len(list((rep / "tables").glob("*.csv")))
+    out["n_figur"] = len(list((rep / "figures").glob("*.png")))
+    dec = config.project_dir() / ".claude" / "decisions.md"
+    if dec.exists():
+        rows = [
+            r for r in _baris_tabel(dec.read_text(encoding="utf-8")) if r and r[0].startswith("D")
+        ]
+        out["n_keputusan"] = len(rows)
+        out["n_keputusan_sepakat"] = sum(len(r) >= 4 and r[3] == "DISEPAKATI" for r in rows)
+    return out
+
+
 def daftar_figur() -> list[str]:
     """Nama berkas PNG di reports/figures (urut abjad)."""
     folder = config.path("reports") / "figures"
@@ -277,9 +394,31 @@ def bangun_data() -> dict[str, Any]:
                 keputusan_terbuka(dec.read_text(encoding="utf-8")) if dec.exists() else []
             ),
             "hasil": ringkasan_hasil(),
+            "aktivitas": ringkasan_aktivitas(),
+            "model": info_model(),
             "figur": daftar_figur(),
         }
     )
+
+
+def simulasi(profil: dict[str, Any]) -> dict[str, Any]:
+    """Keluaran `recommend()` ditambah `ilustrasi_model`: peluang prediksi Random Forest untuk
+    profil ini dan selisihnya bila tiap strategi +1 poin. Kontrak `recommend()` tidak diubah;
+    angka ini ilustrasi model (asosiasi), bukan jaminan hasil."""
+    from umkm import recommend as rk
+
+    hasil = rk.recommend(profil)
+    p = rk.ProfilUMKM.model_validate(profil)
+    art = rk.muat_artefak(str(rk.dir_model_default()))
+    m = art["model"]
+    x = rk.baris_profil(p, art["benchmark"]["batas_skala_omzet"])[m["fitur"]]
+    delta = rk.selisih_prediksi(m["model"], x, rk.STRATEGI, art["meta"]["whatif_tambah"])
+    hasil["ilustrasi_model"] = {
+        "model": m["nama"],
+        "peluang_naik_persen": round(float(m["model"].predict_proba(x)[0, 1] * 100), 1),
+        "selisih_plus1_pp": {s: round(float(delta[s]), 1) for s in rk.STRATEGI},
+    }
+    return hasil
 
 
 # ---------------------------------------------------------------------------
@@ -321,9 +460,7 @@ class _Handler(BaseHTTPRequestHandler):
                 panjang = int(self.headers.get("Content-Length", 0))
                 badan = self.rfile.read(panjang)
                 masukan = json.loads(badan.decode("utf-8"))
-                from umkm.recommend import recommend
-
-                hasil = recommend(masukan)
+                hasil = simulasi(masukan)
                 self._kirim(
                     200,
                     json.dumps(hasil, ensure_ascii=False).encode("utf-8"),
