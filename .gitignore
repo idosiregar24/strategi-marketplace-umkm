@@ -14,5 +14,5 @@ umkm_proyek.zip
 .pytest_cache/
 .ruff_cache/
 scratch/
-# situs statis hasil `python -m umkm.dashboard --export site`
-site/
+# situs statis hasil `python -m umkm.dashboard --export site` SENGAJA di-commit:
+# home server cukup `git pull` dan menyajikan folder site/ (isinya hanya agregat)
