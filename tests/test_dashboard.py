@@ -52,6 +52,29 @@ def test_bangun_data_memuat_hasil_random_forest():
     assert {s["segmen"] for s in h["segmen"]} >= {"1", "2", "Semua"}
 
 
+@pytest.mark.skipif(not _FEAT.exists(), reason="data_features.csv belum dibuat")
+def test_arah_per_segmen_konsisten_dengan_total():
+    h = db.bangun_data()["hasil"]
+    seg = {s["segmen"]: s for s in h["segmen"]}
+    arah = {r["k"]: r["naik"] for r in h["arah"]}
+    per = [s for k, s in seg.items() if k != "Semua"]
+    assert sum(s["n_omzet_naik"] for s in per) == seg["Semua"]["n_omzet_naik"] == arah["Omzet"]
+    assert sum(s["n_trx_naik"] for s in per) == seg["Semua"]["n_trx_naik"] == arah["Transaksi"]
+    for s in per:  # naik = omzet ATAU transaksi naik
+        assert s["n_naik_utama"] == s["n_omzet_naik"] + s["n_trx_naik"] - s["n_keduanya_naik"]
+
+
+@pytest.mark.skipif(not _FEAT.exists(), reason="data_features.csv belum dibuat")
+def test_uji_arah_segmen_sama_dengan_tahap5():
+    uji = {r["k"]: r for r in db.uji_arah_segmen()}
+    assert set(uji) == {"Penjualan naik", "Omzet naik", "Transaksi naik"}
+    assert all(0 <= r["p"] <= r["p_holm"] <= 1 for r in uji.values())
+    tahap5 = db._csv("segmen_uji_beda")
+    if tahap5 is not None:  # Fisher naik_penjualan harus sama dengan hasil Tahap 5 (D27)
+        p5 = tahap5.set_index("variabel").loc["naik_penjualan", "p"]
+        assert uji["Penjualan naik"]["p"] == pytest.approx(p5)
+
+
 _MODEL = config.path("models")
 
 

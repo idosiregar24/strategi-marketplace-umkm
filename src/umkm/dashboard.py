@@ -104,6 +104,64 @@ def _bersih(obj: Any) -> Any:
     return obj
 
 
+def _arah_utama_segmen() -> pd.DataFrame | None:
+    """Sampel utama dengan kolom segmen dan penanda naik (penjualan, omzet, transaksi, keduanya)."""
+    feat = config.path("processed") / "data_features.csv"
+    segp = config.path("processed") / "data_segmen.csv"
+    if not (feat.exists() and segp.exists()):
+        return None
+    kol = ["id_responden", "sampel_utama", "naik_penjualan", "arah_omzet", "arah_trx"]
+    f = pd.read_csv(feat, usecols=kol)
+    s = pd.read_csv(segp, usecols=["id_responden", "segmen"])
+    u = f[f["sampel_utama"] == 1].merge(s, on="id_responden", how="inner")
+    om, tr = u["arah_omzet"] == "naik", u["arah_trx"] == "naik"
+    return u.assign(naik=u["naik_penjualan"] == 1, om=om, tr=tr, dua=om & tr)
+
+
+def arah_per_segmen() -> dict[str, dict[str, int]]:
+    """Jumlah UMKM sampel utama yang omzetnya naik, transaksinya naik, dan keduanya naik, per
+    segmen K-Means (kunci "Semua" untuk total). Kosong bila data segmen/fitur belum ada."""
+    u = _arah_utama_segmen()
+    if u is None:
+        return {}
+
+    def hitung(d: pd.DataFrame) -> dict[str, int]:
+        return {
+            "n_omzet_naik": int(d["om"].sum()),
+            "n_trx_naik": int(d["tr"].sum()),
+            "n_keduanya_naik": int(d["dua"].sum()),
+        }
+
+    out = {str(k): hitung(g) for k, g in u.groupby("segmen")}
+    out["Semua"] = hitung(u)
+    return out
+
+
+def uji_arah_segmen() -> list[dict[str, Any]]:
+    """Uji beda proporsi naik antar-segmen (D30): Fisher eksak untuk 2 segmen, chi-kuadrat bila
+    lebih; p dikoreksi Holm atas 3 indikator (penjualan, omzet, transaksi naik). Deskriptif."""
+    from scipy.stats import chi2_contingency, fisher_exact
+    from statsmodels.stats.multitest import multipletests
+
+    u = _arah_utama_segmen()
+    if u is None or u["segmen"].nunique() < 2:
+        return []
+    out = []
+    for kol, nama in (("naik", "Penjualan naik"), ("om", "Omzet naik"), ("tr", "Transaksi naik")):
+        tab = pd.crosstab(u["segmen"], u[kol]).reindex(columns=[True, False], fill_value=0)
+        if len(tab) == 2:
+            p = float(fisher_exact(tab.to_numpy())[1])
+            uji = "Fisher"
+        else:
+            p = float(chi2_contingency(tab.to_numpy())[1])
+            uji = "chi-kuadrat"
+        out.append({"k": nama, "uji": uji, "p": p})
+    holm = multipletests([r["p"] for r in out], method="holm")[1]
+    for r, ph in zip(out, holm):
+        r["p_holm"] = float(ph)
+    return out
+
+
 def ringkasan_hasil() -> dict[str, Any]:
     """Angka kunci, data grafik, dan catatan kualitas dari tabel Tahap 2-3 (None bila belum ada)."""
     out: dict[str, Any] = {}
@@ -234,6 +292,7 @@ def ringkasan_hasil() -> dict[str, Any]:
         out["rf_confusion"] = {k: int(c[k]) for k in ("tn", "fp", "fn", "tp")}
 
     seg = _csv("profil_segmen")
+    arah_seg = arah_per_segmen()
     if seg is not None:
         out["segmen"] = [
             {
@@ -247,8 +306,10 @@ def ringkasan_hasil() -> dict[str, Any]:
                 "n_utama": int(r["n_sampel_utama"]),
                 "n_naik_utama": int(r["n_naik_utama"]),
             }
+            | arah_seg.get(str(r["segmen"]), {})
             for _, r in seg.iterrows()
         ]
+        out["uji_arah_segmen"] = uji_arah_segmen()
 
     gap = _csv("rekomendasi_gap")
     if gap is not None:

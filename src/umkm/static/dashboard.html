@@ -138,6 +138,14 @@ a { color: var(--accent-ink); }
 .ticks i { flex: 1; border-radius: 2px; background: var(--bar-faint); }
 .ticks i.on { background: var(--accent); }
 .kv { display: grid; gap: 8px; }
+.seg-naik { border-top: 1px dashed var(--line); padding-top: 10px; display: grid; gap: 6px; }
+.seg-naik h4 { margin: 0; font-size: 0.74rem; font-weight: 600; color: var(--muted); }
+.seg-naik table { font-size: 0.78rem; }
+.seg-naik th, .seg-naik td { padding: 6px 6px; text-align: right; vertical-align: middle; }
+.seg-naik th:first-child, .seg-naik td:first-child { text-align: left; }
+.seg-naik td:first-child b { display: block; color: var(--ink); }
+.seg-naik td:first-child small { color: var(--muted); }
+.seg-naik tr:last-child td { border-bottom: 0; }
 .kv-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: 0.82rem; color: var(--ink-2); }
 .kv-row b { color: var(--ink); font-variant-numeric: tabular-nums; }
 .kv-row .bar { grid-column: 1 / -1; height: 6px; background: var(--bar-faint); border-radius: 3px; overflow: hidden; margin-top: -4px; }
@@ -304,6 +312,7 @@ footer .kredit { display: block; margin-top: 4px; font-size: 0.72rem; }
         <div class="big"><span class="v" id="k-naik">-</span><span class="badge acc" id="k-naik-b"></span></div>
         <div class="ticks" id="k-ticks" aria-hidden="true"></div>
         <div class="kv" id="k-naik-kv"></div>
+        <div class="seg-naik" id="k-naik-seg" hidden></div>
       </div>
       <div class="card">
         <div class="card-head"><h3>Kemampuan Random Forest <i class="info" data-tip="ROC-AUC pada data uji validasi silang 5×5. 0,5 = tebakan acak, 1 = sempurna.">i</i></h3></div>
@@ -332,6 +341,7 @@ footer .kredit { display: block; margin-top: 4px; font-size: 0.72rem; }
     <div class="g2">
       <article class="card" data-chart="arah"></article>
       <article class="card" data-chart="platform"></article>
+      <article class="card span2" data-chart="arahseg" hidden></article>
     </div>
   </section>
 
@@ -696,6 +706,16 @@ function renderOverview(d) {
     $("k-naik-b").textContent = `${a.n_naik} dari ${a.n_utama} UMKM`;
     $("k-ticks").innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < Math.round(r * n) ? "on" : ""}"></i>`).join("");
     kvRows("k-naik-kv", arah.map((x) => ({ k: `${x.k} naik`, t: pct(x.naik / a.n_utama), v: x.naik / a.n_utama, hi: true })));
+    const segNaik = (h.segmen || []).filter((s) => s.segmen !== "Semua" && s.n_omzet_naik != null);
+    if (segNaik.length) {
+      const baris = segNaik.map((s) => `<tr data-tip="${esc(`Segmen ${s.segmen}: ${s.n_keduanya_naik} UMKM naik di omzet dan transaksi sekaligus`)}">
+        <td><b>Segmen ${esc(s.segmen)}</b><small>${esc(s.nama)}</small></td>
+        <td><b>${s.n_naik_utama}</b>/${s.n_utama}</td><td>${s.n_omzet_naik}</td><td>${s.n_trx_naik}</td></tr>`).join("");
+      $("k-naik-seg").innerHTML = `<h4>Rincian ${a.n_naik} UMKM yang naik, per segmen</h4>
+        <table><thead><tr><th>Segmen</th><th>Naik</th><th>Omzet naik</th><th>Transaksi naik</th></tr></thead><tbody>${baris}</tbody></table>
+        <p class="note">Satu UMKM bisa naik di omzet dan transaksi sekaligus, jadi kolom omzet + transaksi tidak dijumlahkan.</p>`;
+      $("k-naik-seg").hidden = false;
+    }
   }
   if (rf) {
     $("k-auc").textContent = num(rf.auc);
@@ -767,6 +787,47 @@ function renderKondisi(h) {
       kesimpulan: `<b>${esc(p[0].k)}, ${esc(p[1].k)}, dan ${esc(p[2].k)}</b> adalah kanal utama (${pct(p[2].pct)}–${pct(p[0].pct)} UMKM). ${esc(p[p.length - 2].k)} dan ${esc(p[p.length - 1].k)} masih jarang (di bawah 6%).${semua ? ` Rata-rata satu UMKM memakai ${num(semua.jumlah_platform_rata, 1)} platform.` : ""}`,
     });
   }
+  renderArahSegmen(h);
+}
+
+/* Persentase UMKM yang naik di dalam tiap segmen (bukan jumlah orang, karena ukuran segmen berbeda). */
+function renderArahSegmen(h) {
+  const seg = (h.segmen || []).filter((s) => s.segmen !== "Semua" && s.n_omzet_naik != null && s.n_utama);
+  if (seg.length < 2) return;
+  const uji = h.uji_arah_segmen || [];
+  const IND = [
+    { k: "Penjualan naik", n: (s) => s.n_naik_utama },
+    { k: "Omzet naik", n: (s) => s.n_omzet_naik },
+    { k: "Transaksi naik", n: (s) => s.n_trx_naik },
+  ];
+  const key = (s) => "s" + s.segmen;
+  const ser = () => { const C = warna(), cols = [C.accent, C.neutral]; return seg.map((s, i) => ({ key: key(s), name: `Segmen ${s.segmen} (n = ${s.n_utama})`, color: cols[i % 2] })); };
+  const rows = IND.map((ind) => {
+    const u = uji.find((x) => x.k === ind.k), v = {}, tp = {};
+    seg.forEach((s) => {
+      v[key(s)] = (ind.n(s) / s.n_utama) * 100;
+      tp[key(s)] = `Segmen ${s.segmen}, ${ind.k.toLowerCase()}: ${ind.n(s)} dari ${s.n_utama} UMKM (${pct(ind.n(s) / s.n_utama)})${u ? ` · beda antar-segmen p = ${num(u.p, 2)}` : ""}`;
+    });
+    return { label: ind.k, v, tip: tp };
+  });
+  const bermakna = uji.filter((x) => x.p_holm < 0.05);
+  const pMin = uji.length ? Math.min(...uji.map((x) => x.p)) : null;
+  const naik = (s) => pct(s.n_naik_utama / s.n_utama);
+  const el = document.querySelector('[data-chart="arahseg"]');
+  el.hidden = false;
+  kartu("arahseg", {
+    judul: "UMKM yang naik, per segmen",
+    info: "Persentase dihitung di dalam tiap segmen (sampel utama), karena ukuran segmen berbeda. Uji beda antar-segmen: Fisher eksak, koreksi Holm atas 3 indikator.",
+    big: { v: seg.map(naik).join(" vs "), badge: bermakna.length ? "ada beda bermakna" : "beda tidak bermakna", cls: "acc", k: `penjualan naik, ${seg.map((s) => `Segmen ${s.segmen}`).join(" vs ")}` },
+    sub: "Persentase dari anggota sampel utama di tiap segmen; satu UMKM bisa naik di omzet dan transaksi sekaligus",
+    legend: ser(),
+    draw: (w) => hbars({ rows, series: ser(), domain: [0, 100], fmtNilai: (v) => num(v, 0) + "%", fmtTick: (t) => t + "%", labelW: 110, aria: "Persentase UMKM yang naik per segmen" }, w),
+    csv: () => [["segmen", "indikator", "n_naik", "n_segmen", "persen", "p_fisher", "p_holm"],
+      ...IND.flatMap((ind) => { const u = uji.find((x) => x.k === ind.k); return seg.map((s) => [s.segmen, ind.k, ind.n(s), s.n_utama, (ind.n(s) / s.n_utama) * 100, u?.p ?? "", u?.p_holm ?? ""]); })],
+    kesimpulan: bermakna.length
+      ? `Proporsi yang naik berbeda bermakna antar-segmen pada: <b>${esc(bermakna.map((x) => x.k).join(", "))}</b> (Fisher, Holm p &lt; 0,05). Ini hubungan asosiasi, bukan sebab-akibat.`
+      : `<b>Kedua segmen mirip: sekitar separuh UMKM melaporkan kenaikan</b> (${seg.map((s) => `Segmen ${s.segmen} ${naik(s)}`).join(", ")}). Selisih omzet naik dan transaksi naik antar-segmen juga kecil dan tidak bermakna secara statistik${pMin != null ? ` (uji Fisher, semua p ≥ ${num(pMin, 2)}, juga setelah koreksi Holm)` : ""}. Jadi laporan kenaikan penjualan tidak tampak berkaitan dengan profil usaha pembentuk segmen (skala omzet, lama usaha, lama di marketplace, jumlah platform).`,
+  });
 }
 
 /* ---------------- Random Forest ---------------- */
