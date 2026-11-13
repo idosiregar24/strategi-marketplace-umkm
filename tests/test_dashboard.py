@@ -138,3 +138,32 @@ def test_ekspor_situs_statis(tmp_path):
     assert (out / "index.html").read_bytes() == db.STATIC.read_bytes()
     assert sorted(p.name for p in (out / "figures").glob("*.png")) == data["figur"]
     assert (out / ".nojekyll").exists()
+    # halaman rincian ikut diekspor; nama usaha hanya di daftar_umkm.json, bukan di data.json (D31)
+    assert (out / "rincian.html").read_bytes() == db.STATIC_RINCIAN.read_bytes()
+    daftar = json.loads((out / "daftar_umkm.json").read_text(encoding="utf-8"))
+    assert daftar["statis"] and len(daftar["umkm"]) == data["hasil"]["angka"]["n_utama"]
+    assert "R001" not in (out / "data.json").read_text(encoding="utf-8")
+
+
+@pytest.mark.skipif(not _FEAT.exists(), reason="data_features.csv belum dibuat")
+def test_daftar_umkm_cocok_dengan_ringkasan():
+    daftar = db.daftar_umkm()
+    h = db.bangun_data()["hasil"]
+    assert len(daftar) == h["angka"]["n_utama"] and len({r["id"] for r in daftar}) == len(daftar)
+    assert sum(r["naik"] for r in daftar) == h["angka"]["n_naik"]
+    assert all(r["nama"] for r in daftar)
+    for s in (s for s in h["segmen"] if s["segmen"] != "Semua"):
+        anggota = [r for r in daftar if r["segmen"] == s["segmen"]]
+        assert sum(r["naik"] for r in anggota) == s["n_naik_utama"]
+        assert sum(r["arah_omzet"] == "naik" for r in anggota) == s["n_omzet_naik"]
+        assert sum(r["arah_trx"] == "naik" for r in anggota) == s["n_trx_naik"]
+    for r in daftar:  # naik penjualan = omzet ATAU transaksi naik (D13)
+        assert r["naik"] == (r["arah_omzet"] == "naik" or r["arah_trx"] == "naik")
+    urut = [r["naik"] for r in daftar]
+    assert urut == sorted(urut, reverse=True)  # yang naik tampil lebih dulu
+    json.dumps(db.bangun_daftar(), allow_nan=False)
+
+
+def test_persen_ubah():
+    assert db._persen_ubah(100, 150) == 50
+    assert db._persen_ubah(0, 10) is None and db._persen_ubah(float("nan"), 1) is None

@@ -146,6 +146,11 @@ a { color: var(--accent-ink); }
 .seg-naik td:first-child b { display: block; color: var(--ink); }
 .seg-naik td:first-child small { color: var(--muted); }
 .seg-naik tr:last-child td { border-bottom: 0; }
+.seg-naik tbody tr { cursor: pointer; }
+.seg-naik tbody tr:hover td { background: var(--surface-2); }
+.seg-naik td a { color: inherit; text-decoration: none; border-bottom: 1px dashed var(--bar-neutral); }
+.seg-naik td a:hover { color: var(--accent-ink); border-bottom-color: var(--accent); }
+.seg-naik .lihat { justify-self: start; text-decoration: none; }
 .kv-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: 0.82rem; color: var(--ink-2); }
 .kv-row b { color: var(--ink); font-variant-numeric: tabular-nums; }
 .kv-row .bar { grid-column: 1 / -1; height: 6px; background: var(--bar-faint); border-radius: 3px; overflow: hidden; margin-top: -4px; }
@@ -187,6 +192,8 @@ a { color: var(--accent-ink); }
 .item .rk { width: 30px; height: 30px; border-radius: 50%; background: var(--bar-faint); color: var(--ink-2); font-weight: 700; font-size: 0.82rem; display: grid; place-items: center; }
 .item:first-child .rk { background: var(--accent); color: #fff; }
 .item h4 { font-size: 0.88rem; }
+.why ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 0.86rem; color: var(--ink-2); }
+.why ul b { color: var(--ink); }
 .item p { font-size: 0.8rem; color: var(--ink-2); margin-top: 2px; }
 .item .side-val { text-align: right; font-size: 0.78rem; color: var(--muted); display: grid; gap: 4px; justify-items: end; }
 .item .side-val b { color: var(--ink); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
@@ -284,6 +291,7 @@ footer .kredit { display: block; margin-top: 4px; font-size: 0.72rem; }
     <a href="#random-forest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M12 7.5v4M12 11.5l-5 4.5M12 11.5l5 4.5"/></svg>Random Forest</a>
     <a href="#pls-sem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2.5" y="4" width="6" height="5" rx="1.2"/><rect x="2.5" y="15" width="6" height="5" rx="1.2"/><circle cx="18" cy="12" r="3.5"/><path d="M8.5 6.5l6.5 4M8.5 17.5l6.5-4"/></svg>PLS-SEM</a>
     <a href="#rekomendasi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Rekomendasi</a>
+    <a href="rincian.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Daftar UMKM naik<span class="count" id="nav-umkm">-</span></a>
     <a href="#aktivitas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>Rangkuman aktivitas<span class="count" id="nav-tahap">-</span></a>
     <a href="#teknis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Detail teknis</a>
   </nav>
@@ -386,6 +394,10 @@ footer .kredit { display: block; margin-top: 4px; font-size: 0.72rem; }
         <div class="list" id="seg-actions"></div>
       </div>
       <article class="card" data-chart="gap"></article>
+      <div class="card why span3" id="seg-why" hidden>
+        <div class="card-head"><h3 style="color:var(--ink); font-size:0.95rem;">Kenapa urutannya sama di setiap segmen?</h3></div>
+        <ul id="seg-why-list"></ul>
+      </div>
     </div>
   </section>
 
@@ -708,13 +720,18 @@ function renderOverview(d) {
     kvRows("k-naik-kv", arah.map((x) => ({ k: `${x.k} naik`, t: pct(x.naik / a.n_utama), v: x.naik / a.n_utama, hi: true })));
     const segNaik = (h.segmen || []).filter((s) => s.segmen !== "Semua" && s.n_omzet_naik != null);
     if (segNaik.length) {
-      const baris = segNaik.map((s) => `<tr data-tip="${esc(`Segmen ${s.segmen}: ${s.n_keduanya_naik} UMKM naik di omzet dan transaksi sekaligus`)}">
+      const url = (seg, ind) => `rincian.html?segmen=${encodeURIComponent(seg)}${ind ? "&ind=" + ind : ""}`;
+      const baris = segNaik.map((s) => `<tr data-href="${url(s.segmen)}" data-tip="${esc(`Segmen ${s.segmen}: ${s.n_keduanya_naik} UMKM naik di omzet dan transaksi sekaligus. Klik untuk melihat nama-nama UMKM-nya.`)}">
         <td><b>Segmen ${esc(s.segmen)}</b><small>${esc(s.nama)}</small></td>
-        <td><b>${s.n_naik_utama}</b>/${s.n_utama}</td><td>${s.n_omzet_naik}</td><td>${s.n_trx_naik}</td></tr>`).join("");
+        <td><a href="${url(s.segmen)}"><b>${s.n_naik_utama}</b>/${s.n_utama}</a></td>
+        <td><a href="${url(s.segmen, "omzet")}">${s.n_omzet_naik}</a></td><td><a href="${url(s.segmen, "trx")}">${s.n_trx_naik}</a></td></tr>`).join("");
       $("k-naik-seg").innerHTML = `<h4>Rincian ${a.n_naik} UMKM yang naik, per segmen</h4>
         <table><thead><tr><th>Segmen</th><th>Naik</th><th>Omzet naik</th><th>Transaksi naik</th></tr></thead><tbody>${baris}</tbody></table>
-        <p class="note">Satu UMKM bisa naik di omzet dan transaksi sekaligus, jadi kolom omzet + transaksi tidak dijumlahkan.</p>`;
+        <p class="note">Satu UMKM bisa naik di omzet dan transaksi sekaligus, jadi kolom omzet + transaksi tidak dijumlahkan. Klik angka untuk melihat nama UMKM-nya.</p>
+        <a class="btn sm lihat" href="rincian.html">Lihat nama ${a.n_naik} UMKM &amp; unduh Excel →</a>`;
+      $("k-naik-seg").querySelectorAll("tr[data-href]").forEach((tr) => tr.addEventListener("click", (e) => { if (!e.target.closest("a")) location.href = tr.dataset.href; }));
       $("k-naik-seg").hidden = false;
+      $("nav-umkm").textContent = a.n_naik;
     }
   }
   if (rf) {
@@ -924,6 +941,8 @@ function renderRekomendasi(h) {
         <span>gap <b>${num(r.gap)}</b></span><span>bobot ${num(r.bobot)}</span></div>
     </div>`).join("");
 
+  renderAlasanSama(h);
+
   const rank = Object.fromEntries((h.rf_pengaruh || []).map((p) => [p.nama, p.peringkat]));
   const g = (h.gap || []).filter((r) => r.segmen === SEG).sort((p, q) => (rank[p.strategi] ?? 9) - (rank[q.strategi] ?? 9));
   if (!g.length) return;
@@ -940,6 +959,25 @@ function renderRekomendasi(h) {
     csv: () => [["segmen", "strategi", "skor_segmen", "skor_umkm_naik", "gap"], ...g.map((r) => [SEG, r.strategi, r.skor, r.benchmark, r.gap])],
     kesimpulan: `Semua strategi sedikit di bawah UMKM yang naik; selisih terbesar di <b>${esc(maxg.strategi)}</b>.${atas ? ` Setelah digabung dengan bobot, <b>${esc(kode(atas.strategi))}</b> menjadi prioritas pertama.` : ""}${rendah.length ? ` ${rendah.map((r) => `${esc(kode(r.strategi))} (${num(r.skor, 1)})`).join(" dan ")} masih di bawah 3 dari 5.` : ""}`,
   });
+}
+
+/* Penjelasan bahasa umum, hanya tampil bila urutan prioritas sama di semua segmen (D28). */
+function renderAlasanSama(h) {
+  const rek = (h.rekomendasi_segmen || []).filter((r) => r.segmen !== "Semua");
+  const segs = [...new Set(rek.map((r) => r.segmen))];
+  const urut = (s) => rek.filter((r) => r.segmen === s).sort((p, q) => p.peringkat - q.peringkat).map((r) => r.strategi).join("|");
+  const sama = segs.length > 1 && segs.every((s) => urut(s) === urut(segs[0]));
+  $("seg-why").hidden = !sama;
+  if (!sama) return;
+  const gaps = (h.gap || []).filter((r) => r.segmen !== "Semua").map((r) => r.gap);
+  const maxGap = gaps.length ? Math.max(...gaps) : null;
+  $("seg-why-list").innerHTML = [
+    `<b>Cara UMKM kecil dan besar mengelola toko ternyata mirip.</b> Skor unggah produk, promosi, komunikasi, dan konsistensi toko di setiap segmen hampir sama.`,
+    `<b>Strategi yang paling berhubungan dengan kenaikan penjualan juga sama</b> untuk UMKM kecil maupun besar. Tidak ada strategi yang hanya cocok untuk satu segmen.`,
+    `<b>Jarak tiap segmen dari UMKM yang penjualannya naik sangat tipis</b>${maxGap != null ? ` (paling jauh ${num(maxGap, 1)} poin dari skala 1–5)` : ""}, jadi tidak cukup untuk mengubah urutan.`,
+    `<b>Yang berbeda adalah cara menjalankannya.</b> Langkah di atas disesuaikan dengan kondisi usaha: UMKM kecil mulai dari langkah sederhana dan gratis, UMKM besar membagi tugas dan menguji cara berbayar.`,
+    `<span class="muted">Ini pola dari data penelitian, bukan jaminan hasil.</span>`,
+  ].map((t) => `<li>${t}</li>`).join("");
 }
 
 /* ---------------- Rangkuman aktivitas dan learning ---------------- */
@@ -1118,7 +1156,7 @@ function setupNav() {
   const io = new IntersectionObserver((ents) => {
     ents.forEach((e) => { if (e.isIntersecting) links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id)); });
   }, { rootMargin: "-30% 0px -60% 0px" });
-  links.forEach((a) => { const s = document.querySelector(a.getAttribute("href")); if (s) io.observe(s); });
+  links.forEach((a) => { const h = a.getAttribute("href"); const s = h.startsWith("#") && document.querySelector(h); if (s) io.observe(s); });
 }
 
 /* ---------------- Muat data ---------------- */

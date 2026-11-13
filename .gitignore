@@ -15,4 +15,5 @@ umkm_proyek.zip
 .ruff_cache/
 scratch/
 # situs statis hasil `python -m umkm.dashboard --export site` SENGAJA di-commit:
-# home server cukup `git pull` dan menyajikan folder site/ (isinya hanya agregat)
+# home server cukup `git pull` dan menyajikan folder site/ (agregat + daftar_umkm.json berisi
+# nama usaha sampel utama, disetujui pengguna untuk publik: D31)

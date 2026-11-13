@@ -4,8 +4,10 @@ Menyajikan satu halaman (static/dashboard.html) yang membaca `data.json`. JSON d
 status tahap, reports/tables, dan data_features.csv pada setiap permintaan, sehingga angka selalu
 mengikuti hasil pipeline terakhir. Grafik PNG diambil dari reports/figures.
 Sebelum browser dibuka, pipeline dijalankan otomatis bila hasilnya belum ada (lihat `siapkan`).
-Server hanya mendengarkan 127.0.0.1 (komputer sendiri) dan hanya melayani tiga jenis alamat.
-Tidak ada data per responden yang dikirim ke halaman; hanya angka ringkasan.
+Server hanya mendengarkan 127.0.0.1 (komputer sendiri) dan hanya melayani alamat yang terdaftar.
+`data.json` hanya berisi angka ringkasan. Halaman kedua (static/rincian.html) membaca
+`daftar_umkm.json`: daftar per UMKM sampel utama BESERTA NAMA USAHA (D31, disetujui pengguna untuk
+ditampilkan juga di situs publik).
 """
 
 from __future__ import annotations
@@ -25,6 +27,14 @@ import pandas as pd
 from umkm import config
 
 STATIC = Path(__file__).parent / "static" / "dashboard.html"
+STATIC_RINCIAN = Path(__file__).parent / "static" / "rincian.html"
+PLATFORM = {
+    "mp_gofood": "GoFood",
+    "mp_grabfood": "GrabFood",
+    "mp_shopee": "Shopee",
+    "mp_maxim": "Maxim",
+    "mp_tiktok": "TikTok Shop",
+}
 STATUS_KODE = {
     "SELESAI": "done",
     "MENUNGGU PERSETUJUAN": "wait",
@@ -135,6 +145,78 @@ def arah_per_segmen() -> dict[str, dict[str, int]]:
     out = {str(k): hitung(g) for k, g in u.groupby("segmen")}
     out["Semua"] = hitung(u)
     return out
+
+
+def _persen_ubah(sebelum: float, sesudah: float) -> float | None:
+    """Perubahan persen sesudah terhadap sebelum; None bila salah satu kosong atau sebelum <= 0."""
+    if pd.isna(sebelum) or pd.isna(sesudah) or sebelum <= 0:
+        return None
+    return float((sesudah - sebelum) / sebelum * 100)
+
+
+def daftar_umkm() -> list[dict[str, Any]]:
+    """Satu baris per UMKM sampel utama (D31): ID, nama usaha, segmen, platform, omzet dan transaksi
+    per bulan sebelum/sesudah, arah omzet/transaksi, dan status penjualan naik (D13).
+
+    Angka rupiah/transaksi adalah isian responden setelah koreksi konfirmasi (D25), SEBELUM winsor,
+    agar sama dengan yang dilaporkan pemilik usaha; arah naik/sama/turun memakai klasifikasi resmi
+    pipeline (data_features). Urut: naik dulu, lalu segmen, lalu nama. Kosong bila data belum ada."""
+    u = _arah_utama_segmen()
+    clean = config.path("processed") / "data_clean.csv"
+    if u is None or not clean.exists():
+        return []
+    kol = [
+        "id_responden",
+        "nama_usaha",
+        "omzet_sebelum",
+        "omzet_sesudah",
+        "trx_sebelum",
+        "trx_sesudah",
+    ]
+    c = pd.read_csv(clean, usecols=kol + list(PLATFORM))
+    s = pd.read_csv(
+        config.path("processed") / "data_segmen.csv", usecols=["id_responden", "nama_segmen"]
+    )
+    d = u.merge(c, on="id_responden", how="left").merge(s, on="id_responden", how="left")
+    d = d.assign(_nama=d["nama_usaha"].str.strip().str.lower()).sort_values(
+        ["naik", "segmen", "_nama"], ascending=[False, True, True]
+    )
+    angka = lambda v: None if pd.isna(v) else float(v)
+    return [
+        {
+            "id": str(r["id_responden"]),
+            "nama": str(r["nama_usaha"]).strip(),
+            "segmen": str(r["segmen"]),
+            "nama_segmen": str(r["nama_segmen"]),
+            "platform": [nama for k, nama in PLATFORM.items() if r[k] == 1],
+            "omzet_sebelum": angka(r["omzet_sebelum"]),
+            "omzet_sesudah": angka(r["omzet_sesudah"]),
+            "pct_omzet": _persen_ubah(r["omzet_sebelum"], r["omzet_sesudah"]),
+            "arah_omzet": None if pd.isna(r["arah_omzet"]) else str(r["arah_omzet"]),
+            "trx_sebelum": angka(r["trx_sebelum"]),
+            "trx_sesudah": angka(r["trx_sesudah"]),
+            "pct_trx": _persen_ubah(r["trx_sebelum"], r["trx_sesudah"]),
+            "arah_trx": None if pd.isna(r["arah_trx"]) else str(r["arah_trx"]),
+            "naik": bool(r["naik"]),
+        }
+        for _, r in d.iterrows()
+    ]
+
+
+def bangun_daftar() -> dict[str, Any]:
+    """Isi daftar_umkm.json untuk halaman rincian (memuat nama usaha, D31)."""
+    feat = config.path("processed") / "data_features.csv"
+    return _bersih(
+        {
+            "diperbarui": pd.Timestamp.now().strftime("%d-%m-%Y %H:%M"),
+            "data_dari": (
+                pd.Timestamp.fromtimestamp(feat.stat().st_mtime).strftime("%d-%m-%Y %H:%M")
+                if feat.exists()
+                else None
+            ),
+            "umkm": daftar_umkm(),
+        }
+    )
 
 
 def uji_arah_segmen() -> list[dict[str, Any]]:
@@ -543,8 +625,13 @@ class _Handler(BaseHTTPRequestHandler):
         jalur = self.path.split("?", 1)[0]
         if jalur in ("/", "/index.html"):
             self._kirim(200, STATIC.read_bytes(), "text/html; charset=utf-8")
+        elif jalur == "/rincian.html":
+            self._kirim(200, STATIC_RINCIAN.read_bytes(), "text/html; charset=utf-8")
         elif jalur == "/data.json":
             isi = json.dumps(bangun_data(), ensure_ascii=False).encode("utf-8")
+            self._kirim(200, isi, "application/json; charset=utf-8")
+        elif jalur == "/daftar_umkm.json":
+            isi = json.dumps(bangun_daftar(), ensure_ascii=False).encode("utf-8")
             self._kirim(200, isi, "application/json; charset=utf-8")
         elif jalur.startswith("/figures/") and (p := figur_aman(jalur[len("/figures/") :])):
             self._kirim(200, p.read_bytes(), "image/png")
@@ -613,8 +700,9 @@ def siapkan(jalankan_pipeline: bool = True) -> None:
 
 def ekspor(folder: Path, pipeline: bool = True) -> Path:
     """Tulis dashboard sebagai situs statis (tanpa server Python) untuk dipublikasikan:
-    index.html, data.json (angka ringkasan, ditandai `statis`), figures/*.png, dan .nojekyll
-    (GitHub Pages). Hanya berkas-berkas itu yang ditimpa; PNG lama di figures/ dibersihkan."""
+    index.html, data.json (angka ringkasan, ditandai `statis`), rincian.html + daftar_umkm.json
+    (daftar per UMKM dengan nama usaha, D31), figures/*.png, dan .nojekyll (GitHub Pages). Hanya
+    berkas-berkas itu yang ditimpa; PNG lama di figures/ dibersihkan."""
     siapkan(pipeline)
     folder = Path(folder)
     fig = folder / "figures"
@@ -626,6 +714,11 @@ def ekspor(folder: Path, pipeline: bool = True) -> Path:
         shutil.copyfile(config.path("reports") / "figures" / nama, fig / nama)
     (folder / "index.html").write_bytes(STATIC.read_bytes())
     (folder / "data.json").write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    (folder / "rincian.html").write_bytes(STATIC_RINCIAN.read_bytes())
+    daftar = bangun_daftar() | {"statis": True}
+    (folder / "daftar_umkm.json").write_text(
+        json.dumps(daftar, ensure_ascii=False), encoding="utf-8"
+    )
     (folder / ".nojekyll").touch()
     return folder
 

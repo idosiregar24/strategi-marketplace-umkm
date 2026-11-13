@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daftar UMKM Naik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg: #f6f6f7; --surface: #ffffff; --surface-2: #fafafa; --ink: #141414; --ink-2: #555a61; --muted: #8b9098;
+  --line: #ebebee; --accent: #f26b1d; --accent-ink: #c2510f; --accent-soft: #fff1e7; --bar-neutral: #d7d9de; --bar-faint: #eff0f2;
+  --neg: #d43c3c; --neg-soft: #fdecec; --good: #14833b; --good-soft: #e8f7ee; --shadow: 0 1px 2px rgba(16, 24, 40, .04);
+  --font: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e0f11; --surface: #17181b; --surface-2: #1c1d21; --ink: #f1f1f2; --ink-2: #b9bcc2; --muted: #868b93;
+    --line: #26282d; --accent: #f5813a; --accent-ink: #f8a06a; --accent-soft: #2b1a0f; --bar-neutral: #41444b; --bar-faint: #26282d;
+    --neg: #e66767; --neg-soft: #2c1414; --good: #4cc27a; --good-soft: #142619; --shadow: none; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e0f11; --surface: #17181b; --surface-2: #1c1d21; --ink: #f1f1f2; --ink-2: #b9bcc2; --muted: #868b93;
+  --line: #26282d; --accent: #f5813a; --accent-ink: #f8a06a; --accent-soft: #2b1a0f; --bar-neutral: #41444b; --bar-faint: #26282d;
+  --neg: #e66767; --neg-soft: #2c1414; --good: #4cc27a; --good-soft: #142619; --shadow: none; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.55 var(--font); }
+[hidden] { display: none !important; }
+h1, h2, h3, h4, p { margin: 0; }
+a { color: var(--accent-ink); }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 22px 28px 56px; display: grid; gap: 18px; }
+@media (max-width: 760px) { .wrap { padding: 16px 16px 48px; } }
+
+.back { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; text-decoration: none; color: var(--ink-2); }
+.back:hover { color: var(--accent-ink); }
+.back svg { width: 16px; height: 16px; }
+.head { display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; flex-wrap: wrap; }
+.head h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
+.head p { font-size: 0.84rem; color: var(--muted); max-width: 80ch; margin-top: 2px; }
+
+.btn { appearance: none; font: inherit; font-size: 0.8rem; font-weight: 600; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px; padding: 8px 13px; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; box-shadow: var(--shadow); }
+.btn:hover { border-color: var(--bar-neutral); background: var(--surface-2); }
+.btn svg { width: 15px; height: 15px; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { filter: brightness(1.06); background: var(--accent); }
+.btn[disabled] { opacity: .6; cursor: progress; }
+.btn:focus-visible, .pill:focus-visible, .back:focus-visible, th button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); display: grid; gap: 2px; }
+.stat .v { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.stat .k { font-size: 0.78rem; color: var(--muted); }
+.stat.hi .v { color: var(--accent-ink); }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); display: grid; gap: 14px; min-width: 0; }
+.filters { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: flex-end; }
+.f { display: grid; gap: 5px; }
+.f > span { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.pills { display: inline-flex; gap: 4px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 3px; flex-wrap: wrap; }
+.pill { appearance: none; font: inherit; font-size: 0.8rem; font-weight: 600; border: 0; background: transparent; color: var(--ink-2); padding: 5px 11px; border-radius: 7px; cursor: pointer; }
+.pill[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-ink); }
+select, input[type="search"] { font: inherit; font-size: 0.84rem; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; min-height: 34px; }
+input[type="search"] { width: 220px; max-width: 100%; }
+.f.grow { flex: 1 1 200px; }
+.f.grow input { width: 100%; }
+.f.act { margin-left: auto; }
+@media (max-width: 760px) { .f.act { margin-left: 0; } }
+
+.scroll { overflow-x: auto; margin: 0 -18px; padding: 0 18px; }
+table { border-collapse: collapse; width: 100%; min-width: 900px; font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-size: 0.72rem; color: var(--muted); font-weight: 600; background: var(--surface-2); position: sticky; top: 0; white-space: nowrap; }
+th:first-child { border-radius: 8px 0 0 8px; } th:last-child { border-radius: 0 8px 8px 0; }
+th.r, td.r { text-align: right; }
+th button { appearance: none; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; padding: 0; display: inline-flex; gap: 4px; align-items: center; }
+th button:hover { color: var(--ink); }
+th button .ar { font-size: 0.7rem; opacity: .35; }
+th button[data-on] .ar { opacity: 1; color: var(--accent-ink); }
+tbody tr:hover td { background: var(--surface-2); }
+tr:last-child td { border-bottom: 0; }
+td.no { color: var(--muted); width: 36px; }
+td.nm b { display: block; color: var(--ink); font-weight: 600; text-transform: capitalize; }
+td.nm small { color: var(--muted); font-size: 0.72rem; }
+.seg { display: inline-grid; place-items: center; min-width: 22px; height: 22px; border-radius: 6px; font-weight: 700; font-size: 0.74rem; background: var(--bar-faint); color: var(--ink-2); }
+.seg.s1 { background: var(--accent-soft); color: var(--accent-ink); }
+.plat { color: var(--ink-2); font-size: 0.78rem; }
+.ba { white-space: nowrap; }
+.ba small { color: var(--muted); }
+.chg { font-weight: 600; white-space: nowrap; }
+.chg.naik { color: var(--good); } .chg.turun { color: var(--neg); } .chg.sama { color: var(--muted); }
+.badge { display: inline-flex; align-items: center; font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.badge.up { color: var(--good); background: var(--good-soft); }
+.badge.idle { color: var(--muted); background: var(--bar-faint); }
+.tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.empty { text-align: center; color: var(--muted); padding: 28px 0; }
+.note { font-size: 0.78rem; color: var(--muted); }
+.note ul { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 2px; }
+.error { color: var(--neg); font-size: 0.86rem; }
+.toast { font-size: 0.8rem; color: var(--ink-2); }
+footer { font-size: 0.76rem; color: var(--muted); }
+footer .kredit { display: block; margin-top: 4px; font-size: 0.72rem; }
+@media print { .filters, .back, .f.act { display: none !important; } body { background: #fff; } .card, .stat { box-shadow: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Kembali ke dashboard</a>
+
+  <header class="head">
+    <div>
+      <h1 id="judul">Daftar UMKM yang penjualannya naik</h1>
+      <p>Sampel utama: UMKM yang punya data omzet/transaksi sebelum masuk marketplace. Data diolah <span id="m-data">memuat…</span>.</p>
+    </div>
+  </header>
+  <p class="error" id="err" hidden></p>
+
+  <div class="stats" aria-live="polite">
+    <div class="stat hi"><span class="v" id="s-n">-</span><span class="k" id="s-n-k">UMKM ditampilkan</span></div>
+    <div class="stat"><span class="v" id="s-om">-</span><span class="k">omzet naik</span></div>
+    <div class="stat"><span class="v" id="s-tr">-</span><span class="k">transaksi naik</span></div>
+    <div class="stat"><span class="v" id="s-dua">-</span><span class="k">omzet dan transaksi naik</span></div>
+  </div>
+
+  <section class="card">
+    <div class="filters">
+      <div class="f"><span>Status</span><div class="pills" data-f="status">
+        <button class="pill" data-v="naik">Naik</button><button class="pill" data-v="tetap">Tidak naik</button><button class="pill" data-v="semua">Semua</button></div></div>
+      <div class="f"><span>Segmen</span><div class="pills" data-f="segmen" id="f-seg"><button class="pill" data-v="semua">Semua</button></div></div>
+      <label class="f"><span>Yang naik</span>
+        <select id="f-ind">
+          <option value="semua">Omzet atau transaksi</option>
+          <option value="omzet">Omzet naik</option>
+          <option value="trx">Transaksi naik</option>
+          <option value="keduanya">Omzet dan transaksi naik</option>
+          <option value="omzet_saja">Hanya omzet naik</option>
+          <option value="trx_saja">Hanya transaksi naik</option>
+        </select></label>
+      <label class="f grow"><span>Cari nama usaha</span><input type="search" id="f-cari" placeholder="mis. bakso" autocomplete="off"></label>
+      <div class="f act"><span>&nbsp;</span>
+        <button class="btn primary" id="xlsx" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Unduh Excel (.xlsx)</button></div>
+    </div>
+    <p class="toast" id="toast" hidden></p>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th>#</th>
+          <th><button data-sort="nama">Nama usaha <span class="ar">↕</span></button></th>
+          <th><button data-sort="segmen">Segmen <span class="ar">↕</span></button></th>
+          <th>Platform</th>
+          <th class="r">Omzet per bulan<br><small>sebelum → sesudah</small></th>
+          <th class="r"><button data-sort="pct_omzet">Perubahan <span class="ar">↕</span></button></th>
+          <th class="r">Transaksi per bulan<br><small>sebelum → sesudah</small></th>
+          <th class="r"><button data-sort="pct_trx">Perubahan <span class="ar">↕</span></button></th>
+          <th>Yang naik</th>
+        </tr></thead>
+        <tbody id="rows"><tr><td colspan="9" class="empty">Memuat data…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="note">
+      <b>Keterangan</b>
+      <ul>
+        <li>Penjualan dianggap <b>naik</b> bila omzet ATAU jumlah transaksi per bulan naik setelah masuk marketplace.</li>
+        <li>Angka adalah isian pemilik usaha setelah konfirmasi ulang, belum dipangkas nilai ekstremnya (winsor), jadi bisa sedikit berbeda dari angka di grafik analisis.</li>
+        <li>Daftar ini deskriptif. Kenaikan tidak berarti disebabkan oleh marketplace atau strategi tertentu.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer><span id="foot">Penelitian strategi marketplace UMKM Pekanbaru · hasil bersifat asosiasi, bukan kausalitas.</span><span class="kredit">Ido Refael Siregar</span></footer>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const angka = (x, d = 0) => (x == null || !isFinite(x) ? "-" : Number(x).toLocaleString("id-ID", { maximumFractionDigits: d }));
+const rupiah = (x) => x == null ? "-" : Math.abs(x) < 1e6 ? "Rp" + Math.round(x / 1e3).toLocaleString("id-ID") + " rb" : "Rp" + (x / 1e6).toLocaleString("id-ID", { maximumFractionDigits: 1 }) + " jt";
+const persen = (x) => x == null ? "-" : (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toLocaleString("id-ID", { maximumFractionDigits: Math.abs(x) < 10 ? 1 : 0 }) + "%";
+const ARAH = { naik: "naik", sama: "sama", turun: "turun" };
+const IND = {
+  semua: (r) => true,
+  omzet: (r) => r.arah_omzet === "naik",
+  trx: (r) => r.arah_trx === "naik",
+  keduanya: (r) => r.arah_omzet === "naik" && r.arah_trx === "naik",
+  omzet_saja: (r) => r.arah_omzet === "naik" && r.arah_trx !== "naik",
+  trx_saja: (r) => r.arah_trx === "naik" && r.arah_omzet !== "naik",
+};
+const IND_LABEL = { semua: "Omzet atau transaksi", omzet: "Omzet naik", trx: "Transaksi naik", keduanya: "Omzet dan transaksi naik", omzet_saja: "Hanya omzet naik", trx_saja: "Hanya transaksi naik" };
+
+let DATA = null, VIEW = [];
+const F = { status: "naik", segmen: "semua", ind: "semua", cari: "", sort: null, dir: 1 };
+
+/* Filter dari URL, supaya tautan dari dashboard (mis. ?segmen=1&ind=omzet) langsung terpakai. */
+(function bacaURL() {
+  const q = new URLSearchParams(location.search);
+  if (["naik", "tetap", "semua"].includes(q.get("status"))) F.status = q.get("status");
+  if (q.get("segmen")) F.segmen = q.get("segmen");
+  if (IND[q.get("ind")]) F.ind = q.get("ind");
+  if (q.get("cari")) F.cari = q.get("cari");
+})();
+function tulisURL() {
+  const q = new URLSearchParams();
+  if (F.status !== "naik") q.set("status", F.status);
+  if (F.segmen !== "semua") q.set("segmen", F.segmen);
+  if (F.ind !== "semua") q.set("ind", F.ind);
+  if (F.cari) q.set("cari", F.cari);
+  const s = q.toString();
+  history.replaceState(null, "", location.pathname + (s ? "?" + s : ""));
+}
+
+function saring() {
+  const cari = F.cari.trim().toLowerCase();
+  let v = DATA.umkm.filter((r) =>
+    (F.status === "semua" || (F.status === "naik") === r.naik) &&
+    (F.segmen === "semua" || r.segmen === F.segmen) &&
+    IND[F.ind](r) &&
+    (!cari || r.nama.toLowerCase().includes(cari) || r.id.toLowerCase().includes(cari)));
+  if (F.sort) {
+    const k = F.sort, d = F.dir;
+    v = v.slice().sort((a, b) => {
+      const x = a[k], y = b[k];
+      if (x == null && y == null) return 0;
+      if (x == null) return 1;
+      if (y == null) return -1;
+      return (typeof x === "string" ? x.localeCompare(y, "id", { sensitivity: "base" }) : x - y) * d;
+    });
+  }
+  return v;
+}
+
+function judul() {
+  const st = { naik: "yang penjualannya naik", tetap: "yang penjualannya tidak naik", semua: "di sampel utama" }[F.status];
+  return `Daftar UMKM ${st}${F.segmen !== "semua" ? `, Segmen ${F.segmen}` : ""}`;
+}
+
+function render() {
+  VIEW = saring();
+  const n = VIEW.length;
+  $("judul").textContent = judul();
+  document.title = F.segmen !== "semua" ? `UMKM Segmen ${F.segmen}` : "Daftar UMKM Naik";
+  $("s-n").textContent = n;
+  $("s-n-k").textContent = `UMKM ditampilkan dari ${DATA.umkm.length} di sampel utama`;
+  $("s-om").textContent = VIEW.filter(IND.omzet).length;
+  $("s-tr").textContent = VIEW.filter(IND.trx).length;
+  $("s-dua").textContent = VIEW.filter(IND.keduanya).length;
+  document.querySelectorAll(".pills").forEach((g) => g.querySelectorAll(".pill").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === F[g.dataset.f]))));
+  $("f-ind").value = F.ind;
+  if ($("f-cari").value !== F.cari) $("f-cari").value = F.cari;
+  document.querySelectorAll("th button").forEach((b) => {
+    const on = b.dataset.sort === F.sort;
+    b.toggleAttribute("data-on", on);
+    b.querySelector(".ar").textContent = on ? (F.dir > 0 ? "↑" : "↓") : "↕";
+    b.closest("th").setAttribute("aria-sort", on ? (F.dir > 0 ? "ascending" : "descending") : "none");
+  });
+  $("xlsx").disabled = !n;
+  if (!n) {
+    $("rows").innerHTML = `<tr><td colspan="9" class="empty">Tidak ada UMKM yang cocok dengan saringan ini.</td></tr>`;
+    return;
+  }
+  const chg = (p, a) => `<span class="chg ${ARAH[a] || ""}">${p == null ? (a ? esc(a) : "-") : persen(p)}</span>`;
+  $("rows").innerHTML = VIEW.map((r, i) => {
+    const tags = [r.arah_omzet === "naik" && '<span class="badge up">Omzet</span>', r.arah_trx === "naik" && '<span class="badge up">Transaksi</span>'].filter(Boolean);
+    return `<tr>
+      <td class="no">${i + 1}</td>
+      <td class="nm"><b>${esc(r.nama)}</b><small>${esc(r.id)}</small></td>
+      <td><span class="seg s${esc(r.segmen)}" title="${esc(r.nama_segmen)}">${esc(r.segmen)}</span></td>
+      <td class="plat">${esc(r.platform.join(", ") || "-")}</td>
+      <td class="r ba">${rupiah(r.omzet_sebelum)} <small>→</small> <b>${rupiah(r.omzet_sesudah)}</b></td>
+      <td class="r">${chg(r.pct_omzet, r.arah_omzet)}</td>
+      <td class="r ba">${angka(r.trx_sebelum)} <small>→</small> <b>${angka(r.trx_sesudah)}</b></td>
+      <td class="r">${chg(r.pct_trx, r.arah_trx)}</td>
+      <td><div class="tags">${tags.join("") || '<span class="badge idle">Tidak naik</span>'}</div></td>
+    </tr>`;
+  }).join("");
+}
+function ubah() { tulisURL(); render(); }
+
+/* ---------------- Unduh Excel ---------------- */
+const XLSX_URL = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+let pustaka = null;
+function muatXLSX() {
+  if (window.XLSX) return Promise.resolve(window.XLSX);
+  if (!pustaka) pustaka = new Promise((ok, gagal) => {
+    const s = document.createElement("script");
+    s.src = XLSX_URL;
+    s.onload = () => ok(window.XLSX);
+    s.onerror = () => { pustaka = null; s.remove(); gagal(new Error("pustaka Excel tidak bisa dimuat")); };
+    document.head.appendChild(s);
+  });
+  return pustaka;
+}
+const KOLOM = [
+  ["No", 5], ["ID responden", 12], ["Nama usaha", 34], ["Segmen", 8], ["Nama segmen", 44], ["Platform", 28],
+  ["Omzet sebelum (Rp/bulan)", 22], ["Omzet sesudah (Rp/bulan)", 22], ["Perubahan omzet (%)", 18], ["Arah omzet", 11],
+  ["Transaksi sebelum (/bulan)", 22], ["Transaksi sesudah (/bulan)", 22], ["Perubahan transaksi (%)", 21], ["Arah transaksi", 13],
+  ["Penjualan naik", 14],
+];
+const bulat = (x, d) => (x == null ? null : Math.round(x * 10 ** d) / 10 ** d);
+function barisExcel(r, i) {
+  return [i + 1, r.id, r.nama, Number(r.segmen) || r.segmen, r.nama_segmen, r.platform.join(", "),
+    r.omzet_sebelum, r.omzet_sesudah, bulat(r.pct_omzet, 1), r.arah_omzet,
+    r.trx_sebelum, r.trx_sesudah, bulat(r.pct_trx, 1), r.arah_trx, r.naik ? "Ya" : "Tidak"];
+}
+function namaBerkas() {
+  const t = new Date(), tgl = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
+  const bag = ["umkm", F.status === "semua" ? "sampel_utama" : F.status === "naik" ? "naik" : "tidak_naik"];
+  if (F.segmen !== "semua") bag.push("segmen" + F.segmen);
+  if (F.ind !== "semua") bag.push(F.ind);
+  return `${bag.join("_")}_${tgl}.xlsx`;
+}
+function bukuExcel(X) {
+  const aoa = [KOLOM.map((k) => k[0]), ...VIEW.map(barisExcel)];
+  const ws = X.utils.aoa_to_sheet(aoa);
+  ws["!cols"] = KOLOM.map((k) => ({ wch: k[1] }));
+  ws["!autofilter"] = { ref: X.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: aoa.length - 1, c: KOLOM.length - 1 } }) };
+  ws["!freeze"] = { xSplit: 0, ySplit: 1 };
+  const fmt = { 6: "#,##0", 7: "#,##0", 8: "0.0", 10: "#,##0", 11: "#,##0", 12: "0.0" };
+  for (let r = 1; r < aoa.length; r++) for (const [c, z] of Object.entries(fmt)) {
+    const cell = ws[X.utils.encode_cell({ r, c: +c })];
+    if (cell && cell.t === "n") cell.z = z;
+  }
+  const ket = X.utils.aoa_to_sheet([
+    ["Daftar UMKM - Penelitian strategi marketplace UMKM Pekanbaru"],
+    [],
+    ["Saringan", ""],
+    ["Status", { naik: "Penjualan naik", tetap: "Penjualan tidak naik", semua: "Semua sampel utama" }[F.status]],
+    ["Segmen", F.segmen === "semua" ? "Semua" : `Segmen ${F.segmen}`],
+    ["Yang naik", IND_LABEL[F.ind]],
+    ["Cari nama", F.cari || "-"],
+    ["Jumlah baris", VIEW.length],
+    [],
+    ["Data diolah", DATA.data_dari || "-"],
+    ["Diunduh", new Date().toLocaleString("id-ID")],
+    [],
+    ["Keterangan", ""],
+    ["Sampel utama", `${DATA.umkm.length} UMKM yang punya data omzet/transaksi sebelum masuk marketplace.`],
+    ["Penjualan naik", "Omzet ATAU jumlah transaksi per bulan naik setelah masuk marketplace."],
+    ["Angka", "Isian pemilik usaha setelah konfirmasi ulang, belum di-winsor. Perubahan (%) = (sesudah - sebelum) / sebelum x 100."],
+    ["Segmen", "K-Means pada profil usaha: skala omzet, lama usaha, lama di marketplace, jumlah platform."],
+    ["Catatan", "Daftar deskriptif. Kenaikan tidak berarti disebabkan oleh marketplace atau strategi tertentu (asosiasi, bukan kausalitas)."],
+  ]);
+  ket["!cols"] = [{ wch: 16 }, { wch: 100 }];
+  const wb = X.utils.book_new();
+  X.utils.book_append_sheet(wb, ws, "Daftar UMKM");
+  X.utils.book_append_sheet(wb, ket, "Keterangan");
+  return wb;
+}
+async function unduhExcel() {
+  const b = $("xlsx"), teks = b.innerHTML;
+  b.disabled = true;
+  b.lastChild.textContent = "Menyiapkan…";
+  $("toast").hidden = true;
+  try {
+    const X = await muatXLSX();
+    X.writeFile(bukuExcel(X), namaBerkas(), { compression: true });
+  } catch (e) {
+    unduhCSV();
+    $("toast").textContent = `Excel tidak bisa dibuat (${e.message}; perlu koneksi internet). Sebagai gantinya diunduh berkas CSV yang juga bisa dibuka di Excel.`;
+    $("toast").hidden = false;
+  } finally {
+    b.innerHTML = teks;
+    b.disabled = !VIEW.length;
+  }
+}
+function unduhCSV() {
+  const sel = (v) => v == null ? "" : typeof v === "number" ? String(v).replace(".", ",") : `"${String(v).replace(/"/g, '""')}"`;
+  const teks = [KOLOM.map((k) => k[0]), ...VIEW.map(barisExcel)].map((r) => r.map(sel).join(";")).join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["﻿" + teks], { type: "text/csv;charset=utf-8" }));
+  a.download = namaBerkas().replace(/\.xlsx$/, ".csv");
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+/* ---------------- Interaksi ---------------- */
+document.querySelectorAll(".pills").forEach((g) => g.addEventListener("click", (e) => {
+  const b = e.target.closest(".pill");
+  if (!b) return;
+  F[g.dataset.f] = b.dataset.v;
+  ubah();
+}));
+$("f-ind").addEventListener("change", (e) => { F.ind = e.target.value; ubah(); });
+let tc = null;
+$("f-cari").addEventListener("input", (e) => { clearTimeout(tc); tc = setTimeout(() => { F.cari = e.target.value; ubah(); }, 120); });
+document.querySelectorAll("th button").forEach((b) => b.addEventListener("click", () => {
+  const k = b.dataset.sort;
+  if (F.sort !== k) { F.sort = k; F.dir = k.startsWith("pct") ? -1 : 1; }
+  else if ((F.dir > 0) === !k.startsWith("pct")) F.dir *= -1;
+  else F.sort = null; // klik ketiga: kembali ke urutan bawaan
+  render();
+}));
+$("xlsx").addEventListener("click", unduhExcel);
+
+async function muat() {
+  try {
+    const r = await fetch("daftar_umkm.json", { cache: "no-store" });
+    if (!r.ok) throw new Error(`server menjawab ${r.status}`);
+    DATA = await r.json();
+    if (!DATA.umkm || !DATA.umkm.length) throw new Error("daftar UMKM kosong; jalankan pipeline lebih dulu");
+    $("m-data").textContent = DATA.data_dari || "-";
+    const segs = [...new Set(DATA.umkm.map((u) => u.segmen))].sort();
+    $("f-seg").innerHTML = `<button class="pill" data-v="semua">Semua</button>` + segs.map((s) => {
+      const u = DATA.umkm.find((x) => x.segmen === s);
+      return `<button class="pill" data-v="${esc(s)}" title="${esc(u.nama_segmen)}">Segmen ${esc(s)}</button>`;
+    }).join("");
+    if (F.segmen !== "semua" && !segs.includes(F.segmen)) F.segmen = "semua";
+    render();
+  } catch (e) {
+    const lokal = ["localhost", "127.0.0.1"].includes(location.hostname);
+    $("err").textContent = `Data tidak bisa dimuat (${e.message}). ${lokal ? "Pastikan server masih berjalan: python -m umkm.dashboard" : "Coba muat ulang halaman."}`;
+    $("err").hidden = false;
+    $("rows").innerHTML = "";
+  }
+}
+muat();
+</script>
+</body>
+</html>

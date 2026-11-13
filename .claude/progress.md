@@ -167,6 +167,15 @@ Status: BELUM / BERJALAN / MENUNGGU PERSETUJUAN / SELESAI
 - Dashboard lokal `src/umkm/dashboard.py` dan `src/umkm/static/dashboard.html` diperbarui menjadi 2 mode tampilan:
   Tampilan Umum (pemilik UMKM/bisnis) dan Tampilan Developer/Kompleks (data scientist/statistik mendalam).
 
+### 2026-11-13 - Di luar tahap: daftar UMKM per nama dan unduh Excel (D31)
+- `src/umkm/static/rincian.html` (halaman baru) dan `dashboard.py`: `daftar_umkm()`, `bangun_daftar()`, rute
+  `/rincian.html` dan `/daftar_umkm.json`, ikut diekspor ke `site/`. Kartu ringkasan: baris/angka per segmen bisa diklik
+  menuju daftar tersaring; menu samping "Daftar UMKM naik". Unduh .xlsx (lembar Daftar UMKM + Keterangan).
+- Angka cocok dengan kartu: Segmen 1 27 naik (omzet 26, transaksi 25), Segmen 2 35 (33, 35), total 62 dari 116.
+- 2 tes baru, 1 tes ekspor diperluas (total 134 lolos). Diperiksa di browser headless (desktop dan 390 px).
+- Bagian Rekomendasi: kartu bahasa umum "Kenapa urutannya sama di setiap segmen?" (tampil hanya bila urutan
+  prioritas sama antar-segmen; penjelasan D26 bobot sama, D27 skor strategi segmen tidak berbeda, D28 gap kecil).
+
 ### 2026-11-02 - Di luar tahap: desain ulang dashboard (D29)
 - `src/umkm/static/dashboard.html` ditulis ulang: satu halaman dengan navigasi; 6 grafik SVG (arah perubahan, platform,
   AUC model, permutation importance RF, simulasi +1 poin, skor segmen vs UMKM naik) dengan tombol unduh PNG/SVG/CSV dan

@@ -75,6 +75,7 @@ komputer sendiri (127.0.0.1). Hentikan dengan Ctrl+C.
 python -m umkm.dashboard --export site
 ```
 
-Folder `site/` berisi `index.html`, `data.json` (hanya angka ringkasan, tanpa data per responden) dan
+Folder `site/` berisi `index.html`, `data.json` (hanya angka ringkasan), `rincian.html` +
+`daftar_umkm.json` (daftar UMKM sampel utama BESERTA NAMA USAHA, dengan unduh Excel; D31) dan
 `figures/`. Folder ini bisa disajikan oleh web server apa pun (nginx, Caddy, GitHub Pages, Cloudflare Pages)
 tanpa Python. Jalankan ulang perintah di atas setiap kali pipeline diperbarui, lalu unggah ulang `site/`.
